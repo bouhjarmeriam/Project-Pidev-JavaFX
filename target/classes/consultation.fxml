@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.ConsultationController" spacing="10" style="-fx-padding: 20;">
+    <stylesheets>
+        <URL value="@/consultation.css" />
+    </stylesheets>
+
+    <!-- Header Section -->
+    <VBox spacing="10">
+        <HBox alignment="CENTER" style="-fx-padding: 0 0 15 0;">
+            <ImageView fitHeight="180" fitWidth="180" preserveRatio="true">
+                <image>
+                    <Image url="@img/logo.png" />
+                </image>
+            </ImageView>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 10 0;">
+            <Button fx:id="backButton" text="← Back to Main page" onAction="#handleBackButton" styleClass="back-button"/>
+        </HBox>
+
+        <Label text="Patient Consultation Portal" styleClass="header-label"/>
+    </VBox>
+
+    <!-- Patient Login Section -->
+    <GridPane hgap="10" vgap="10" styleClass="login-section">
+        <Label text="Patient ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="loginPatientIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Enter your patient ID" styleClass="form-field"/>
+        <Button text="Login" onAction="#handlePatientLogin" GridPane.rowIndex="0" GridPane.columnIndex="2" styleClass="login-button"/>
+    </GridPane>
+
+    <!-- Consultation Form -->
+    <GridPane fx:id="consultationForm" hgap="10" vgap="10" visible="false" styleClass="form-section">
+        <Label text="Date:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+        <DatePicker fx:id="datePicker" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="form-field"/>
+
+        <Label text="Patient ID:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="patientIdField" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="false" styleClass="form-field"/>
+
+        <Label text="Service:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
+        <ComboBox fx:id="serviceCombo" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Select service" styleClass="form-field"/>
+
+        <Label text="Status:" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="statusField" text="En cours de traitement" editable="false" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="form-field"/>
+
+        <Label text="Phone:" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="phoneField" GridPane.rowIndex="4" GridPane.columnIndex="1" promptText="Phone number" styleClass="form-field"/>
+    </GridPane>
+
+    <!-- Action Buttons -->
+    <HBox fx:id="actionButtonsContainer" spacing="10" styleClass="button-container" visible="false">
+        <Button fx:id="addButton" text="Add Consultation" onAction="#handleAddConsultation" styleClass="action-button add-button"/>
+        <Button fx:id="updateButton" text="Update" onAction="#handleUpdateConsultation" visible="false" styleClass="action-button update-button"/>
+        <Button fx:id="deleteButton" text="Delete" onAction="#handleDeleteConsultation" visible="false" styleClass="action-button delete-button"/>
+        <Button fx:id="rateButton" text="Rate Service" onAction="#handleRateService" visible="false" styleClass="action-button rate-button"/>
+    </HBox>
+
+    <!-- Consultation Table -->
+    <TableView fx:id="consultationTable" visible="false" styleClass="consultation-table">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="50" styleClass="table-column"/>
+            <TableColumn fx:id="serviceColumn" text="Service" prefWidth="150" styleClass="table-column"/>
+            <TableColumn fx:id="dateColumn" text="Date" prefWidth="100" styleClass="table-column"/>
+            <TableColumn fx:id="statusColumn" text="Status" prefWidth="120" styleClass="table-column"/>
+            <TableColumn fx:id="phoneColumn" text="Phone" prefWidth="120" styleClass="table-column"/>
+            <TableColumn fx:id="ratingColumn" text="Rating" prefWidth="120" styleClass="table-column"/>
+        </columns>
+    </TableView>
+</VBox>

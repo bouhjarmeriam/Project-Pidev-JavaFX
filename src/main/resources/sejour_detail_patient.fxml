@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SejourDetailPatientController"
+            style="-fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);"
+            prefWidth="800" prefHeight="600">
+    <top>
+        <VBox spacing="0">
+            <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: linear-gradient(to right, #1565c0, #0d47a1); -fx-padding: 15 25;">
+                <FontAwesomeIconView glyphName="BED" size="30" glyphStyle="-fx-fill: white;"/>
+                <Label text="Détails du Séjour Hospitalier" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white; -fx-font-family: 'Segoe UI';"/>
+            </HBox>
+        </VBox>
+    </top>
+    
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;">
+            <VBox spacing="25">
+                <padding>
+                    <Insets top="30" right="30" bottom="30" left="30"/>
+                </padding>
+                
+                <!-- Patient Info Card -->
+                <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+                    
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <FontAwesomeIconView glyphName="USER" size="24" glyphStyle="-fx-fill: #1565c0;"/>
+                        <Label text="Patient" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1565c0; -fx-font-family: 'Segoe UI';"/>
+                    </HBox>
+                    
+                    <Label fx:id="lblPatientNom" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #37474f;" text="Nom du Patient"/>
+                </VBox>
+                
+                <!-- Basic Info Card -->
+                <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+                    
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <FontAwesomeIconView glyphName="INFO_CIRCLE" size="24" glyphStyle="-fx-fill: #1565c0;"/>
+                        <Label text="Informations Générales du Séjour" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1565c0; -fx-font-family: 'Segoe UI';"/>
+                    </HBox>
+                    
+                    <GridPane hgap="20" vgap="15">
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="150" prefWidth="200"/>
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="250" prefWidth="400"/>
+                        </columnConstraints>
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                            <FontAwesomeIconView glyphName="ID_CARD" size="14" glyphStyle="-fx-fill: #1565c0;"/>
+                            <Label text="Identifiant:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-text-fill: #37474f;"/>
+                        </HBox>
+                        <Label fx:id="lblId" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #37474f;" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                            <FontAwesomeIconView glyphName="CALENDAR_CHECK_O" size="14" glyphStyle="-fx-fill: #1565c0;"/>
+                            <Label text="Date d'entrée:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-text-fill: #37474f;"/>
+                        </HBox>
+                        <Label fx:id="lblDateEntree" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #37474f;" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                            <FontAwesomeIconView glyphName="CALENDAR_MINUS_O" size="14" glyphStyle="-fx-fill: #1565c0;"/>
+                            <Label text="Date de sortie:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-text-fill: #37474f;"/>
+                        </HBox>
+                        <Label fx:id="lblDateSortie" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #37474f;" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                            <FontAwesomeIconView glyphName="CLOCK_O" size="14" glyphStyle="-fx-fill: #1565c0;"/>
+                            <Label text="Durée du séjour:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-text-fill: #37474f;"/>
+                        </HBox>
+                        <Label fx:id="lblDuree" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #37474f;" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="0">
+                            <FontAwesomeIconView glyphName="LIST_UL" size="14" glyphStyle="-fx-fill: #1565c0;"/>
+                            <Label text="Type de séjour:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-text-fill: #37474f;"/>
+                        </HBox>
+                        <Label fx:id="lblTypeSejour" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #37474f;" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                    </GridPane>
+                </VBox>
+                
+                <!-- Payment Info Card -->
+                <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+                    
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <FontAwesomeIconView glyphName="MONEY" size="24" glyphStyle="-fx-fill: #1565c0;"/>
+                        <Label text="Informations de Paiement et Facturation" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1565c0; -fx-font-family: 'Segoe UI';"/>
+                    </HBox>
+                    
+                    <GridPane hgap="20" vgap="15">
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="150" prefWidth="200"/>
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="250" prefWidth="400"/>
+                        </columnConstraints>
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                            <FontAwesomeIconView glyphName="EURO" size="14" glyphStyle="-fx-fill: #1565c0;"/>
+                            <Label text="Frais de séjour:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-text-fill: #37474f;"/>
+                        </HBox>
+                        <Label fx:id="lblFraisSejour" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #37474f;" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                            <FontAwesomeIconView glyphName="PLUS_CIRCLE" size="14" glyphStyle="-fx-fill: #1565c0;"/>
+                            <Label text="Prix des extras:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-text-fill: #37474f;"/>
+                        </HBox>
+                        <Label fx:id="lblPrixExtras" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #37474f;" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                            <FontAwesomeIconView glyphName="CREDIT_CARD" size="14" glyphStyle="-fx-fill: #1565c0;"/>
+                            <Label text="Moyen de paiement:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-text-fill: #37474f;"/>
+                        </HBox>
+                        <Label fx:id="lblMoyenPaiement" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #37474f;" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                            <FontAwesomeIconView glyphName="CHECK_CIRCLE" size="14" glyphStyle="-fx-fill: #1565c0;"/>
+                            <Label text="Statut du paiement:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-text-fill: #37474f;"/>
+                        </HBox>
+                        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                            <Label fx:id="lblStatutPaiement" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #37474f;"/>
+                            <Label fx:id="lblStatutIndicator" style="-fx-background-radius: 10; -fx-padding: 3 10; -fx-font-weight: bold; -fx-font-family: 'Segoe UI';"/>
+                        </HBox>
+                    </GridPane>
+                </VBox>
+                
+                <!-- Total Card -->
+                <HBox alignment="CENTER_RIGHT">
+                    <VBox spacing="5" style="-fx-background-color: #1565c0; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 3);">
+                        <padding>
+                            <Insets top="15" right="20" bottom="15" left="20"/>
+                        </padding>
+                        
+                        <HBox spacing="10" alignment="CENTER">
+                            <FontAwesomeIconView glyphName="CALCULATOR" size="16" glyphStyle="-fx-fill: white;"/>
+                            <Label text="MONTANT TOTAL À PAYER" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white; -fx-font-family: 'Segoe UI';"/>
+                        </HBox>
+                        <Label fx:id="lblTotal" text="0.00 €" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white; -fx-font-family: 'Segoe UI';"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+    
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #1565c0; -fx-padding: 15 25;">
+            <Button text="Fermer" onAction="#handleClose" prefWidth="100"
+                    style="-fx-background-color: white; -fx-text-fill: #1565c0; -fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-background-radius: 5;">
+                <graphic>
+                    <FontAwesomeIconView glyphName="CLOSE" size="14" glyphStyle="-fx-fill: #1565c0;"/>
+                </graphic>
+            </Button>
+        </HBox>
+    </bottom>
+</BorderPane> 

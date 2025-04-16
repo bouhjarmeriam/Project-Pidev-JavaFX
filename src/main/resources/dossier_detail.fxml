@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DossierDetailController"
+            style="-fx-background-color: linear-gradient(to bottom, #f9f9f9, #ffffff);"
+            prefWidth="900" prefHeight="700">
+    <top>
+        <VBox spacing="10" style="-fx-background-color: linear-gradient(to right, #2193b0, #6dd5ed); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 3);">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <FontAwesomeIconView glyphName="FOLDER_OPEN" size="28" glyphStyle="-fx-fill: white;"/>
+                <Label text="Détails du Dossier Médical" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: white; -fx-font-family: 'Segoe UI';" />
+            </HBox>
+        </VBox>
+    </top>
+    
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" 
+                   style="-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;"
+                   minWidth="850" minHeight="500">
+            <content>
+                <VBox spacing="20">
+                    <padding>
+                        <Insets top="20" right="25" bottom="20" left="25"/>
+                    </padding>
+                    
+                    <HBox spacing="20" style="-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3);">
+                        <padding>
+                            <Insets top="15" right="15" bottom="15" left="15"/>
+                        </padding>
+                        
+                        <GridPane hgap="25" vgap="15" HBox.hgrow="ALWAYS">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="150" prefWidth="200"/>
+                                <ColumnConstraints hgrow="ALWAYS" minWidth="250" prefWidth="400"/>
+                            </columnConstraints>
+                            
+                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                                <FontAwesomeIconView glyphName="ID_CARD" size="16" glyphStyle="-fx-fill: #2193b0;"/>
+                                <Label text="ID:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI';"/>
+                            </HBox>
+                            <Label fx:id="lblId" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px;" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                            
+                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                                <FontAwesomeIconView glyphName="CALENDAR" size="16" glyphStyle="-fx-fill: #2193b0;"/>
+                                <Label text="Date de création:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI';"/>
+                            </HBox>
+                            <Label fx:id="lblDateCreation" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px;" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            
+                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                                <FontAwesomeIconView glyphName="USER" size="16" glyphStyle="-fx-fill: #2193b0;"/>
+                                <Label text="Patient:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI';"/>
+                            </HBox>
+                            <Label fx:id="lblPatient" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px;" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                            
+                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                                <FontAwesomeIconView glyphName="USER_MD" size="16" glyphStyle="-fx-fill: #2193b0;"/>
+                                <Label text="Médecin:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI';"/>
+                            </HBox>
+                            <Label fx:id="lblMedecin" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px;" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                            
+                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="0">
+                                <FontAwesomeIconView glyphName="INFO_CIRCLE" size="16" glyphStyle="-fx-fill: #2193b0;"/>
+                                <Label text="Statut:" style="-fx-font-weight: bold; -fx-font-family: 'Segoe UI';"/>
+                            </HBox>
+                            <Label fx:id="lblStatut" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px;" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                        </GridPane>
+                    </HBox>
+                    
+                    <TitledPane text="Historique des maladies" expanded="true" maxHeight="Infinity"
+                              style="-fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3);">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="HEARTBEAT" size="16" glyphStyle="-fx-fill: #e74c3c;"/>
+                        </graphic>
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 0 0 8 8;" VBox.vgrow="ALWAYS">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            <ScrollPane fitToWidth="true" prefHeight="120" maxHeight="150" style="-fx-background-color: transparent;">
+                                <Label fx:id="lblHistoriqueMaladies" wrapText="true" 
+                                      style="-fx-font-family: 'Segoe UI'; -fx-text-fill: #333333; -fx-font-size: 14px; -fx-background-color: #f8f9fa; -fx-padding: 10; -fx-background-radius: 5; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-min-height: 80; -fx-max-width: 800;"/>
+                            </ScrollPane>
+                        </VBox>
+                    </TitledPane>
+                    
+                    <TitledPane text="Opérations passées" expanded="true" maxHeight="Infinity"
+                              style="-fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3);">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="SCISSORS" size="16" glyphStyle="-fx-fill: #3498db;"/>
+                        </graphic>
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 0 0 8 8;" VBox.vgrow="ALWAYS">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            <ScrollPane fitToWidth="true" prefHeight="120" maxHeight="150" style="-fx-background-color: transparent;">
+                                <Label fx:id="lblOperationsPassees" wrapText="true" 
+                                      style="-fx-font-family: 'Segoe UI'; -fx-text-fill: #333333; -fx-font-size: 14px; -fx-background-color: #f8f9fa; -fx-padding: 10; -fx-background-radius: 5; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-min-height: 80; -fx-max-width: 800;"/>
+                            </ScrollPane>
+                        </VBox>
+                    </TitledPane>
+                    
+                    <TitledPane text="Consultations passées" expanded="true" maxHeight="Infinity"
+                              style="-fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3);">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="STETHOSCOPE" size="16" glyphStyle="-fx-fill: #9b59b6;"/>
+                        </graphic>
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 0 0 8 8;" VBox.vgrow="ALWAYS">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            <ScrollPane fitToWidth="true" prefHeight="120" maxHeight="150" style="-fx-background-color: transparent;">
+                                <Label fx:id="lblConsultationsPassees" wrapText="true" 
+                                      style="-fx-font-family: 'Segoe UI'; -fx-text-fill: #333333; -fx-font-size: 14px; -fx-background-color: #f8f9fa; -fx-padding: 10; -fx-background-radius: 5; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-min-height: 80; -fx-max-width: 800;"/>
+                            </ScrollPane>
+                        </VBox>
+                    </TitledPane>
+                    
+                    <TitledPane text="Notes" expanded="true" maxHeight="Infinity"
+                              style="-fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3);">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="STICKY_NOTE" size="16" glyphStyle="-fx-fill: #f39c12;"/>
+                        </graphic>
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 0 0 8 8;" VBox.vgrow="ALWAYS">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            <ScrollPane fitToWidth="true" prefHeight="120" maxHeight="150" style="-fx-background-color: transparent;">
+                                <Label fx:id="lblNotes" wrapText="true" 
+                                      style="-fx-font-family: 'Segoe UI'; -fx-text-fill: #333333; -fx-font-size: 14px; -fx-background-color: #f8f9fa; -fx-padding: 10; -fx-background-radius: 5; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-min-height: 80; -fx-max-width: 800;"/>
+                            </ScrollPane>
+                        </VBox>
+                    </TitledPane>
+                    
+                    <TitledPane text="Image" expanded="true" 
+                              style="-fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3);">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="IMAGE" size="16" glyphStyle="-fx-fill: #1abc9c;"/>
+                        </graphic>
+                        <VBox alignment="CENTER" style="-fx-background-color: white; -fx-background-radius: 0 0 8 8;" spacing="10">
+                            <padding>
+                                <Insets top="15" right="15" bottom="15" left="15"/>
+                            </padding>
+                            <StackPane minHeight="250" maxHeight="300">
+                                <VBox alignment="CENTER" style="-fx-background-color: #f8f9fa; -fx-background-radius: 5; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-min-height: 250; -fx-min-width: 400;">
+                                    <FontAwesomeIconView fx:id="placeholderIcon" glyphName="IMAGE" size="48" glyphStyle="-fx-fill: #cccccc;"/>
+                                    <Label text="Aucune image disponible" style="-fx-text-fill: #999999; -fx-font-family: 'Segoe UI';"/>
+                                </VBox>
+                                <ImageView fx:id="imageView" fitWidth="450" preserveRatio="true" 
+                                         style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 3);"/>
+                            </StackPane>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button text="Mettre à jour l'image" onAction="#handleUpdateImage" 
+                                      style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-background-radius: 5; -fx-padding: 8 15 8 15; -fx-cursor: hand;">
+                                    <graphic>
+                                        <FontAwesomeIconView glyphName="UPLOAD" size="14" glyphStyle="-fx-fill: white;"/>
+                                    </graphic>
+                                </Button>
+                                <Button text="Voir en plein écran" onAction="#handleFullscreenImage" fx:id="btnFullscreenImage" visible="false"
+                                      style="-fx-background-color: #16a085; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-background-radius: 5; -fx-padding: 8 15 8 15; -fx-cursor: hand;">
+                                    <graphic>
+                                        <FontAwesomeIconView glyphName="SEARCH_PLUS" size="14" glyphStyle="-fx-fill: white;"/>
+                                    </graphic>
+                                </Button>
+                            </HBox>
+                        </VBox>
+                    </TitledPane>
+                    
+                    <TitledPane text="Séjours associés" expanded="true" 
+                              style="-fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3);">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="BED" size="16" glyphStyle="-fx-fill: #2980b9;"/>
+                        </graphic>
+                        <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius: 0 0 8 8;">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            <TableView fx:id="sejourTable" prefHeight="250" minHeight="200" style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e0e0e0; -fx-border-width: 1;">
+                                <columns>
+                                    <TableColumn fx:id="colDateEntree" text="Date d'entrée" prefWidth="140"/>
+                                    <TableColumn fx:id="colDateSortie" text="Date de sortie" prefWidth="140"/>
+                                    <TableColumn fx:id="colTypeSejour" text="Type" prefWidth="120"/>
+                                    <TableColumn fx:id="colFraisSejour" text="Frais" prefWidth="100"/>
+                                    <TableColumn fx:id="colStatutPaiement" text="Statut" prefWidth="100"/>
+                                </columns>
+                                <placeholder>
+                                    <Label text="Aucun séjour enregistré" style="-fx-font-family: 'Segoe UI'; -fx-text-fill: #7f8c8d;"/>
+                                </placeholder>
+                            </TableView>
+                            <HBox spacing="10" alignment="CENTER_RIGHT">
+                                <Button text="Ajouter séjour" onAction="#handleAjouterSejour" 
+                                      style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-background-radius: 5; -fx-padding: 8 15 8 15; -fx-cursor: hand;">
+                                    <graphic>
+                                        <FontAwesomeIconView glyphName="PLUS" size="14" glyphStyle="-fx-fill: white;"/>
+                                    </graphic>
+                                </Button>
+                            </HBox>
+                        </VBox>
+                    </TitledPane>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+    
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-background-color: linear-gradient(to right, #2193b0, #6dd5ed); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, -3);">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+            <Button text="Fermer" onAction="#handleFermer" prefWidth="120"
+                  style="-fx-background-color: white; -fx-text-fill: #2193b0; -fx-font-weight: bold; -fx-font-family: 'Segoe UI'; -fx-background-radius: 5; -fx-padding: 10 15 10 15; -fx-cursor: hand;">
+                <graphic>
+                    <FontAwesomeIconView glyphName="CLOSE" size="14" glyphStyle="-fx-fill: #2193b0;"/>
+                </graphic>
+            </Button>
+        </HBox>
+    </bottom>
+</BorderPane> 

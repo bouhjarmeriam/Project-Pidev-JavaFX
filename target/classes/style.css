@@ -1,0 +1,67 @@
+/* Apply a red-blue gradient background */
+#navBar {
+  -fx-background-color: linear-gradient(to right, red, blue);
+  -fx-padding: 10px;
+}
+
+/* Style for buttons */
+#homeBtn,
+#profileBtn,
+#settingsBtn {
+  -fx-background-color: rgba(255, 255, 255, 0.2); /* Transparent White */
+  -fx-text-fill: white;
+  -fx-font-size: 14px;
+  -fx-padding: 8px 15px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
+  -fx-border-color: white;
+}
+
+/* Hover effect */
+#homeBtn:hover,
+#profileBtn:hover,
+#settingsBtn:hover {
+  -fx-background-color: rgba(255, 255, 255, 0.4);
+  -fx-cursor: hand;
+}
+
+/* Active button effect */
+#homeBtn:pressed,
+#profileBtn:pressed,
+#settingsBtn:pressed {
+  -fx-background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Sejour Details Styles */
+.sejour-detail-title {
+  -fx-font-size: 20px;
+  -fx-font-weight: bold;
+  -fx-padding: 10px 0;
+}
+
+.sejour-detail-label {
+  -fx-font-weight: bold;
+  -fx-text-fill: #2c3e50;
+}
+
+.sejour-detail-value {
+  -fx-text-fill: #34495e;
+}
+
+.sejour-detail-section {
+  -fx-padding: 10px;
+  -fx-background-color: #f8f9fa;
+  -fx-background-radius: 5px;
+  -fx-border-color: #dee2e6;
+  -fx-border-radius: 5px;
+}
+
+.sejour-close-button {
+  -fx-background-color: #6c757d;
+  -fx-text-fill: white;
+  -fx-cursor: hand;
+}
+
+.sejour-close-button:hover {
+  -fx-background-color: #5a6268;
+}
