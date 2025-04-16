@@ -4,12 +4,19 @@ import entite.etage;
 import entite.departement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import service.EtageService;
 import service.DepartementService;
 
+import java.io.IOException;
 import java.util.List;
 
 public class EtageController {
@@ -37,6 +44,14 @@ public class EtageController {
     }
 
     private void setupTable() {
+        // Configuration des largeurs de colonnes
+        idColumn.setPrefWidth(80);
+        numeroColumn.setPrefWidth(100);
+        departementColumn.setPrefWidth(200);
+        modifierColumn.setPrefWidth(100);
+        supprimerColumn.setPrefWidth(100);
+
+        // Configuration des colonnes de données
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         numeroColumn.setCellValueFactory(new PropertyValueFactory<>("numero"));
         departementColumn.setCellValueFactory(cellData -> {
@@ -44,11 +59,14 @@ public class EtageController {
             return new javafx.beans.property.SimpleStringProperty(d != null ? d.getNom() : "");
         });
 
-        // Colonne Modifier
+        // Colonne Modifier améliorée
         modifierColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button btn = new Button("Modifier");
+            private final Button btn = new Button("✏️");
 
             {
+                btn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+                btn.setTooltip(new Tooltip("Modifier"));
+
                 btn.setOnAction(event -> {
                     etage etage = getTableView().getItems().get(getIndex());
                     handleModify(etage);
@@ -66,11 +84,14 @@ public class EtageController {
             }
         });
 
-        // Colonne Supprimer
+        // Colonne Supprimer améliorée
         supprimerColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button btn = new Button("Supprimer");
+            private final Button btn = new Button("🗑️");
 
             {
+                btn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+                btn.setTooltip(new Tooltip("Supprimer"));
+
                 btn.setOnAction(event -> {
                     etage etage = getTableView().getItems().get(getIndex());
                     handleDelete(etage);
@@ -87,6 +108,10 @@ public class EtageController {
                 }
             }
         });
+
+        // Style général du tableau
+        etageTable.setStyle("-fx-font-size: 14px;");
+        etageTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private void loadDepartements() {
@@ -164,5 +189,61 @@ public class EtageController {
         departementCombo.setValue(null);
         numeroError.setText("");
         departementError.setText("");
+    }
+    private void showAlert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    @FXML
+    private void showDepartements(ActionEvent event) {
+        try {
+            // Chemin relatif correct (sans "src/main/resources")
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/departement.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible de charger l'interface des étages", Alert.AlertType.ERROR);
+        }
+
+    }
+
+    @FXML
+    private void showEtages(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void showSalles(ActionEvent event) {
+        try {
+            // Chemin relatif correct (sans "src/main/resources")
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/salle.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible de charger l'interface des salles", Alert.AlertType.ERROR);
+        }
+    }
+
+    public void Acceuil(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/interface.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            showAlert("Erreur", "Impossible de charger le dashboard", Alert.AlertType.ERROR);
+        }
     }
 }

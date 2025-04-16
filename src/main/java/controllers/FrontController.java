@@ -81,29 +81,23 @@ public class FrontController {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
+    private void showAlert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     public void ConsulteDepartement(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/listedepartement.fxml"));
             Parent root = loader.load();
-
-            Listdepartement controller = loader.getController();
-
-            // Chargez les départements depuis votre source de données
-            List<departement> departements = Arrays.asList(
-                    new departement("Informatique", "Bâtiment A", "/img/blog1.jpg"),
-                    new departement("Médecine", "Bâtiment B", "/img/medecine.jpg")
-            );
-
-            controller.initializeData(departements);
-
             Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
-
         } catch (IOException e) {
-            showErrorAlert("Erreur", "Échec du chargement: " + e.getMessage());
+            showAlert("Erreur", "Impossible de charger l'interface des salles", Alert.AlertType.ERROR);
         }
     }
     }

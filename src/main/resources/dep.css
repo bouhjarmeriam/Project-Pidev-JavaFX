@@ -1,0 +1,75 @@
+/* Style pour les cartes de département */
+.department-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 20px;
+    -fx-cursor: hand;
+    -fx-pref-width: 280px;
+    -fx-pref-height: 180px;
+}
+
+.department-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(74, 111, 165, 0.3), 15, 0, 0, 0);
+    -fx-background-color: #f0f4f9;
+}
+
+.department-card-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4a6fa5;
+}
+
+.department-card-details {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666;
+}
+
+/* Style pour les cartes d'étage */
+.floor-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 0);
+    -fx-padding: 15px;
+    -fx-cursor: hand;
+    -fx-pref-width: 220px;
+    -fx-pref-height: 150px;
+}
+
+.floor-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 126, 95, 0.3), 12, 0, 0, 0);
+    -fx-background-color: #fff0ed;
+}
+
+.floor-card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff7e5f;
+}
+
+/* Style pour les cartes de salle */
+.room-card {
+    -fx-background-color: white;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 0);
+    -fx-padding: 12px;
+    -fx-cursor: hand;
+    -fx-pref-width: 180px;
+    -fx-pref-height: 120px;
+}
+
+.room-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(105, 179, 162, 0.3), 10, 0, 0, 0);
+    -fx-background-color: #f0f9f7;
+}
+
+.room-card-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #69b3a2;
+}
+
+/* Style pour les icônes */
+.card-icon {
+    -fx-fill: currentColor;
+}

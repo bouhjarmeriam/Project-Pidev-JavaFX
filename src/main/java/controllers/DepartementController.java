@@ -5,11 +5,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import service.DepartementService;
 
 import java.io.File;
@@ -20,21 +26,28 @@ import java.util.Optional;
 
 public class DepartementController {
 
-    @FXML private MenuBar menuBar;
+    // Champs du formulaire
     @FXML private TextField nomField;
     @FXML private TextField adresseField;
     @FXML private TextField imageField;
     @FXML private ImageView imagePreview;
+
+    // Messages d'erreur
     @FXML private Label nomError;
     @FXML private Label adresseError;
     @FXML private Label imageError;
 
+    // TableView et colonnes
     @FXML private TableView<departement> departementTable;
     @FXML private TableColumn<departement, String> nomColumn;
     @FXML private TableColumn<departement, String> adresseColumn;
     @FXML private TableColumn<departement, String> imageColumn;
-    @FXML private TableColumn<departement, Void> modifierColumn;
-    @FXML private TableColumn<departement, Void> supprimerColumn;
+    @FXML private TableColumn<departement, Void> actionsColumn;
+
+    // Boutons
+    @FXML private Button saveBtn;
+    @FXML private Button clearBtn;
+    @FXML private Button browseBtn;
 
     private final DepartementService departementService = new DepartementService();
     private final ObservableList<departement> departementData = FXCollections.observableArrayList();
@@ -43,15 +56,108 @@ public class DepartementController {
 
     @FXML
     public void initialize() {
-        // Create images directory if it doesn't exist
+        createImageDirectory();
+        setupTable();
+        loadDepartements();
+    }
+
+    private void createImageDirectory() {
         File imageDir = new File(IMAGE_DIR);
         if (!imageDir.exists()) {
             imageDir.mkdirs();
         }
+    }
 
-        setupTableColumns();
-        loadDepartements();
-        setupMenuBar();
+    private void setupTable() {
+        // Configuration des largeurs de colonnes
+        nomColumn.setPrefWidth(200);
+        adresseColumn.setPrefWidth(250);
+        imageColumn.setPrefWidth(150);
+        actionsColumn.setPrefWidth(150);
+
+        // Configuration des colonnes de données
+        nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        adresseColumn.setCellValueFactory(new PropertyValueFactory<>("adresse"));
+        imageColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
+
+        // Configuration améliorée de la colonne image
+        imageColumn.setCellFactory(column -> new TableCell<departement, String>() {
+            private final ImageView imageView = new ImageView();
+            private final Label label = new Label();
+
+            {
+                imageView.setFitHeight(40);
+                imageView.setFitWidth(40);
+                imageView.setPreserveRatio(true);
+                label.setStyle("-fx-text-fill: gray;");
+            }
+
+            @Override
+            protected void updateItem(String imageName, boolean empty) {
+                super.updateItem(imageName, empty);
+
+                setGraphic(null);
+                setText(null);
+
+                if (!empty && imageName != null && !imageName.isEmpty()) {
+                    try {
+                        File imageFile = new File(IMAGE_DIR + imageName);
+                        if (imageFile.exists()) {
+                            imageView.setImage(new Image(imageFile.toURI().toString()));
+                            setGraphic(imageView);
+                        } else {
+                            label.setText("Image manquante");
+                            setGraphic(label);
+                        }
+                    } catch (Exception e) {
+                        label.setText("Erreur");
+                        setGraphic(label);
+                    }
+                }
+            }
+        });
+
+        // Configuration améliorée de la colonne d'actions
+        actionsColumn.setCellFactory(column -> new TableCell<departement, Void>() {
+            private final HBox buttons = new HBox(5);
+            private final Button editBtn = new Button("✏️");
+            private final Button deleteBtn = new Button("🗑️");
+
+            {
+                buttons.setStyle("-fx-alignment: CENTER;");
+                editBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+                deleteBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+
+                editBtn.setTooltip(new Tooltip("Modifier"));
+                deleteBtn.setTooltip(new Tooltip("Supprimer"));
+
+                editBtn.setOnAction(event -> {
+                    departement dept = getTableView().getItems().get(getIndex());
+                    showEditDialog(dept);
+                });
+
+                deleteBtn.setOnAction(event -> {
+                    departement dept = getTableView().getItems().get(getIndex());
+                    confirmAndDelete(dept);
+                });
+
+                buttons.getChildren().addAll(editBtn, deleteBtn);
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(buttons);
+                }
+            }
+        });
+
+        // Style général du tableau
+        departementTable.setStyle("-fx-font-size: 14px;");
+        departementTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private void loadDepartements() {
@@ -60,100 +166,98 @@ public class DepartementController {
         departementTable.setItems(departementData);
     }
 
-    private void setupMenuBar() {
-        // Activate Departments menu by default
-        Menu navigationMenu = menuBar.getMenus().get(1);
-        for (MenuItem item : navigationMenu.getItems()) {
-            if (item.getText().equals("Départements")) {
-                item.getStyleClass().add("active");
+    @FXML
+    private void handleBrowseImage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif"),
+                new FileChooser.ExtensionFilter("Tous les fichiers", "*.*")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            try {
+                String fileName = System.currentTimeMillis() + "_" + selectedFile.getName();
+                File destFile = new File(IMAGE_DIR + fileName);
+                Files.copy(selectedFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                imagePath = fileName;
+                imageField.setText(fileName);
+                imagePreview.setImage(new Image(destFile.toURI().toString()));
+                imageError.setText("");
+            } catch (IOException e) {
+                showAlert("Erreur", "Impossible de charger l'image: " + e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
 
-    private void setupTableColumns() {
-        nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        adresseColumn.setCellValueFactory(new PropertyValueFactory<>("adresse"));
+    @FXML
+    private void handleSave(ActionEvent event) {
+        if (!validateForm()) return;
 
-        imageColumn.setCellFactory(col -> new TableCell<departement, String>() {
-            private final ImageView imageView = new ImageView();
-            {
-                imageView.setFitHeight(40);
-                imageView.setFitWidth(40);
-                imageView.setPreserveRatio(true);
-                imageView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);");
-            }
+        departement dept = new departement();
+        dept.setNom(nomField.getText());
+        dept.setAdresse(adresseField.getText());
+        dept.setImage(imagePath);
 
-            @Override
-            protected void updateItem(String imageName, boolean empty) {
-                super.updateItem(imageName, empty);
-                if (empty || imageName == null || imageName.isEmpty()) {
-                    setGraphic(null);
-                } else {
-                    try {
-                        File imageFile = new File(IMAGE_DIR + imageName);
-                        if (imageFile.exists()) {
-                            Image image = new Image(imageFile.toURI().toString());
-                            imageView.setImage(image);
-                            setGraphic(imageView);
-                        } else {
-                            setGraphic(new Label("No Image"));
-                        }
-                    } catch (Exception e) {
-                        setGraphic(new Label("Error"));
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        departement selected = departementTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            dept.setId(selected.getId());
+            departementService.updateDepartement(dept);
+            showAlert("Succès", "Département mis à jour", Alert.AlertType.INFORMATION);
+        } else {
+            departementService.addDepartement(dept);
+            showAlert("Succès", "Département ajouté", Alert.AlertType.INFORMATION);
+        }
 
-        addActionButtonsToTable();
+        resetForm();
+        loadDepartements();
     }
 
-    private void addActionButtonsToTable() {
-        modifierColumn.setCellFactory(col -> new TableCell<departement, Void>() {
-            private final Button btn = new Button();
-            {
-                btn.getStyleClass().add("action-button");
-                btn.getStyleClass().add("edit-button");
-                Image editIcon = new Image(getClass().getResourceAsStream("src/main/resources/icons/edit-icon.png"));
-                btn.setGraphic(new ImageView(editIcon));
-                btn.setTooltip(new Tooltip("Modifier"));
-                btn.setOnAction(e -> showEditDialog(getTableView().getItems().get(getIndex())));
-            }
+    private boolean validateForm() {
+        boolean isValid = true;
+        clearErrors();
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : btn);
-            }
-        });
+        if (nomField.getText().isEmpty()) {
+            nomError.setText("Le nom est obligatoire");
+            isValid = false;
+        }
 
-        supprimerColumn.setCellFactory(col -> new TableCell<departement, Void>() {
-            private final Button btn = new Button();
-            {
-                btn.getStyleClass().add("action-button");
-                btn.getStyleClass().add("delete-button");
-                Image deleteIcon = new Image(getClass().getResourceAsStream("src/main/resources/icons/delete-icon.png"));
-                btn.setGraphic(new ImageView(deleteIcon));
-                btn.setTooltip(new Tooltip("Supprimer"));
-                btn.setOnAction(e -> confirmAndDelete(getTableView().getItems().get(getIndex())));
-            }
+        if (adresseField.getText().isEmpty()) {
+            adresseError.setText("L'adresse est obligatoire");
+            isValid = false;
+        }
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : btn);
-            }
-        });
+        return isValid;
+    }
+
+    private void clearErrors() {
+        nomError.setText("");
+        adresseError.setText("");
+        imageError.setText("");
+    }
+
+    @FXML
+    private void handleClear(ActionEvent event) {
+        resetForm();
+    }
+
+    private void resetForm() {
+        nomField.clear();
+        adresseField.clear();
+        imageField.clear();
+        imagePreview.setImage(null);
+        imagePath = "";
+        departementTable.getSelectionModel().clearSelection();
+        clearErrors();
     }
 
     private void showEditDialog(departement dept) {
-        // Populate form with selected department data
         nomField.setText(dept.getNom());
         adresseField.setText(dept.getAdresse());
         imageField.setText(dept.getImage());
 
-        // Load image preview if exists
         if (dept.getImage() != null && !dept.getImage().isEmpty()) {
             File imageFile = new File(IMAGE_DIR + dept.getImage());
             if (imageFile.exists()) {
@@ -169,137 +273,66 @@ public class DepartementController {
         alert.setHeaderText("Supprimer le département");
         alert.setContentText("Êtes-vous sûr de vouloir supprimer le département " + dept.getNom() + "?");
 
+        ButtonType yesButton = new ButtonType("Oui", ButtonBar.ButtonData.YES);
+        ButtonType noButton = new ButtonType("Non", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(yesButton, noButton);
+
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == yesButton) {
             departementService.deleteDepartement(dept);
             loadDepartements();
-            showAlert("Succès", "Département supprimé avec succès", Alert.AlertType.INFORMATION);
+            showAlert("Succès", "Département supprimé", Alert.AlertType.INFORMATION);
         }
     }
 
-    private void showAlert(String title, String message, Alert.AlertType type) {
-        Alert alert = new Alert(type);
+    private void showAlert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    private void clearForm() {
-        nomField.clear();
-        adresseField.clear();
-        imageField.clear();
-        imagePreview.setImage(null);
-        imagePath = "";
-
-        nomError.setText("");
-        adresseError.setText("");
-        imageError.setText("");
+    @FXML
+    private void showDepartements(ActionEvent event) {
+        // Already on departement view
     }
 
     @FXML
-    private void handleBrowse(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Sélectionner une image");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
-        );
-
-        File selectedFile = fileChooser.showOpenDialog(null);
-        if (selectedFile != null) {
-            try {
-                // Copy file to images directory
-                String fileName = System.currentTimeMillis() + "_" + selectedFile.getName();
-                File destFile = new File(IMAGE_DIR + fileName);
-                Files.copy(selectedFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-                // Update UI
-                imageField.setText(fileName);
-                imagePreview.setImage(new Image(destFile.toURI().toString()));
-                imagePath = fileName;
-            } catch (IOException e) {
-                showAlert("Erreur", "Erreur lors du chargement de l'image", Alert.AlertType.ERROR);
-                e.printStackTrace();
-            }
+    private void showEtages(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/etage.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            showAlert("Erreur", "Impossible de charger l'interface des étages", Alert.AlertType.ERROR);
         }
     }
 
     @FXML
-    private void handleSave(ActionEvent event) {
-        if (validateForm()) {
-            departement dept = new departement();
-            dept.setNom(nomField.getText());
-            dept.setAdresse(adresseField.getText());
-            dept.setImage(imagePath);
-
-            departementService.addDepartement(dept);
-            loadDepartements();
-            clearForm();
-            showAlert("Succès", "Département enregistré avec succès", Alert.AlertType.INFORMATION);
+    private void showSalles(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/salle.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            showAlert("Erreur", "Impossible de charger l'interface des salles", Alert.AlertType.ERROR);
         }
     }
 
-    private boolean validateForm() {
-        boolean isValid = true;
-
-        if (nomField.getText().isEmpty()) {
-            nomError.setText("Le nom est obligatoire");
-            isValid = false;
-        } else {
-            nomError.setText("");
-        }
-
-        if (adresseField.getText().isEmpty()) {
-            adresseError.setText("L'adresse est obligatoire");
-            isValid = false;
-        } else {
-            adresseError.setText("");
-        }
-
-        return isValid;
-    }
-
-    // Navigation methods
-    @FXML
-    private void handleSalleNavigation() {
-        updateActiveMenuItem("Salles");
-        // Code to load Salle view
-    }
-
-    @FXML
-    private void handleEtageNavigation() {
-        updateActiveMenuItem("Étages");
-        // Code to load Etage view
-    }
-
-    @FXML
-    private void handleDepartementNavigation() {
-        updateActiveMenuItem("Départements");
-    }
-
-    @FXML
-    private void handleAbout() {
-        showAlert("À propos", "Gestion des Départements\nVersion 1.0", Alert.AlertType.INFORMATION);
-    }
-
-    @FXML
-    private void handleQuit() {
-        System.exit(0);
-    }
-
-    @FXML
-    private void handleReset() {
-        clearForm();
-    }
-
-    private void updateActiveMenuItem(String menuText) {
-        Menu navigationMenu = menuBar.getMenus().get(1);
-        for (MenuItem item : navigationMenu.getItems()) {
-            if (item.getText().equals(menuText)) {
-                item.getStyleClass().add("active");
-            } else {
-                item.getStyleClass().remove("active");
-            }
+    public void Acceuil(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/interface.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            showAlert("Erreur", "Impossible de charger l'interface des salles", Alert.AlertType.ERROR);
         }
     }
 }

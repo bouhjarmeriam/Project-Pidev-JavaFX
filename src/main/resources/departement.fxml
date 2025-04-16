@@ -3,92 +3,66 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.DepartementController"
-            stylesheets="@/styles1.css"
-            prefHeight="600" prefWidth="1000">
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.DepartementController"
+      stylesheets="@styles1.css"
+      spacing="0">
 
-    <!-- Barre de menu améliorée -->
-    <MenuBar fx:id="menuBar" styleClass="custom-menu-bar" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-        <Menu text="Fichier" styleClass="custom-menu">
-            <MenuItem text="Nouveau" styleClass="custom-menu-item" />
-            <MenuItem text="Ouvrir" styleClass="custom-menu-item" />
-            <SeparatorMenuItem />
-            <MenuItem text="Quitter" styleClass="custom-menu-item" onAction="#handleQuit" />
-        </Menu>
-        <Menu text="Navigation" styleClass="custom-menu">
-            <MenuItem text="Salles" styleClass="custom-menu-item" onAction="#handleSalleNavigation" />
-            <MenuItem text="Étages" styleClass="custom-menu-item" onAction="#handleEtageNavigation" />
-            <MenuItem text="Départements" styleClass="custom-menu-item active" onAction="#handleDepartementNavigation" />
-        </Menu>
-        <Menu text="Aide" styleClass="custom-menu">
-            <MenuItem text="À propos" styleClass="custom-menu-item" onAction="#handleAbout" />
-        </Menu>
-    </MenuBar>
+    <!-- Barre de navigation -->
+    <HBox styleClass="navbar">
+        <Button text="Départements" styleClass="nav-btn active" onAction="#showDepartements"/>
+        <Button text="Étages" styleClass="nav-btn" onAction="#showEtages"/>
+        <Button text="Salles" styleClass="nav-btn" onAction="#showSalles"/>
+        <Button text="Acceuil" styleClass="nav-btn" onAction="#Acceuil"/>
+    </HBox>
 
-    <VBox alignment="TOP_CENTER" spacing="20" AnchorPane.topAnchor="40" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
-        <!-- Titre avec icône -->
-        <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label text="Gestion des Départements" styleClass="title-label"/>
-        </HBox>
+    <ScrollPane fitToWidth="true" styleClass="content-scroll">
+        <VBox styleClass="main-container" spacing="20">
+            <!-- En-tête -->
+            <Label text="Gestion des Départements" styleClass="header-title"/>
 
-        <!-- Carte de formulaire -->
-        <VBox styleClass="form-card">
-            <Label text="Ajouter/Modifier un Département" styleClass="form-title"/>
-            <GridPane hgap="15" vgap="15">
-                <columnConstraints>
-                    <ColumnConstraints halignment="RIGHT" minWidth="120"/>
-                    <ColumnConstraints halignment="LEFT" minWidth="350"/>
-                </columnConstraints>
+            <!-- Formulaire -->
+            <VBox styleClass="form-container" spacing="15">
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Nom:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="nomField" styleClass="form-field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <Label fx:id="nomError" styleClass="error-label" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
 
-                <Label text="Nom :" styleClass="input-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                <TextField fx:id="nomField" styleClass="form-input" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-                <Label fx:id="nomError" styleClass="error-label" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <Label text="Adresse:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="adresseField" styleClass="form-field" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <Label fx:id="adresseError" styleClass="error-label" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
 
-                <Label text="Adresse :" styleClass="input-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                <TextField fx:id="adresseField" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-                <Label fx:id="adresseError" styleClass="error-label" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    <Label text="Image:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <HBox spacing="10" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                        <TextField fx:id="imageField" styleClass="form-field" editable="false"/>
+                        <Button fx:id="browseBtn" text="Parcourir" styleClass="browse-btn" onAction="#handleBrowseImage"/>
+                    </HBox>
+                    <Label fx:id="imageError" styleClass="error-label" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
 
-                <Label text="Image :" styleClass="input-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="4" GridPane.columnIndex="1">
-                    <TextField fx:id="imageField" styleClass="form-input" editable="false" HBox.hgrow="ALWAYS"/>
-                    <Button text="Parcourir" styleClass="browse-button" onAction="#handleBrowse"/>
+                    <ImageView fx:id="imagePreview" fitHeight="100" fitWidth="100" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                </GridPane>
+
+                <HBox spacing="10" styleClass="button-container">
+                    <Button fx:id="saveBtn" text="Enregistrer" styleClass="primary-btn" onAction="#handleSave"/>
+                    <Button fx:id="clearBtn" text="Effacer" styleClass="secondary-btn" onAction="#handleClear"/>
                 </HBox>
-                <Label fx:id="imageError" styleClass="error-label" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+            </VBox>
 
-                <ImageView fx:id="imagePreview" fitHeight="120" fitWidth="120" styleClass="image-preview" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+            <!-- Tableau -->
+            <VBox styleClass="table-container" spacing="10">
+                <Label text="Liste des départements" styleClass="section-title"/>
 
-                <HBox spacing="15" alignment="CENTER_RIGHT" GridPane.rowIndex="7" GridPane.columnIndex="1">
-                    <Button text="Réinitialiser" styleClass="reset-button" onAction="#handleReset"/>
-                    <Button text="Enregistrer" styleClass="submit-button" onAction="#handleSave"/>
-                </HBox>
-            </GridPane>
-        </VBox>
-
-        <!-- Carte de tableau -->
-        <VBox styleClass="table-card">
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <Label text="Liste des Départements" styleClass="table-title"/>
-            </HBox>
-
-            <ScrollPane fitToWidth="true" styleClass="transparent-scroll">
-                <TableView fx:id="departementTable" styleClass="modern-table">
+                <TableView fx:id="departementTable" styleClass="data-table">
                     <columns>
-                        <TableColumn fx:id="nomColumn" text="Nom" styleClass="table-header"/>
-                        <TableColumn fx:id="adresseColumn" text="Adresse" styleClass="table-header"/>
-                        <TableColumn fx:id="imageColumn" text="Image" styleClass="table-header"/>
-                        <TableColumn text="Actions" styleClass="table-header">
-                            <columns>
-                                <TableColumn fx:id="modifierColumn" text="" styleClass="action-column"/>
-                                <TableColumn fx:id="supprimerColumn" text="" styleClass="action-column"/>
-                            </columns>
-                        </TableColumn>
+                        <TableColumn fx:id="nomColumn" text="Nom"/>
+                        <TableColumn fx:id="adresseColumn" text="Adresse"/>
+                        <TableColumn fx:id="imageColumn" text="Logo"/>
+                        <TableColumn fx:id="actionsColumn" text="Actions"/>
                     </columns>
                 </TableView>
-            </ScrollPane>
+            </VBox>
         </VBox>
-    </VBox>
-</AnchorPane>
+    </ScrollPane>
+</VBox>

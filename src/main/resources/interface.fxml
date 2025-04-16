@@ -24,7 +24,7 @@
                     style="-fx-background-color: transparent; -fx-text-fill: #bdc3c7; -fx-pref-width: 200; -fx-pref-height: 40;"/>
             <Button text="Equipment" fx:id="btnEquipment"
                     style="-fx-background-color: transparent; -fx-text-fill: #bdc3c7; -fx-pref-width: 200; -fx-pref-height: 40;"/>
-            <Button text="Infrastructure" fx:id="btnInfrastructure"
+            <Button text="Infrastructure" fx:id="btnInfrastructure" onAction="#handleAdmininfrastructure"
                     style="-fx-background-color: transparent; -fx-text-fill: #bdc3c7; -fx-pref-width: 200; -fx-pref-height: 40;"/>
             <Button text="Medication Stock" fx:id="btnMedicationStock"
                     style="-fx-background-color: transparent; -fx-text-fill: #bdc3c7; -fx-pref-width: 200; -fx-pref-height: 40;"/>

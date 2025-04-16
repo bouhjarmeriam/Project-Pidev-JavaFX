@@ -3,17 +3,69 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Listdepartement">
-    <center>
-        <VBox spacing="20">
-            <!-- Search Bar -->
-            <TextField fx:id="searchBar" promptText="Rechercher un département..."
-                       style="-fx-font-size: 14px; -fx-padding: 8px;"/>
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.Listdepartement"
+            style="-fx-background-color: #f5f7fa;"
+            stylesheets="dep.css">
 
-            <!-- Departments Container -->
-            <FlowPane fx:id="departementContainer" hgap="20" vgap="20"
-                      alignment="TOP_CENTER" style="-fx-padding: 10px;"/>
+    <!-- Top Section with Title and Search -->
+    <top>
+        <VBox spacing="15" style="-fx-background-color: #4a6fa5; -fx-padding: 20px;">
+            <Label text="Gestion des Départements"
+                   style="-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;"/>
+
+            <HBox spacing="10" alignment="CENTER">
+                <TextField fx:id="searchBar" promptText="Rechercher un département..."
+                           style="-fx-font-size: 14px; -fx-padding: 8px; -fx-background-radius: 20; -fx-border-radius: 20; -fx-pref-width: 400px;"/>
+
+                <Button text="Rechercher"
+                        style="-fx-background-color: #ff7e5f; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8px 20px;"/>
+            </HBox>
         </VBox>
+    </top>
+
+    <!-- Main Content Area -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;">
+            <VBox spacing="30" style="-fx-padding: 30px;">
+                <!-- Departments Container -->
+                <FlowPane fx:id="departementContainer" hgap="25" vgap="25"
+                          alignment="TOP_CENTER" style="-fx-padding: 10px;"/>
+
+                <!-- Floors Container (hidden by default, shown when department is selected) -->
+                <VBox fx:id="floorsContainer" spacing="15" visible="false" managed="false"
+                      style="-fx-padding: 20px; -fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 10;">
+                    <Label text="Étages du Département"
+                           style="-fx-font-size: 20px; -fx-text-fill: #4a6fa5; -fx-font-weight: bold;"/>
+
+                    <FlowPane fx:id="floorContainer" hgap="20" vgap="20"
+                              alignment="TOP_CENTER" style="-fx-padding: 10px;"/>
+                </VBox>
+
+                <!-- Rooms Container (hidden by default, shown when floor is selected) -->
+                <VBox fx:id="roomsContainer" spacing="15" visible="false" managed="false"
+                      style="-fx-padding: 20px; -fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 10;">
+                    <Label text="Salles de l'Étage"
+                           style="-fx-font-size: 20px; -fx-text-fill: #4a6fa5; -fx-font-weight: bold;"/>
+
+                    <FlowPane fx:id="roomContainer" hgap="15" vgap="15"
+                              alignment="TOP_CENTER" style="-fx-padding: 10px;"/>
+                </VBox>
+            </VBox>
+        </ScrollPane>
     </center>
+
+    <!-- Back Button -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15px;">
+            <Button fx:id="backButton" text="Retour"
+                    style="-fx-background-color: #4a6fa5; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8px 25px;"
+                    visible="false"/>
+        </HBox>
+    </bottom>
 </BorderPane>

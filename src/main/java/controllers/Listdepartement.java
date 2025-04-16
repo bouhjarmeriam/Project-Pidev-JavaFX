@@ -1,162 +1,229 @@
 package controllers;
 
 import entite.departement;
+import entite.etage;
+import entite.salle;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import java.util.ArrayList;
+import javafx.scene.shape.SVGPath;
+import javafx.geometry.Pos;
+import service.DepartementService;
+import service.EtageService;
+import service.SalleService;
+
+import java.io.File;
 import java.util.List;
 
 public class Listdepartement {
 
-    @FXML
-    private TextField searchBar;
+    private final DepartementService departementService = new DepartementService();
+    private final EtageService etageService = new EtageService();
+    private final SalleService salleService = new SalleService();
 
-    @FXML
-    private FlowPane departementContainer;
+    @FXML private FlowPane departementContainer;
+    @FXML private FlowPane floorContainer;
+    @FXML private FlowPane roomContainer;
+    @FXML private VBox floorsContainer;
+    @FXML private VBox roomsContainer;
+    @FXML private Button backButton;
+    @FXML private TextField searchBar;
 
-    @FXML
-    private VBox mainContainer;
-
-    private List<departement> departements = new ArrayList<>();
+    private departement selectedDepartment;
+    private etage selectedFloor;
 
     @FXML
     public void initialize() {
-        // Initialize sample data
-        loadDepartements();
-
-        // Set up search functionality
-        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterDepartements(newValue.toLowerCase());
-        });
-
-        // Display initial departments
-        displayDepartements(departements);
+        loadAllDepartments(); // Charger tous les départements
+        backButton.setOnAction(e -> handleBack());
+        searchBar.textProperty().addListener((obs, oldVal, newVal) -> searchDepartments(newVal));
     }
 
-    private void loadDepartements() {
-        // In a real application, this would come from a service or database
-        departements.add(new departement(
-                "Département Informatique",
-                "123 Rue de la Technologie, Paris",
-                "/img/blog1.jpg"
-        ));
-
-        departements.add(new departement(
-                "Département Médecine",
-                "456 Avenue de la Santé, Lyon",
-                "/img/blog1.jpg"
-        ));
-
-
-    }
-
-    private void displayDepartements(List<departement> depts) {
-        departementContainer.getChildren().clear();
-
-        if (depts.isEmpty()) {
-            Label noResults = new Label("Aucun département disponible pour le moment.");
-            noResults.setStyle("-fx-text-fill: #6c757d;");
-            departementContainer.getChildren().add(noResults);
-            return;
-        }
-
-        for (departement dept : depts) {
-            departementContainer.getChildren().add(createDepartementCard(dept));
-        }
-    }
-
-    private VBox createDepartementCard(departement dept) {
+    private Node createDepartmentCard(departement department) {
         VBox card = new VBox(10);
-        card.setAlignment(Pos.TOP_CENTER);
-        card.setPadding(new Insets(15)); // Fixed: Using javafx.geometry.Insets
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);");
-        card.setPrefWidth(300);
-        card.setPrefHeight(350);
+        card.getStyleClass().add("department-card");
 
+        // Image du département
         ImageView imageView = new ImageView();
         try {
-            imageView.setImage(new Image(getClass().getResourceAsStream(dept.getImage())));
+            if (department.getImage() != null && !department.getImage().isEmpty()) {
+                String imagePath = "file:" + new File(department.getImage()).getAbsolutePath();
+                Image image = new Image(imagePath, 150, 100, true, true);
+                imageView.setImage(image);
+            } else {
+                // Image par défaut
+                imageView.setImage(new Image(getClass().getResourceAsStream("/images/default_dept.png")));
+            }
         } catch (Exception e) {
-            // Fallback image
-            imageView.setImage(new Image(getClass().getResourceAsStream("/images/default.jpg")));
+            imageView.setImage(new Image(getClass().getResourceAsStream("/images/default_dept.png")));
         }
-        imageView.setFitWidth(270);
-        imageView.setFitHeight(180);
+        imageView.setFitWidth(150);
+        imageView.setFitHeight(100);
         imageView.setPreserveRatio(false);
+        imageView.getStyleClass().add("department-image");
 
-        Label title = new Label(dept.getNom());
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 18)); // Fixed: Using javafx.scene.text.Font
-        title.setTextFill(Color.DODGERBLUE); // Fixed: Using javafx.scene.paint.Color
+        // Titre
+        Label title = new Label(department.getNom());
+        title.getStyleClass().add("department-card-title");
 
-        HBox addressBox = new HBox(5);
-        Label addressIcon = new Label("📍");
-        Label address = new Label(dept.getAdresse());
-        address.setStyle("-fx-text-fill: #6c757d;");
-        addressBox.getChildren().addAll(addressIcon, address);
+        // Détails
+        int floorCount = etageService.getEtagesByDepartement(department.getId()).size();
+        Label details = new Label(String.format("%d étages • %s", floorCount, department.getAdresse()));
+        details.getStyleClass().add("department-card-details");
 
-        card.getChildren().addAll(imageView, title, addressBox);
-
-        card.setOnMouseClicked(e -> {
-            handleDepartmentSelection(dept);
-        });
+        card.getChildren().addAll(imageView, title, details);
+        card.setAlignment(Pos.CENTER);
+        card.setOnMouseClicked(e -> showDepartmentDetails(department));
 
         return card;
     }
 
-    private void filterDepartements(String filter) {
-        if (filter.isEmpty()) {
-            displayDepartements(departements);
-            return;
+    private void showDepartmentDetails(departement department) {
+        selectedDepartment = department;
+        int floorCount = etageService.getEtagesByDepartement(department.getId()).size();
+
+        floorContainer.getChildren().clear();
+
+        if (floorCount > 0) {
+            List<etage> floors = etageService.getEtagesByDepartement(department.getId());
+            for (etage floor : floors) {
+                floorContainer.getChildren().add(createFloorCard(floor));
+            }
+        } else {
+            Label noFloorsLabel = new Label("Ce département n'a pas encore d'étages");
+            noFloorsLabel.setStyle("-fx-text-fill: #666; -fx-font-size: 14px;");
+            floorContainer.getChildren().add(noFloorsLabel);
         }
 
-        List<departement> filtered = new ArrayList<>();
-        for (departement dept : departements) {
-            if (dept.getNom().toLowerCase().contains(filter)) {
-                filtered.add(dept);
+        floorsContainer.setVisible(true);
+        floorsContainer.setManaged(true);
+        roomsContainer.setVisible(false);
+        roomsContainer.setManaged(false);
+        backButton.setVisible(true);
+    }
+
+    private Node createFloorCard(etage floor) {
+        VBox card = new VBox(10);
+        card.getStyleClass().add("floor-card");
+
+        SVGPath icon = new SVGPath();
+        icon.setContent("M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19,19H5V5h14V19z");
+        icon.getStyleClass().add("card-icon");
+        icon.setStyle("-fx-fill: #ff7e5f;");
+
+        Label title = new Label("Étage " + floor.getNumero());
+        title.getStyleClass().add("floor-card-title");
+
+        int roomCount = salleService.getAll().stream()
+                .filter(r -> r.getEtage() != null && r.getEtage().getId() == floor.getId())
+                .toList().size();
+
+        Label details = new Label(String.format("%d salles", roomCount));
+        details.setStyle("-fx-text-fill: #888;");
+
+        card.getChildren().addAll(icon, title, details);
+        card.setAlignment(Pos.CENTER);
+        card.setOnMouseClicked(e -> showRooms(floor));
+
+        return card;
+    }
+
+    private Node createRoomCard(salle room) {
+        VBox card = new VBox(10);
+        card.getStyleClass().add("room-card");
+
+        // Image de la salle
+        ImageView imageView = new ImageView();
+        try {
+            if (room.getImage() != null && !room.getImage().isEmpty()) {
+                String imagePath = "file:" + new File(room.getImage()).getAbsolutePath();
+                Image image = new Image(imagePath, 120, 80, true, true);
+                imageView.setImage(image);
+            } else {
+                imageView.setImage(new Image(getClass().getResourceAsStream("/images/default_room.png")));
+            }
+        } catch (Exception e) {
+            imageView.setImage(new Image(getClass().getResourceAsStream("/images/default_room.png")));
+        }
+        imageView.setFitWidth(120);
+        imageView.setFitHeight(80);
+        imageView.setPreserveRatio(false);
+
+        Label title = new Label(room.getNom());
+        title.getStyleClass().add("room-card-title");
+
+        Label details = new Label(String.format("%s • %d places • %s",
+                room.getType_salle(), room.getCapacite(), room.getStatus()));
+        details.setStyle("-fx-text-fill: #888;");
+
+        card.getChildren().addAll(imageView, title, details);
+        card.setAlignment(Pos.CENTER);
+
+        return card;
+    }
+
+    private void showRooms(etage floor) {
+        selectedFloor = floor;
+        roomContainer.getChildren().clear();
+
+        List<salle> rooms = salleService.getAll().stream()
+                .filter(r -> r.getEtage() != null && r.getEtage().getId() == floor.getId())
+                .toList();
+
+        if (rooms.isEmpty()) {
+            Label noRoomsLabel = new Label("Cet étage n'a pas encore de salles");
+            noRoomsLabel.setStyle("-fx-text-fill: #666; -fx-font-size: 14px;");
+            roomContainer.getChildren().add(noRoomsLabel);
+        } else {
+            for (salle room : rooms) {
+                roomContainer.getChildren().add(createRoomCard(room));
             }
         }
 
-        displayDepartements(filtered);
+        roomsContainer.setVisible(true);
+        roomsContainer.setManaged(true);
+        backButton.setVisible(true);
     }
 
-
-    private void handleDepartmentSelection(departement dept) {
-        // Handle what happens when a department is clicked
-        System.out.println("Selected department: " + dept.getNom());
-
-        // You would typically:
-        // 1. Load a new FXML with department details
-        // 2. Pass the selected department to the new controller
-        // 3. Show the new scene
-
-        // Example:
-        // try {
-        //     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/departmentDetails.fxml"));
-        //     Parent root = loader.load();
-        //     DepartmentDetailsController controller = loader.getController();
-        //     controller.setDepartment(dept);
-        //     Stage stage = (Stage) mainContainer.getScene().getWindow();
-        //     stage.setScene(new Scene(root));
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+    private void handleBack() {
+        if (roomsContainer.isVisible()) {
+            roomsContainer.setVisible(false);
+            roomsContainer.setManaged(false);
+        } else if (floorsContainer.isVisible()) {
+            floorsContainer.setVisible(false);
+            floorsContainer.setManaged(false);
+            backButton.setVisible(false);
+        }
     }
 
-    public void initializeData(List<departement> departements) {
-        this.departements = departements;
-        // Rafraîchir l'affichage
-        displayDepartements(departements);
+    private void loadAllDepartments() {
+        departementContainer.getChildren().clear();
+        List<departement> allDepartments = departementService.getAllDepartements();
+
+        // Afficher tous les départements, avec ou sans étages
+        for (departement dept : allDepartments) {
+            departementContainer.getChildren().add(createDepartmentCard(dept));
+        }
+    }
+
+    private void searchDepartments(String searchTerm) {
+        departementContainer.getChildren().clear();
+
+        List<departement> results;
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            results = departementService.getAllDepartements();
+        } else {
+            results = departementService.searchDepartements(searchTerm);
+        }
+
+        for (departement dept : results) {
+            departementContainer.getChildren().add(createDepartmentCard(dept));
+        }
     }
 }
-
