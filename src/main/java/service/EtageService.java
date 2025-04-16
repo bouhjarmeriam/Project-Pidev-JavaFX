@@ -1,7 +1,7 @@
 package service;
 
-import entite.departement;
 import entite.etage;
+import entite.departement;
 import util.DataSource;
 
 import java.sql.*;
@@ -29,29 +29,31 @@ public class EtageService {
         }
     }
 
-    public List<etage> getEtagesByDepartement(int departementId) {
+    public List<etage> getAllEtages() {
         List<etage> list = new ArrayList<>();
-        String query = "SELECT * FROM etage WHERE departement_id=?";
+        String query = "SELECT e.*, d.nom as departement_nom, d.adresse " +
+                "FROM etage e JOIN departement d ON e.departement_id = d.id";
 
         try (Connection conn = DataSource.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
 
-            ps.setInt(1, departementId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    etage e = new etage();
-                    e.setId(rs.getInt("id"));
-                    e.setNumero(rs.getInt("numero"));
+            while (rs.next()) {
+                departement d = new departement(
+                        rs.getInt("departement_id"),
+                        rs.getString("departement_nom"),
+                        rs.getString("adresse"),
+                        null // image non récupérée ici
+                );
 
-                    departement d = new departement();
-                    d.setId(rs.getInt("departement_id"));
-                    e.setDepartement(d);
-
-                    list.add(e);
-                }
+                list.add(new etage(
+                        rs.getInt("id"),
+                        rs.getInt("numero"),
+                        d
+                ));
             }
-        } catch (SQLException e) {
-            System.err.println("Error fetching etages: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.err.println("Error fetching etages: " + ex.getMessage());
         }
         return list;
     }
@@ -65,6 +67,7 @@ public class EtageService {
             ps.setInt(2, e.getDepartement().getId());
             ps.setInt(3, e.getId());
             ps.executeUpdate();
+
         } catch (SQLException ex) {
             System.err.println("Error updating etage: " + ex.getMessage());
         }
@@ -77,31 +80,73 @@ public class EtageService {
 
             ps.setInt(1, id);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error deleting etage: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.err.println("Error deleting etage: " + ex.getMessage());
         }
     }
-    public static List<etage> getAll() {
-        List<etage> list = new ArrayList<>();
-        String query = "SELECT * FROM etage";
+
+    public List<etage> searchEtages(String searchTerm) {
+        List<etage> results = new ArrayList<>();
+        String query = "SELECT e.*, d.nom as departement_nom, d.adresse " +
+                "FROM etage e JOIN departement d ON e.departement_id = d.id " +
+                "WHERE e.numero LIKE ? OR d.nom LIKE ? OR d.adresse LIKE ?";
 
         try (Connection conn = DataSource.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(query)) {
 
-            while (rs.next()) {
-                etage e = new etage();
-                e.setId(rs.getInt("id"));
-                e.setNumero(rs.getInt("numero")); // Assure-toi que la colonne 'nom' existe dans ta table 'etage'
-                list.add(e);
+            String like = "%" + searchTerm + "%";
+            ps.setString(1, like);
+            ps.setString(2, like);
+            ps.setString(3, like);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    departement d = new departement(
+                            rs.getInt("departement_id"),
+                            rs.getString("departement_nom"),
+                            rs.getString("adresse"),
+                            null // image non récupérée ici
+                    );
+
+                    results.add(new etage(
+                            rs.getInt("id"),
+                            rs.getInt("numero"),
+                            d
+                    ));
+                }
             }
-
-        } catch (SQLException e) {
-            System.err.println("Error fetching étages: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.err.println("Error searching etages: " + ex.getMessage());
         }
 
-        return list;
+        return results;
     }
 
+    public List<etage> getEtagesByDepartement(int departementId) {
+        List<etage> list = new ArrayList<>();
+        String query = "SELECT * FROM etage WHERE departement_id = ?";
 
+        try (Connection conn = DataSource.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, departementId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // On suppose qu'on a déjà le département et on ne le recharge pas
+                    departement d = new departement();
+                    d.setId(departementId);
+
+                    list.add(new etage(
+                            rs.getInt("id"),
+                            rs.getInt("numero"),
+                            d
+                    ));
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error fetching etages by departement: " + ex.getMessage());
+        }
+        return list;
+    }
 }

@@ -38,22 +38,35 @@ public class SalleController {
 
     @FXML
     public void initialize() {
-        typeCombo.setItems(FXCollections.observableArrayList("Consultation", "Bloc opératoire", "Réanimation", "Chambre"));
-        statusCombo.setItems(FXCollections.observableArrayList("Disponible", "Occupée", "En maintenance"));
+        // Initialisation des ComboBox
+        typeCombo.setItems(FXCollections.observableArrayList(
+                "Consultation", "Bloc opératoire", "Réanimation", "Chambre"));
+        statusCombo.setItems(FXCollections.observableArrayList(
+                "Disponible", "Occupée", "En maintenance"));
 
-        prioriteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1));
+        // Configuration du Spinner
+        prioriteSpinner.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1));
 
-        List<etage> etages = EtageService.getAll();
+        // Chargement des étages
+        List<etage> etages = etageService.getAllEtages();
         etageCombo.setItems(FXCollections.observableArrayList(etages));
 
-        // Cell value factories (sans JavaFX Properties)
-        colNom.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNom()));
-        colCapacite.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getCapacite()));
-        colType.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getType()));
-        colStatus.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatus()));
-        colPriorite.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPriorite()));
-        colEtage.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getEtage().getNumero()));
+        // Configuration des colonnes du TableView
+        colNom.setCellValueFactory(cellData ->
+                new ReadOnlyStringWrapper(cellData.getValue().getNom()));
+        colCapacite.setCellValueFactory(cellData ->
+                new ReadOnlyObjectWrapper<>(cellData.getValue().getCapacite()));
+        colType.setCellValueFactory(cellData ->
+                new ReadOnlyStringWrapper(cellData.getValue().getType()));
+        colStatus.setCellValueFactory(cellData ->
+                new ReadOnlyStringWrapper(cellData.getValue().getStatus()));
+        colPriorite.setCellValueFactory(cellData ->
+                new ReadOnlyObjectWrapper<>(cellData.getValue().getPriorite()));
+        colEtage.setCellValueFactory(cellData ->
+                new ReadOnlyObjectWrapper<>(cellData.getValue().getEtage().getNumero()));
 
+        // Chargement des salles
         loadSalles();
     }
 
@@ -78,13 +91,47 @@ public class SalleController {
             }
 
             salle s = new salle(nom, capacite, type, status, priorite);
+            s.setEtage(etageSelected); // Association de l'étage
             salleService.addSalle(s);
 
             loadSalles();
             clearForm();
 
         } catch (NumberFormatException e) {
-            showAlert("Erreur", "Capacité invalide !");
+            showAlert("Erreur", "Capacité doit être un nombre valide !");
+        }
+    }
+
+    @FXML
+    private void handleSupprimer() {
+        salle selected = salleTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            salleService.deleteSalle(selected.getId());
+            loadSalles();
+        } else {
+            showAlert("Aucune sélection", "Veuillez sélectionner une salle à supprimer.");
+        }
+    }
+
+    @FXML
+    private void handleModifier() {
+        salle selected = salleTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            try {
+                selected.setNom(nomField.getText());
+                selected.setCapacite(Integer.parseInt(capaciteField.getText()));
+                selected.setType(typeCombo.getValue());
+                selected.setStatus(statusCombo.getValue());
+                selected.setPriorite(prioriteSpinner.getValue());
+                selected.setEtage(etageCombo.getValue());
+
+                salleService.updateSalle(selected);
+                loadSalles();
+            } catch (NumberFormatException e) {
+                showAlert("Erreur", "Capacité doit être un nombre valide !");
+            }
+        } else {
+            showAlert("Aucune sélection", "Veuillez sélectionner une salle à modifier.");
         }
     }
 

@@ -79,6 +79,10 @@ public class DepartementService {
         }
     }
 
+    public void deleteDepartement(departement d) {
+        deleteDepartement(d.getId());
+    }
+
     public List<departement> searchDepartements(String searchTerm) {
         List<departement> results = new ArrayList<>();
         String query = "SELECT * FROM departement WHERE nom LIKE ? OR adresse LIKE ?";
