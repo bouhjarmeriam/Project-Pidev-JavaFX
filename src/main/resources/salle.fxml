@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.SalleController">
+
+    <VBox spacing="20" alignment="TOP_CENTER" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+        <Label text="Gestion des Salles" style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+
+        <!-- Formulaire -->
+        <VBox spacing="15" style="-fx-background-color: #f5f5f5; -fx-padding: 15; -fx-background-radius: 5;">
+            <Label text="Ajouter une salle" style="-fx-font-weight: bold;"/>
+
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" minWidth="120"/>
+                    <ColumnConstraints halignment="LEFT" minWidth="300"/>
+                </columnConstraints>
+
+                <Label text="Nom :" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="nomField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Capacité :" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="capaciteField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Type de salle :" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="typeCombo" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Status :" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="statusCombo" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="Priorité :" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Spinner fx:id="prioriteSpinner" GridPane.rowIndex="4" GridPane.columnIndex="1">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="10" initialValue="1"/>
+                    </valueFactory>
+                </Spinner>
+
+                <Label text="Étage :" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="etageCombo" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                <Button text="Ajouter Salle" fx:id="ajouterButton" onAction="#handleAjouter" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.halignment="RIGHT"/>
+            </GridPane>
+        </VBox>
+
+        <!-- Tableau -->
+        <VBox spacing="5">
+            <Label text="Liste des Salles" style="-fx-font-weight: bold;"/>
+            <TableView fx:id="salleTable">
+                <columns>
+                    <TableColumn fx:id="colNom" text="Nom" minWidth="150"/>
+                    <TableColumn fx:id="colCapacite" text="Capacité" minWidth="80"/>
+                    <TableColumn fx:id="colType" text="Type" minWidth="100"/>
+                    <TableColumn fx:id="colStatus" text="Status" minWidth="100"/>
+                    <TableColumn fx:id="colPriorite" text="Priorité" minWidth="80"/>
+                    <TableColumn fx:id="colEtage" text="Étage" minWidth="100"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </VBox>
+</AnchorPane>
+

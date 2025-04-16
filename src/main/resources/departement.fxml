@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.DepartementController"
+            prefHeight="600" prefWidth="800">
+
+    <VBox alignment="TOP_CENTER" spacing="20" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+        <Label text="Gestion des Départements" style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+
+        <!-- Formulaire -->
+        <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #f5f5f5; -fx-background-radius: 5;">
+            <Label text="Ajouter un Département" style="-fx-font-weight: bold;"/>
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" minWidth="100"/>
+                    <ColumnConstraints halignment="LEFT" minWidth="300"/>
+                </columnConstraints>
+
+                <Label text="Nom :" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="nomField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label fx:id="nomError" text="" style="-fx-text-fill: red;" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Adresse :" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="adresseField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Label fx:id="adresseError" text="" style="-fx-text-fill: red;" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="Image :" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <HBox spacing="5" alignment="CENTER_LEFT" GridPane.rowIndex="4" GridPane.columnIndex="1">
+                    <TextField fx:id="imageField" editable="false" HBox.hgrow="ALWAYS"/>
+                    <Button text="Choisir" onAction="#handleImageUpload"/>
+                </HBox>
+                <Label fx:id="imageError" text="" style="-fx-text-fill: red;" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                <ImageView fx:id="imagePreview" fitHeight="100" fitWidth="100" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+                <Button text="Ajouter" onAction="#handleSave" GridPane.rowIndex="7" GridPane.columnIndex="1"
+                        GridPane.halignment="RIGHT" style="-fx-pref-width: 120;"/>
+            </GridPane>
+        </VBox>
+
+        <!-- Tableau -->
+        <VBox spacing="5" style="-fx-padding: 10;">
+            <Label text="Départements existants" style="-fx-font-weight: bold;"/>
+            <TableView fx:id="departementTable" style="-fx-table-cell-border-color: transparent;">
+                <columns>
+                    <TableColumn fx:id="nomColumn" text="Nom" minWidth="150"/>
+                    <TableColumn fx:id="adresseColumn" text="Adresse" minWidth="200"/>
+                    <TableColumn fx:id="imageColumn" text="Image" minWidth="150"/>
+                    <TableColumn fx:id="modifierColumn" text="Modifier" minWidth="100"/>
+                    <TableColumn fx:id="supprimerColumn" text="Supprimer" minWidth="100"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </VBox>
+</AnchorPane>

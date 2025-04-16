@@ -1,0 +1,154 @@
+/* ===== COLOR THEME ===== */
+.root {
+    -fx-medical-red: #e74c3c;      /* Vibrant red */
+    -fx-medical-blue: #3498db;     /* Professional blue */
+    -fx-dark-blue: #2980b9;        /* Darker blue */
+    -fx-white: #ffffff;            /* Pure white */
+    -fx-light-gray: #ecf0f1;       /* Light background */
+    -fx-medium-gray: #bdc3c7;      /* Borders */
+}
+
+/* ===== BASE STYLING ===== */
+.vbox {
+    -fx-background-color: -fx-white;
+    -fx-padding: 25px;
+    -fx-spacing: 15px;
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* ===== HEADER ===== */
+.header-label {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-medical-blue;
+    -fx-padding: 0 0 20px 0;
+}
+
+/* ===== FORM CONTAINERS ===== */
+.login-section, .form-section {
+    -fx-background-color: -fx-white;
+    -fx-border-color: -fx-medium-gray;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 20px;
+}
+
+/* ===== FORM ELEMENTS ===== */
+.form-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-dark-blue;
+    -fx-font-size: 14px;
+}
+
+.form-field {
+    -fx-background-color: -fx-white;
+    -fx-border-color: -fx-medium-gray;
+    -fx-border-radius: 3px;
+    -fx-border-width: 1px;
+    -fx-padding: 8px;
+}
+
+.form-field:focused {
+    -fx-border-color: -fx-medical-blue;
+    -fx-border-width: 2px;
+}
+
+/* ===== BUTTONS ===== */
+.button {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 4px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 0, 2, 0, 1);
+    -fx-min-width: 120px;
+}
+
+/* Login Button (Blue) */
+.login-button {
+    -fx-background-color: -fx-medical-blue;
+    -fx-text-fill: white;
+}
+.login-button:hover {
+    -fx-background-color: -fx-dark-blue;
+}
+
+/* Add Button (Blue) */
+.add-button {
+    -fx-background-color: -fx-medical-blue;
+    -fx-text-fill: white;
+}
+.add-button:hover {
+    -fx-background-color: -fx-dark-blue;
+}
+
+/* Update Button (White with Blue) */
+.update-button {
+    -fx-background-color: -fx-white;
+    -fx-text-fill: -fx-medical-blue;
+    -fx-border-color: -fx-medical-blue;
+    -fx-border-width: 1px;
+}
+.update-button:hover {
+    -fx-background-color: -fx-light-gray;
+}
+
+/* Delete Button (Red) */
+.delete-button {
+    -fx-background-color: -fx-medical-red;
+    -fx-text-fill: white;
+}
+.delete-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+/* ===== TABLE ===== */
+.consultation-table {
+    -fx-background-color: -fx-white;
+    -fx-border-color: -fx-medium-gray;
+    -fx-border-width: 1px;
+}
+
+.table-view .column-header {
+    -fx-background-color: -fx-medical-blue;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -fx-light-gray;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: -fx-medical-blue;
+    -fx-text-fill: white;
+}
+
+/* ===== SPECIAL FIELDS ===== */
+#patientIdField {
+    -fx-background-color: #eaf2f8;
+    -fx-font-weight: bold;
+}
+
+#statusField {
+    -fx-background-color: #fdedec;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-medical-red;
+}
+
+/* ===== COMBOBOX & DATEPICKER ===== */
+.combo-box, .date-picker {
+    -fx-background-color: -fx-white;
+    -fx-border-color: -fx-medium-gray;
+    -fx-border-radius: 3px;
+}
+
+.combo-box .arrow-button,
+.date-picker .arrow-button {
+    -fx-background-color: -fx-medical-blue;
+}
+
+.combo-box .arrow-button:hover,
+.date-picker .arrow-button:hover {
+    -fx-background-color: -fx-dark-blue;
+}

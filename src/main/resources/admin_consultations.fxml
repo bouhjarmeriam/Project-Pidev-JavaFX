@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.AdminConsultationController" spacing="10" style="-fx-padding: 15;">
+
+    <Label text="Admin Consultation Management" style="-fx-font-size: 18; -fx-font-weight: bold;" />
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" promptText="Search..." style="-fx-pref-width: 300;" />
+        <Button text="Search" onAction="#handleSearch" style="-fx-background-color: #3498db; -fx-text-fill: white;" />
+
+        <Label text="Filter by Status:" style="-fx-padding: 0 10 0 20;" />
+        <ComboBox fx:id="statusFilterCombo" style="-fx-pref-width: 150;" />
+
+        <Button text="Refresh" onAction="#handleRefresh" style="-fx-background-color: #2ecc71; -fx-text-fill: white;" />
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 0 0 10 0;">
+        <!-- Statistics buttons -->
+        <Button fx:id="statsButton" text="Bar Chart Stats" style="-fx-background-color: #9b59b6; -fx-text-fill: white;" />
+        <Button fx:id="pieChartButton" text="Pie Chart Stats" style="-fx-background-color: #e67e22; -fx-text-fill: white;" />
+        <!-- PDF Export button -->
+        <Button fx:id="exportPdfButton" text="Export to PDF" style="-fx-background-color: #1abc9c; -fx-text-fill: white;" />
+    </HBox>
+
+    <TableView fx:id="consultationTable" style="-fx-pref-height: 500;">
+        <columns>
+            <TableColumn text="ID" prefWidth="50">
+                <cellValueFactory>
+                    <PropertyValueFactory property="id"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Service" prefWidth="150">
+                <cellValueFactory>
+                    <PropertyValueFactory property="serviceName"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Date" prefWidth="120">
+                <cellValueFactory>
+                    <PropertyValueFactory property="date"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Patient ID" prefWidth="100">
+                <cellValueFactory>
+                    <PropertyValueFactory property="patientIdentifier"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Phone" prefWidth="100">
+                <cellValueFactory>
+                    <PropertyValueFactory property="phoneNumber"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Status" prefWidth="100">
+                <cellValueFactory>
+                    <PropertyValueFactory property="status"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Rating" prefWidth="80">
+                <cellValueFactory>
+                    <PropertyValueFactory property="rating"/>
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+</VBox>

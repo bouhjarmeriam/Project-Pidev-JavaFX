@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Listdepartement">
+    <center>
+        <VBox spacing="20">
+            <!-- Search Bar -->
+            <TextField fx:id="searchBar" promptText="Rechercher un département..."
+                       style="-fx-font-size: 14px; -fx-padding: 8px;"/>
+
+            <!-- Departments Container -->
+            <FlowPane fx:id="departementContainer" hgap="20" vgap="20"
+                      alignment="TOP_CENTER" style="-fx-padding: 10px;"/>
+        </VBox>
+    </center>
+</BorderPane>
