@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.MedecinController"
+      spacing="20" alignment="CENTER"
+      style="-fx-background-color: #f8fafc; -fx-padding: 30;">
+
+    <!-- En-tête avec icône médicale -->
+    <StackPane>
+        <ImageView fitWidth="90" fitHeight="90" preserveRatio="true">
+            <image>
+                <Image url="@img/logo.png"/>
+            </image>
+        </ImageView>
+    </StackPane>
+
+    <!-- Titre stylisé -->
+    <Label text="Informations Médecin" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1e293b;">
+        <effect>
+            <DropShadow color="rgba(0,0,0,0.1)" radius="5" offsetY="3"/>
+        </effect>
+    </Label>
+
+    <!-- Carte contenant le formulaire -->
+    <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);"
+          spacing="15" alignment="CENTER_LEFT">
+
+        <!-- Champ Spécialité -->
+        <VBox spacing="5">
+            <Label text="Spécialité médicale" style="-fx-font-weight: bold; -fx-text-fill: #475569;"/>
+            <TextField fx:id="specialiteField" promptText="Cardiologie, Pédiatrie..."
+                       style="-fx-background-radius: 5; -fx-padding: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 5; -fx-focus-color: #3b82f6;"/>
+            <Label fx:id="specialiteError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12px;" visible="false"/>
+        </VBox>
+
+        <!-- Champ Téléphone -->
+        <VBox spacing="5">
+            <Label text="Téléphone professionnel" style="-fx-font-weight: bold; -fx-text-fill: #475569;"/>
+            <TextField fx:id="telephoneField" promptText="+212 6..."
+                       style="-fx-background-radius: 5; -fx-padding: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 5; -fx-focus-color: #3b82f6;"/>
+            <Label fx:id="telephoneError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12px;" visible="false"/>
+        </VBox>
+
+        <!-- Bouton avec effet de survol -->
+        <Button fx:id="btnEnregistrer" text="Enregistrer le médecin" onAction="#handleEnregistrer"
+                style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 10 25; -fx-cursor: hand;"
+                alignment="CENTER">
+            <effect>
+                <DropShadow color="rgba(59,130,246,0.5)" radius="5" spread="0.3"/>
+            </effect>
+        </Button>
+    </VBox>
+</VBox>

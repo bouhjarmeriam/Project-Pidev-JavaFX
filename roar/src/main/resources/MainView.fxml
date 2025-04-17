@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.NavController"
+            stylesheets="@style.css">
+
+    <!-- Navigation Bar -->
+    <top>
+        <HBox spacing="15" fx:id="navBar">
+            <Button text="Home" fx:id="homeBtn" onAction="#goToHome"/>
+            <Button text="Profile" fx:id="profileBtn" onAction="#goToProfile"/>
+            <Button text="Settings" fx:id="settingsBtn" onAction="#goToSettings"/>
+        </HBox>
+    </top>
+
+    <!-- Content Area -->
+    <center>
+        <Pane fx:id="contentArea"/>
+    </center>
+
+</BorderPane>

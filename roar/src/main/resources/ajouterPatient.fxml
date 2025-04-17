@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.PatientController"
+      spacing="20"
+      alignment="CENTER"
+      style="-fx-background-color: #f8fafc; -fx-padding: 30;">
+
+    <!-- Carte contenant le formulaire -->
+    <VBox style="-fx-background-color: white;
+                -fx-background-radius: 10;
+                -fx-padding: 25;
+                -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);"
+          spacing="15"
+          alignment="CENTER"
+          maxWidth="400">
+
+        <!-- Icône et titre -->
+        <StackPane alignment="CENTER">
+            <ImageView fitWidth="90" fitHeight="90" preserveRatio="true">
+                <image>
+                    <Image url="@img/logo.png"/>
+                </image>
+            </ImageView>
+        </StackPane>
+
+        <Label text="Nouveau Patient"
+               style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1e293b;">
+            <effect>
+                <DropShadow color="rgba(0,0,0,0.05)" radius="3" offsetY="2"/>
+            </effect>
+        </Label>
+
+        <!-- Formulaire -->
+        <GridPane hgap="15" vgap="10" alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" halignment="RIGHT" minWidth="100"/>
+                <ColumnConstraints hgrow="ALWAYS" halignment="LEFT" minWidth="200"/>
+            </columnConstraints>
+
+            <!-- Adresse -->
+            <Label text="Adresse:" style="-fx-font-weight: bold; -fx-text-fill: #475569;" GridPane.rowIndex="0"/>
+            <TextField fx:id="adresseField" promptText="123 Rue Principale..." GridPane.rowIndex="0" GridPane.columnIndex="1"
+                       style="-fx-background-radius: 5; -fx-padding: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 5;"/>
+            <Label fx:id="adresseError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12px;" GridPane.rowIndex="1" GridPane.columnIndex="1" visible="false"/>
+
+            <!-- Téléphone -->
+            <Label text="Téléphone:" style="-fx-font-weight: bold; -fx-text-fill: #475569;" GridPane.rowIndex="2"/>
+            <TextField fx:id="telephoneField" promptText="06 12 34 56 78" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                       style="-fx-background-radius: 5; -fx-padding: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 5;"/>
+            <Label fx:id="telephoneError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12px;" GridPane.rowIndex="3" GridPane.columnIndex="1" visible="false"/>
+
+            <!-- Date de naissance -->
+            <Label text="Naissance:" style="-fx-font-weight: bold; -fx-text-fill: #475569;" GridPane.rowIndex="4"/>
+            <DatePicker fx:id="dateNaissancePicker" promptText="JJ/MM/AAAA" GridPane.rowIndex="4" GridPane.columnIndex="1"
+                        style="-fx-background-radius: 5; -fx-border-color: #e2e8f0; -fx-border-radius: 5;"/>
+            <Label fx:id="dateNaissanceError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12px;" GridPane.rowIndex="5" GridPane.columnIndex="1" visible="false"/>
+        </GridPane>
+
+        <!-- Bouton Enregistrer -->
+        <Button fx:id="btnEnregistrer" text="Enregistrer le patient" onAction="#handleEnregistrer"
+                style="-fx-background-color: #4f46e5;
+                      -fx-text-fill: white;
+                      -fx-font-weight: bold;
+                      -fx-background-radius: 5;
+                      -fx-padding: 10 30;
+                      -fx-font-size: 14;"
+                alignment="CENTER">
+            <effect>
+                <DropShadow color="rgba(79,70,229,0.3)" radius="5" spread="0.2"/>
+            </effect>
+        </Button>
+    </VBox>
+</VBox>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
+
+<?import java.lang.String?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.AjouterUtilisateurController"
+      spacing="25" alignment="CENTER"
+      style="-fx-background-color: linear-gradient(to bottom, #f4f7fa, #dde4eb);">
+
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+
+    <!-- Titre avec style modernisé -->
+    <Label text="Créer un nouvel utilisateur">
+        <font>
+            <Font name="System Bold" size="24"/>
+        </font>
+        <textFill>
+            <Color/>
+        </textFill>
+        <effect>
+            <DropShadow color="#6c757d" radius="4" offsetY="2" spread="0.2"/>
+        </effect>
+    </Label>
+
+    <!-- Carte contenant le formulaire -->
+    <VBox style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0.2, 0, 2);"
+          spacing="20" maxWidth="500">
+
+        <GridPane hgap="15" vgap="10">
+            <!-- Colonne 1 - Labels -->
+            <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" halignment="RIGHT" minWidth="120"/>
+                <ColumnConstraints hgrow="ALWAYS" halignment="LEFT" minWidth="280"/>
+            </columnConstraints>
+
+            <!-- Ligne 0 - Email -->
+            <Label text="Email :" style="-fx-font-weight: bold; -fx-text-fill: #495057; -fx-font-size: 14;" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="emailField" promptText="Adresse email" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                       style="-fx-background-radius: 8; -fx-padding: 10; -fx-border-color: #ced4da; -fx-border-radius: 8; -fx-background-color: #f8f9fa; -fx-text-fill: #212529;"
+                       prefWidth="280">
+                <tooltip>
+                    <Tooltip text="Entrez une adresse email valide"/>
+                </tooltip>
+            </TextField>
+            <Label fx:id="emailError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12;" GridPane.rowIndex="1" GridPane.columnIndex="1" visible="false"/>
+
+            <!-- Ligne 2 - Mot de passe -->
+            <Label text="Mot de passe :" style="-fx-font-weight: bold; -fx-text-fill: #495057; -fx-font-size: 14;" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="passwordField" promptText="Mot de passe" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                           style="-fx-background-radius: 8; -fx-padding: 10; -fx-border-color: #ced4da; -fx-border-radius: 8; -fx-background-color: #f8f9fa; -fx-text-fill: #212529;"
+                           prefWidth="280">
+                <tooltip>
+                    <Tooltip text="Minimum 8 caractères"/>
+                </tooltip>
+            </PasswordField>
+            <Label fx:id="passwordError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12;" GridPane.rowIndex="3" GridPane.columnIndex="1" visible="false"/>
+
+            <!-- Ligne 4 - Nom -->
+            <Label text="Nom :" style="-fx-font-weight: bold; -fx-text-fill: #495057; -fx-font-size: 14;" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <TextField fx:id="nomField" promptText="Nom" GridPane.rowIndex="4" GridPane.columnIndex="1"
+                       style="-fx-background-radius: 8; -fx-padding: 10; -fx-border-color: #ced4da; -fx-border-radius: 8; -fx-background-color: #f8f9fa; -fx-text-fill: #212529;"
+                       prefWidth="280">
+                <tooltip>
+                    <Tooltip text="Entrez votre nom"/>
+                </tooltip>
+            </TextField>
+            <Label fx:id="nomError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12;" GridPane.rowIndex="5" GridPane.columnIndex="1" visible="false"/>
+
+            <!-- Ligne 6 - Prénom -->
+            <Label text="Prénom :" style="-fx-font-weight: bold; -fx-text-fill: #495057; -fx-font-size: 14;" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+            <TextField fx:id="prenomField" promptText="Prénom" GridPane.rowIndex="6" GridPane.columnIndex="1"
+                       style="-fx-background-radius: 8; -fx-padding: 10; -fx-border-color: #ced4da; -fx-border-radius: 8; -fx-background-color: #f8f9fa; -fx-text-fill: #212529;"
+                       prefWidth="280">
+                <tooltip>
+                    <Tooltip text="Entrez votre prénom"/>
+                </tooltip>
+            </TextField>
+            <Label fx:id="prenomError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12;" GridPane.rowIndex="7" GridPane.columnIndex="1" visible="false"/>
+
+            <!-- Ligne 8 - Type d'utilisateur -->
+            <Label text="Type d'utilisateur :" style="-fx-font-weight: bold; -fx-text-fill: #495057; -fx-font-size: 14;" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="typeComboBox" GridPane.rowIndex="8" GridPane.columnIndex="1"
+                      style="-fx-background-radius: 8; -fx-padding: 10; -fx-border-color: #ced4da; -fx-border-radius: 8; -fx-background-color: #f8f9fa;"
+                      prefWidth="280">
+                <tooltip>
+                    <Tooltip text="Sélectionnez le type d'utilisateur"/>
+                </tooltip>
+            </ComboBox>
+            <Label fx:id="typeError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12;" GridPane.rowIndex="9" GridPane.columnIndex="1" visible="false"/>
+        </GridPane>
+
+        <!-- Bouton centré dans un HBox -->
+        <HBox alignment="CENTER" spacing="10">
+            <Button fx:id="btnCreer" text="Créer l'utilisateur" onAction="#handleAjouterUtilisateur"
+                    style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 12 30; -fx-font-size: 15;">
+                <effect>
+                    <DropShadow radius="3" color="#0056b3" spread="0.2"/>
+                </effect>
+                <tooltip>
+                    <Tooltip text="Créer un nouvel utilisateur"/>
+                </tooltip>
+            </Button>
+        </HBox>
+    </VBox>
+
+    <!-- CSS intégré pour les effets dynamiques -->
+    <stylesheets>
+        <String fx:value="/Styles.css"/>
+    </stylesheets>
+</VBox>

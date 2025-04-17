@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.ModifierEquipementController">
+    <children>
+        <VBox alignment="CENTER" spacing="10" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Modifier un Équipement" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <TextField fx:id="nomField" promptText="Nom de l'équipement"/>
+            <TextField fx:id="typeField" promptText="Type de l'équipement"/>
+            <ComboBox fx:id="statutCombo" promptText="Statut"/>
+            <TextField fx:id="categorieField" promptText="Catégorie"/>
+
+            <Button text="Enregistrer les modifications" onAction="#modifierEquipementAction"/>
+        </VBox>
+    </children>
+</AnchorPane>

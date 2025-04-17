@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.ListeEntretienController"
+            prefWidth="800.0" prefHeight="600.0">
+
+    <TableView fx:id="entretienTable" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0"
+               AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+        <columns>
+            <TableColumn fx:id="nomColumn" text="Nom Équipement" prefWidth="200.0"/>
+            <TableColumn fx:id="dateColumn" text="Date" prefWidth="200.0"/>
+            <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="200.0"/>
+            <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="180.0"/>
+        </columns>
+    </TableView>
+</AnchorPane>

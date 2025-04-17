@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" spacing="10" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2); -fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
+
+    <!-- Image de fond serait à gérer dans le contrôleur ou via CSS -->
+
+    <!-- Logo -->
+    <ImageView fitWidth="180" preserveRatio="true">
+        <image>
+            <Image url="@img/logo.png" />
+        </image>
+        <effect>
+            <DropShadow color="#95a5a6" radius="3" spread="0.2" />
+        </effect>
+    </ImageView>
+
+    <!-- Phrase d'accueil -->
+    <Text style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-fill: #333;" text="Bienvenue dans notre service, votre bien-être est notre priorité !" />
+
+    <!-- Conteneur principal du formulaire -->
+    <VBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color: rgba(255, 255, 255, 0.8); -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+
+        <!-- Message d'erreur (serait géré dynamiquement dans le contrôleur) -->
+        <Label fx:id="errorLabel" style="-fx-text-fill: #dc3545; -fx-font-size: 14px;" visible="false" />
+
+        <!-- Champ Email -->
+        <Label style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Email" />
+        <TextField fx:id="emailField" style="-fx-pref-width: 250; -fx-background-radius: 5; -fx-border-color: #ced4da; -fx-padding: 6;" />
+
+        <!-- Champ Mot de passe -->
+        <Label style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-padding: 5 0 0 0;" text="Mot de passe" />
+        <PasswordField fx:id="passwordField" style="-fx-pref-width: 250; -fx-background-radius: 5; -fx-border-color: #ced4da; -fx-padding: 6;" />
+
+        <!-- Case à cocher "Se souvenir de moi" -->
+        <CheckBox fx:id="rememberMeCheckBox" style="-fx-font-size: 14px;" text="Se souvenir de moi" />
+
+        <!-- Bouton de connexion -->
+        <Button fx:id="loginButton" onAction="#handleLogin" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 20; -fx-pref-width: 250;" text="Se connecter">
+            <effect>
+                <InnerShadow color="#0056b3" radius="2" />
+            </effect>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+        </Button>
+    </VBox>
+</VBox>

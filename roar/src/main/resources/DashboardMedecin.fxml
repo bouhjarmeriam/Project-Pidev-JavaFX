@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane style="-fx-background-color: #F0F0F0;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MedecinDashboardController">
+    <!-- Sidebar -->
+    <left>
+        <VBox fx:id="sidebar" prefWidth="250" style="-fx-background-color: #003a5d; -fx-padding: 20;">
+            <Label text="Menu Médecin" style="-fx-text-fill: white;">
+                <font>
+                    <Font name="Arial Bold" size="22"/>
+                </font>
+            </Label>
+            <VBox spacing="10" style="-fx-padding: 10 0 10 0;">
+                <Hyperlink text="Dashboard" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Dossiers Patients" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Consultations" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Ordonnances" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Examen" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Historique Médical" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Profil" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Button text="Se déconnecter" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0;" onAction="#handleLogoutAction"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Main Content -->
+    <center>
+        <VBox style="-fx-background-color: #c2e1f5; -fx-padding: 40 20 40 20; -fx-alignment: top-left;" spacing="20">
+            <Label text="Bienvenue sur votre espace Médecin" style="-fx-text-fill: #003a5d;">
+                <font>
+                    <Font name="Arial Bold" size="24"/>
+                </font>
+            </Label>
+            <Label text="Gérez vos patients et consultez leurs dossiers médicaux." style="-fx-text-fill: #005a8d;">
+                <font>
+                    <Font name="Arial" size="18"/>
+                </font>
+            </Label>
+            <!-- Task Sections -->
+            <FlowPane hgap="30" vgap="30" style="-fx-padding: 20 0 20 0;">
+                <!-- Task Card 1 -->
+                <VBox styleClass="task-card blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Dossiers Patients" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Consulter et gérer les dossiers de vos patients" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <!-- Task Card 2 -->
+                <VBox styleClass="task-card blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Consultations" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Gérer les consultations et rendez-vous" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <!-- Task Card 3 -->
+                <VBox styleClass="task-card dark-blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Ordonnances" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Créer et gérer les ordonnances des patients" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <!-- Task Card 4 -->
+                <VBox styleClass="task-card blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Examen" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Visualiser les examens médicaux effectués" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <!-- Task Card 5 -->
+                <VBox styleClass="task-card dark-blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Historique Médical" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Consulter l'historique médical complet des patients" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <!-- Task Card 6 -->
+                <VBox styleClass="task-card dark-blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Profil" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Modifier vos informations personnelles" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+            </FlowPane>
+        </VBox>
+    </center>
+</BorderPane>

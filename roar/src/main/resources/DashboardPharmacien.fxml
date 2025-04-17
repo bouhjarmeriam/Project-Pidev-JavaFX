@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane style="-fx-background-color: #F0F0F0;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PharmacienDashboardController">
+    <!-- Sidebar -->
+    <left>
+        <VBox fx:id="sidebar" prefWidth="250" style="-fx-background-color: #003a5d; -fx-padding: 20;">
+            <Label text="Menu Pharmacien" style="-fx-text-fill: white;">
+                <font>
+                    <Font name="Arial Bold" size="22"/>
+                </font>
+            </Label>
+            <VBox spacing="10" style="-fx-padding: 10 0 10 0;">
+                <Hyperlink text="Dashboard" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Stocks Médicaments" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Validation Ordonnances" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Livraisons" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Historique des Stocks" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink text="Profil" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Button text="Se déconnecter" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0;" onAction="#handleLogoutAction"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Main Content -->
+    <center>
+        <VBox style="-fx-background-color: #c2e1f5; -fx-padding: 40 20 40 20; -fx-alignment: top-left;" spacing="20">
+            <Label text="Bienvenue sur votre espace Pharmacien" style="-fx-text-fill: #003a5d;">
+                <font>
+                    <Font name="Arial Bold" size="24"/>
+                </font>
+            </Label>
+            <Label text="Gestion des stocks et validation des ordonnances." style="-fx-text-fill: #005a8d;">
+                <font>
+                    <Font name="Arial" size="18"/>
+                </font>
+            </Label>
+            <!-- Task Sections -->
+            <FlowPane hgap="30" vgap="30" style="-fx-padding: 20 0 20 0;">
+                <!-- Task Card 1 -->
+                <VBox styleClass="task-card blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Stocks Médicaments" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Consulter et gérer les stocks de médicaments" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <!-- Task Card 2 -->
+                <VBox styleClass="task-card blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Validation Ordonnances" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Valider les ordonnances des médecins" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <!-- Task Card 3 -->
+                <VBox styleClass="task-card dark-blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Livraisons" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Gérer les livraisons de médicaments" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <!-- Task Card 4 -->
+                <VBox styleClass="task-card blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Historique des Stocks" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Consulter l'historique des stocks" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <!-- Task Card 5 -->
+                <VBox styleClass="task-card dark-blue-card" alignment="CENTER" spacing="10" prefWidth="300">
+                    <Label text="Profil" style="-fx-text-fill: white;">
+                        <font>
+                            <Font name="Arial Bold" size="20"/>
+                        </font>
+                    </Label>
+                    <Label text="Modifier vos informations personnelles" style="-fx-text-fill: white; -fx-max-width: 260; -fx-wrap-text: true;">
+                        <font>
+                            <Font name="Arial" size="16"/>
+                        </font>
+                    </Label>
+                </VBox>
+            </FlowPane>
+        </VBox>
+    </center>
+</BorderPane>

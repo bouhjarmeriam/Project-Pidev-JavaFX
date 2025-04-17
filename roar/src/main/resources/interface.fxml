@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Interface">  <!-- Added controller -->
+
+    <!-- Left Sidebar -->
+    <VBox layoutX="0" layoutY="0" prefHeight="600" prefWidth="250" style="-fx-background-color: #2c3e50;">
+        <!-- Logo Section -->
+        <HBox alignment="CENTER" style="-fx-background-color: #34495e; -fx-padding: 20;">
+            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;" text="CLINIC DASHBOARD" />
+        </HBox>
+
+        <!-- Navigation Menu -->
+        <VBox spacing="10" style="-fx-padding: 20;">
+            <Button fx:id="btnUsers" onAction="#handleUsers" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-pref-width: 200; -fx-pref-height: 40;" text="Users" />
+            <Button fx:id="btnMedicalServices" onAction="#handleMedicalServices" style="-fx-background-color: transparent; -fx-text-fill: #bdc3c7; -fx-pref-width: 200; -fx-pref-height: 40;" text="Medical Services" />
+
+            <Button fx:id="btnConsultations" onAction="#handleAdminConsultation" style="-fx-background-color: transparent; -fx-text-fill: #bdc3c7; -fx-pref-width: 200; -fx-pref-height: 40;" text="Consultations" />
+            <Button fx:id="btnEquipment" onAction="#handleEquipement" style="-fx-background-color: transparent; -fx-text-fill: #bdc3c7; -fx-pref-width: 200; -fx-pref-height: 40;" text="Equipment" />
+            <Button fx:id="btnInfrastructure" style="-fx-background-color: transparent; -fx-text-fill: #bdc3c7; -fx-pref-width: 200; -fx-pref-height: 40;" text="Infrastructure" />
+            <Button fx:id="btnMedicationStock" style="-fx-background-color: transparent; -fx-text-fill: #bdc3c7; -fx-pref-width: 200; -fx-pref-height: 40;" text="Medication Stock" />
+        </VBox>
+    </VBox>
+
+    <!-- Main Content Area -->
+    <AnchorPane layoutX="250" layoutY="0" prefHeight="600" prefWidth="750" style="-fx-background-color: #ecf0f1;">
+        <!-- Header -->
+        <HBox layoutX="0" layoutY="0" prefHeight="60" prefWidth="750" style="-fx-background-color: white; -fx-padding: 10; -fx-alignment: CENTER_RIGHT;">
+            <TextField promptText="Search..." style="-fx-background-radius: 20; -fx-pref-height: 40; -fx-pref-width: 200;" />
+            <Button style="-fx-background-color: transparent;" text="Notifications" />
+            <Button style="-fx-background-color: transparent;" text="Profile" />
+        </HBox>
+
+        <!-- Content Area -->
+        <VBox fx:id="contentArea" layoutX="20" layoutY="80" spacing="20">
+            <Label style="-fx-font-size: 24; -fx-font-weight: bold;" text="Welcome to the Clinic Dashboard" />
+        </VBox>
+    </AnchorPane>
+</AnchorPane>

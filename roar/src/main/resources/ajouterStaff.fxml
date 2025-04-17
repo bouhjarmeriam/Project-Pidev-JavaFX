@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.StaffController"
+      spacing="20"
+      alignment="CENTER"
+      style="-fx-background-color: #f5f7fa; -fx-padding: 40;">
+
+    <!-- Carte formulaire avec effet de profondeur -->
+    <VBox style="-fx-background-color: white;
+                -fx-background-radius: 15;
+                -fx-padding: 30;
+                -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 0);"
+          alignment="CENTER"
+          spacing="25"
+          maxWidth="400">
+
+        <!-- Icône staff -->
+        <StackPane>
+            <ImageView fitWidth="90" fitHeight="90" preserveRatio="true">
+                <image>
+                    <Image url="@img/logo.png"/>
+                </image>
+            </ImageView>
+        </StackPane>
+
+        <!-- Titre stylisé -->
+        <Label text="Enregistrement Staff"
+               style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;">
+            <effect>
+                <DropShadow color="rgba(0,0,0,0.05)" radius="3" offsetY="2"/>
+            </effect>
+        </Label>
+
+        <!-- Champ téléphone -->
+        <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 0 20;">
+            <Label text="Téléphone Professionnel"
+                   style="-fx-font-weight: bold; -fx-text-fill: #4b5563; -fx-font-size: 14;"/>
+            <TextField fx:id="telephoneField"
+                       promptText="+212 6 XX XX XX XX"
+                       style="-fx-background-radius: 8;
+                            -fx-padding: 10;
+                            -fx-border-color: #e5e7eb;
+                            -fx-border-radius: 8;
+                            -fx-font-size: 14;"/>
+            <Label fx:id="telephoneError" text="" style="-fx-text-fill: #dc3545; -fx-font-size: 12px;" visible="false"/>
+        </VBox>
+
+        <!-- Bouton avec effet -->
+        <Button fx:id="btnEnregistrer"
+                text="Enregistrer"
+                onAction="#handleEnregistrer"
+                style="-fx-background-color: #10b981;
+                      -fx-text-fill: white;
+                      -fx-font-weight: bold;
+                      -fx-background-radius: 8;
+                      -fx-padding: 12 40;
+                      -fx-font-size: 14;"
+                alignment="CENTER">
+            <effect>
+                <DropShadow color="rgba(16,185,129,0.3)" radius="8" spread="0.2"/>
+            </effect>
+        </Button>
+    </VBox>
+</VBox>

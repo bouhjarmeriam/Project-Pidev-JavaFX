@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.EquipementController"
+      spacing="25"
+      style="-fx-padding: 30; -fx-background-color: linear-gradient(to bottom, #f9f9f9, #e6e6e6); -fx-font-family: 'Segoe UI', Arial;">
+
+    <!-- Titre principal -->
+    <Label text="Gestion des Équipements"
+           style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #1E1E1E;"/>
+
+    <!-- Sous-titre -->
+    <Label text="Gérez les équipements de l'hôpital depuis cette interface."
+           style="-fx-text-fill: #007ACC; -fx-font-size: 18px;"/>
+
+    <!-- Conteneur des catégories avec une carte claire -->
+    <VBox fx:id="categoryList" spacing="12"
+          style="-fx-background-color: white; -fx-padding: 15; -fx-border-radius: 12; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0.2, 0, 2);">
+        <!-- Les catégories seront ajoutées dynamiquement ici depuis le contrôleur -->
+    </VBox>
+
+    <!-- Zone de contenu des détails -->
+    <HBox fx:id="contentArea" spacing="15"
+          style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 12; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 6, 0.1, 0, 2);">
+        <!-- Contenu dynamique ajouté ici selon les catégories sélectionnées -->
+    </HBox>
+</VBox>

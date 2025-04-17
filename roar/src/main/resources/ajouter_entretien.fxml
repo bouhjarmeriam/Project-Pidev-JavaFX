@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+
+<VBox spacing="15" alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.AjouterEntretienController"
+      style="-fx-padding: 30; -fx-background-color: #f4f4f4;">
+
+    <Label fx:id="titleLabel" text="Créer un entretien" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <TextField fx:id="nomEquipementField" promptText="Nom de l’équipement" editable="false"
+               style="-fx-pref-width: 300px; -fx-background-radius: 8; -fx-padding: 8;"/>
+
+    <DatePicker fx:id="dateEntretienPicker"
+                style="-fx-pref-width: 300px; -fx-background-radius: 8;"/>
+
+    <TextArea fx:id="descriptionField" promptText="Description de l’entretien"
+              style="-fx-pref-width: 300px; -fx-pref-height: 100px; -fx-background-radius: 8; -fx-padding: 8;"/>
+
+    <Button text="Créer" onAction="#handleCreateEntretien"
+            style="-fx-background-color: #3a86ff; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16;"/>
+</VBox>

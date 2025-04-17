@@ -1,0 +1,20 @@
+.input-field:focused {
+    -fx-border-color: #007bff;
+    -fx-border-width: 2;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.3), 10, 0, 0, 0);
+}
+
+.input-field:hover {
+    -fx-background-color: #e9ecef;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #0056b3;
+    -fx-effect: dropshadow(gaussian, rgba(0,86,179,0.4), 15, 0, 0, 2);
+}
+
+.btn-primary:pressed {
+    -fx-background-color: #004085;
+    -fx-effect: none;
+}

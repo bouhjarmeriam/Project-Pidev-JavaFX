@@ -1,0 +1,181 @@
+/* Global Styles */
+.root {
+    -fx-font-family: 'Poppins', sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #888;
+}
+
+/* Header Styles */
+.top-bar {
+    -fx-background-color: #fff;
+    -fx-border-color: #eee;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 15px 0;
+}
+
+.top-link .hyperlink {
+    -fx-text-fill: #2C2D3F;
+    -fx-font-size: 14px;
+    -fx-font-weight: 400;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+.top-link .hyperlink:hover {
+    -fx-text-fill: #1A76D1;
+}
+
+.top-contact .label {
+    -fx-text-fill: #2C2D3F;
+    -fx-font-size: 14px;
+}
+
+.header-inner {
+    -fx-background-color: #fff;
+    -fx-padding: 20px 0;
+}
+
+/* Logo Styles */
+.logo-image {
+    -fx-fit-width: 190px;
+    -fx-preserve-ratio: true;
+}
+
+/* Menu Styles */
+.menu-button, .button {
+    -fx-text-fill: #2C2D3F;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-background-color: transparent;
+    -fx-padding: 25px 12px;
+}
+
+.menu-button:hover, .button:hover {
+    -fx-text-fill: #1A76D1;
+    -fx-underline: false;
+}
+
+.menu-button:hover .label, .button:hover .label {
+    -fx-text-fill: #1A76D1;
+}
+
+/* Primary Button Styles */
+.primary-button {
+    -fx-background-color: #1A76D1;
+    -fx-text-fill: white;
+    -fx-font-weight: 500;
+}
+
+.primary-button:hover {
+    -fx-background-color: #2C2D3F;
+}
+
+/* Secondary Button Styles */
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+    -fx-text-fill: white;
+}
+
+.secondary-button:hover {
+    -fx-background-color: white;
+    -fx-text-fill: #1A76D1;
+}
+
+/* Slider Section */
+.slider-section {
+    -fx-background-color: linear-gradient(to right, #1A76D1, #2196F3);
+    -fx-padding: 120px 0;
+}
+
+.slider-title {
+    -fx-text-fill: white;
+    -fx-font-size: 38px;
+    -fx-font-weight: 700;
+}
+
+.slider-subtitle {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+/* Schedule Cards */
+.schedule-card {
+    -fx-background-color: #d11a1a;
+    -fx-background-radius: 5px;
+    -fx-padding: 30px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);
+}
+
+.schedule-card:hover {
+    -fx-translate-y: -5px;
+}
+
+.schedule-card .label {
+    -fx-text-fill: white;
+}
+
+.schedule-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+}
+
+/* Features Section */
+.features-section {
+    -fx-padding: 100px 0;
+}
+
+.feature-card {
+    -fx-padding: 10px 20px;
+    -fx-alignment: center;
+}
+
+.feature-icon {
+    -fx-font-size: 50px;
+    -fx-text-fill: #1A76D1;
+}
+
+.feature-title {
+    -fx-font-size: 21px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #2C2D3F;
+    -fx-padding: 128px 0 0 0;
+}
+
+/* Footer Styles */
+.footer {
+    -fx-background-color: #1A76D1;
+    -fx-padding: 100px 0 0 0;
+}
+
+.footer-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+    -fx-text-fill: white;
+    -fx-padding: 0 0 20px 0;
+    -fx-border-color: white;
+    -fx-border-width: 0 0 3px 0;
+}
+
+.footer-link {
+    -fx-text-fill: white;
+    -fx-font-weight: 400;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+.footer-link:hover {
+    -fx-text-fill: white;
+    -fx-underline: true;
+}
+
+.copyright {
+    -fx-background-color: #1A76D1;
+    -fx-padding: 25px 0;
+    -fx-alignment: center;
+}
+
+.copyright-text {
+    -fx-text-fill: white;
+}

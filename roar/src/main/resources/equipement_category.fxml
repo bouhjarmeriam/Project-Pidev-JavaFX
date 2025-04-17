@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.EquipementCategoryController"
+      spacing="20" style="-fx-padding: 20;">
+
+    <!-- Titre de la catégorie -->
+    <Label fx:id="categoryLabel" text="Catégorie : " style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <Label fx:id="labelNomCategorie" layoutX="20" layoutY="20" />
+
+    <!-- Barre de recherche -->
+    <TextField fx:id="searchBar" promptText="Rechercher un équipement"
+               onKeyReleased="#filterEquipements" style="-fx-padding: 5px;"/>
+
+    <!-- Bouton pour ajouter un équipement dans la catégorie -->
+    <Button text="Ajouter un équipement à la catégorie"
+            onAction="#handleAjouterEquipement" style="-fx-background-color: #0d6efd; -fx-text-fill: white;"/>
+
+    <!-- Titre de la liste des équipements -->
+    <Label text="Liste des équipements" style="-fx-font-size: 18px;"/>
+
+    <!-- Liste des équipements -->
+    <ListView fx:id="equipementList" prefHeight="200" />
+
+    <!-- Message affiché si aucun équipement n'est trouvé -->
+    <Label fx:id="noEquipementsLabel" text="Aucun équipement trouvé dans cette catégorie."
+           visible="false" style="-fx-text-fill: red;"/>
+
+    <!-- Zone dynamique pour afficher d'autres vues (ex. ajouter un équipement) -->
+    <VBox fx:id="contentArea" xmlns:fx="http://javafx.com/fxml/1" />
+</VBox>
