@@ -320,12 +320,8 @@ public class DepartementController {
     }
 
     private void loadView(String fxmlPath, ActionEvent event) {
-        try (InputStream fxmlStream = getClass().getResourceAsStream(fxmlPath)) {
-            if (fxmlStream == null) {
-                throw new IOException("Fichier " + fxmlPath + " introuvable");
-            }
-
-            Parent root = FXMLLoader.load(fxmlStream);
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
