@@ -87,7 +87,7 @@ public class Interface {
     public void handleAdmininfrastructure(ActionEvent event) {
         try {
             // Chemin relatif correct (sans "src/main/resources")
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/departement.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/salle.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -95,7 +95,7 @@ public class Interface {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Erreur", "Impossible de charger l'interface des étages", Alert.AlertType.ERROR);
+            showAlert("Erreur", "Impossible de charger l'interface des department", Alert.AlertType.ERROR);
         }
     }
 }

@@ -73,3 +73,23 @@
 .card-icon {
     -fx-fill: currentColor;
 }
+.department-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 15px;
+    -fx-cursor: hand;
+    -fx-pref-width: 200px;
+    -fx-pref-height: 220px;
+    -fx-spacing: 10;
+}
+
+.department-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(74, 111, 165, 0.3), 15, 0, 0, 0);
+}
+
+.department-image {
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
+}

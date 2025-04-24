@@ -13,7 +13,7 @@ public class MainFx extends Application {
     @Override
 
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/front.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/interface.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root,1200,800);
         primaryStage.setScene(scene);

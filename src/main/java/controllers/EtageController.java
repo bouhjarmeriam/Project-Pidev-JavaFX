@@ -12,12 +12,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import service.EtageService;
 import service.DepartementService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class EtageController {
     @FXML private TextField numeroField;
@@ -30,28 +33,59 @@ public class EtageController {
     @FXML private TableColumn<etage, String> departementColumn;
     @FXML private TableColumn<etage, Void> modifierColumn;
     @FXML private TableColumn<etage, Void> supprimerColumn;
+    @FXML private Button saveButton;
+    @FXML private Button cancelButton;
 
     private final EtageService etageService = new EtageService();
     private final DepartementService departementService = new DepartementService();
     private final ObservableList<etage> etageList = FXCollections.observableArrayList();
     private final ObservableList<departement> departementList = FXCollections.observableArrayList();
+    private etage etageEnCoursDeModification = null;
 
     @FXML
     public void initialize() {
         setupTable();
         loadDepartements();
+        configureDepartementCombo();
         loadEtages();
     }
 
+    private void configureDepartementCombo() {
+        departementCombo.setConverter(new StringConverter<departement>() {
+            @Override
+            public String toString(departement departement) {
+                return departement != null ? departement.getNom() : "";
+            }
+
+            @Override
+            public departement fromString(String string) {
+                return departementCombo.getItems().stream()
+                        .filter(d -> d.getNom().equals(string))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
+
+        departementCombo.setCellFactory(param -> new ListCell<departement>() {
+            @Override
+            protected void updateItem(departement item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getNom());
+                }
+            }
+        });
+    }
+
     private void setupTable() {
-        // Configuration des largeurs de colonnes
         idColumn.setPrefWidth(80);
         numeroColumn.setPrefWidth(100);
         departementColumn.setPrefWidth(200);
         modifierColumn.setPrefWidth(100);
         supprimerColumn.setPrefWidth(100);
 
-        // Configuration des colonnes de données
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         numeroColumn.setCellValueFactory(new PropertyValueFactory<>("numero"));
         departementColumn.setCellValueFactory(cellData -> {
@@ -59,7 +93,6 @@ public class EtageController {
             return new javafx.beans.property.SimpleStringProperty(d != null ? d.getNom() : "");
         });
 
-        // Colonne Modifier améliorée
         modifierColumn.setCellFactory(param -> new TableCell<>() {
             private final Button btn = new Button("✏️");
 
@@ -84,7 +117,6 @@ public class EtageController {
             }
         });
 
-        // Colonne Supprimer améliorée
         supprimerColumn.setCellFactory(param -> new TableCell<>() {
             private final Button btn = new Button("🗑️");
 
@@ -109,7 +141,6 @@ public class EtageController {
             }
         });
 
-        // Style général du tableau
         etageTable.setStyle("-fx-font-size: 14px;");
         etageTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
@@ -129,42 +160,84 @@ public class EtageController {
     @FXML
     private void handleSave() {
         if (validateForm()) {
-            etage etage = new etage();
-            etage.setNumero(Integer.parseInt(numeroField.getText()));
-            etage.setDepartement(departementCombo.getValue());
-
-            etageService.addEtage(etage);
+            if (etageEnCoursDeModification == null) {
+                etage newEtage = new etage();
+                newEtage.setNumero(Integer.parseInt(numeroField.getText()));
+                newEtage.setDepartement(departementCombo.getValue());
+                etageService.addEtage(newEtage);
+            } else {
+                etageEnCoursDeModification.setNumero(Integer.parseInt(numeroField.getText()));
+                etageEnCoursDeModification.setDepartement(departementCombo.getValue());
+                etageService.updateEtage(etageEnCoursDeModification);
+                etageEnCoursDeModification = null;
+                saveButton.setText("Ajouter");
+            }
             clearForm();
             loadEtages();
+            cancelButton.setDisable(true);
         }
     }
 
     private void handleModify(etage etage) {
-        numeroField.setText(String.valueOf(etage.getNumero()));
-        departementCombo.setValue(etage.getDepartement());
+        try {
+            // Créer la boîte de dialogue
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Modifier l'étage");
+            dialog.setHeaderText("Modification de l'étage #" + etage.getId());
 
-        // Vous pouvez ajouter ici la logique pour mettre à jour
-        // Par exemple, enregistrer l'ID de l'étage à modifier
+            // Ajouter les boutons OK et Annuler
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+            // Charger le contenu FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/modifierEtage.fxml"));
+            Parent root = loader.load();
+
+            // Configurer le contrôleur
+            ModifierEtageController controller = loader.getController();
+            controller.setEtageData(etage);
+            controller.setDepartements(departementList);
+
+            // Ajouter le contenu à la boîte de dialogue
+            dialog.getDialogPane().setContent(root);
+
+            // Personnaliser le style
+            dialog.getDialogPane().setStyle("-fx-font-size: 14px;");
+
+            // Afficher la boîte de dialogue et attendre la réponse
+            Optional<ButtonType> result = dialog.showAndWait();
+
+            // Traiter le résultat
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // Sauvegarder les modifications
+                etage updatedEtage = controller.getUpdatedEtage();
+                if (updatedEtage != null) {
+                    etageService.updateEtage(updatedEtage);
+                    loadEtages(); // Rafraîchir la table
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible d'ouvrir la boîte de dialogue de modification", Alert.AlertType.ERROR);
+        }
     }
 
     private void handleDelete(etage etage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
-        alert.setHeaderText("Supprimer cet étage ?");
+        alert.setHeaderText(null);
         alert.setContentText("Êtes-vous sûr de vouloir supprimer cet étage ?");
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                etageService.deleteEtage(etage.getId());
-                loadEtages();
-            }
-        });
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            etageService.deleteEtage(etage.getId());
+            loadEtages();
+        }
     }
 
     private boolean validateForm() {
         boolean isValid = true;
 
-        // Validation numéro
         try {
             Integer.parseInt(numeroField.getText());
             numeroError.setText("");
@@ -173,7 +246,6 @@ public class EtageController {
             isValid = false;
         }
 
-        // Validation département
         if (departementCombo.getValue() == null) {
             departementError.setText("Veuillez sélectionner un département");
             isValid = false;
@@ -190,6 +262,7 @@ public class EtageController {
         numeroError.setText("");
         departementError.setText("");
     }
+
     private void showAlert(String title, String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -197,10 +270,10 @@ public class EtageController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
     @FXML
     private void showDepartements(ActionEvent event) {
         try {
-            // Chemin relatif correct (sans "src/main/resources")
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/departement.fxml"));
             Parent root = loader.load();
 
@@ -209,20 +282,27 @@ public class EtageController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Erreur", "Impossible de charger l'interface des étages", Alert.AlertType.ERROR);
+            showAlert("Erreur", "Impossible de charger l'interface des départements", Alert.AlertType.ERROR);
         }
-
     }
 
     @FXML
     private void showEtages(ActionEvent event) {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/etage.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible de charger l'interface des étages", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
     private void showSalles(ActionEvent event) {
         try {
-            // Chemin relatif correct (sans "src/main/resources")
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/salle.fxml"));
             Parent root = loader.load();
 
@@ -235,6 +315,7 @@ public class EtageController {
         }
     }
 
+    @FXML
     public void Acceuil(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/interface.fxml"));

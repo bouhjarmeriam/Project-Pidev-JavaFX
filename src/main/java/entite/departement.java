@@ -46,6 +46,13 @@ public class departement {
         this.nbretage++;
     }
 
+    @Override
+    public String toString() {
+        return "departement{" +
+                "nom='" + nom + '\'' +
+                '}';
+    }
+
     // Méthode optionnelle pour diminuer le nombre d'étages
     public void supprimerEtage() {
         if (this.nbretage > 0) {

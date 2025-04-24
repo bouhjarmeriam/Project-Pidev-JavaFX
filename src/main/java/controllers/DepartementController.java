@@ -20,6 +20,7 @@ import service.DepartementService;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
@@ -62,25 +63,26 @@ public class DepartementController {
     }
 
     private void createImageDirectory() {
-        File imageDir = new File(IMAGE_DIR);
-        if (!imageDir.exists()) {
-            imageDir.mkdirs();
+        try {
+            File imageDir = new File(IMAGE_DIR);
+            if (!imageDir.exists()) {
+                boolean created = imageDir.mkdirs();
+                if (!created) {
+                    System.err.println("Échec de la création du dossier images");
+                }
+            }
+        } catch (SecurityException e) {
+            System.err.println("Erreur de permission: " + e.getMessage());
         }
     }
 
     private void setupTable() {
-        // Configuration des largeurs de colonnes
-        nomColumn.setPrefWidth(200);
-        adresseColumn.setPrefWidth(250);
-        imageColumn.setPrefWidth(150);
-        actionsColumn.setPrefWidth(150);
-
-        // Configuration des colonnes de données
+        // Configuration des colonnes
         nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
         adresseColumn.setCellValueFactory(new PropertyValueFactory<>("adresse"));
         imageColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
 
-        // Configuration améliorée de la colonne image
+        // Configuration de la colonne image
         imageColumn.setCellFactory(column -> new TableCell<departement, String>() {
             private final ImageView imageView = new ImageView();
             private final Label label = new Label();
@@ -95,7 +97,6 @@ public class DepartementController {
             @Override
             protected void updateItem(String imageName, boolean empty) {
                 super.updateItem(imageName, empty);
-
                 setGraphic(null);
                 setText(null);
 
@@ -117,7 +118,7 @@ public class DepartementController {
             }
         });
 
-        // Configuration améliorée de la colonne d'actions
+        // Configuration de la colonne d'actions
         actionsColumn.setCellFactory(column -> new TableCell<departement, Void>() {
             private final HBox buttons = new HBox(5);
             private final Button editBtn = new Button("✏️");
@@ -127,9 +128,6 @@ public class DepartementController {
                 buttons.setStyle("-fx-alignment: CENTER;");
                 editBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
                 deleteBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
-
-                editBtn.setTooltip(new Tooltip("Modifier"));
-                deleteBtn.setTooltip(new Tooltip("Supprimer"));
 
                 editBtn.setOnAction(event -> {
                     departement dept = getTableView().getItems().get(getIndex());
@@ -147,17 +145,11 @@ public class DepartementController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(buttons);
-                }
+                setGraphic(empty ? null : buttons);
             }
         });
 
-        // Style général du tableau
         departementTable.setStyle("-fx-font-size: 14px;");
-        departementTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private void loadDepartements() {
@@ -171,11 +163,10 @@ public class DepartementController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir une image");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif"),
-                new FileChooser.ExtensionFilter("Tous les fichiers", "*.*")
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
         );
 
-        File selectedFile = fileChooser.showOpenDialog(null);
+        File selectedFile = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
         if (selectedFile != null) {
             try {
                 String fileName = System.currentTimeMillis() + "_" + selectedFile.getName();
@@ -194,37 +185,33 @@ public class DepartementController {
 
     @FXML
     private void handleSave(ActionEvent event) {
-        if (!validateForm()) return;
+        if (validateForm()) {
+            departement dept = new departement();
+            dept.setNom(nomField.getText());
+            dept.setAdresse(adresseField.getText());
+            dept.setImage(imagePath);
 
-        departement dept = new departement();
-        dept.setNom(nomField.getText());
-        dept.setAdresse(adresseField.getText());
-        dept.setImage(imagePath);
-
-        departement selected = departementTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            dept.setId(selected.getId());
-            departementService.updateDepartement(dept);
-            showAlert("Succès", "Département mis à jour", Alert.AlertType.INFORMATION);
-        } else {
-            departementService.addDepartement(dept);
-            showAlert("Succès", "Département ajouté", Alert.AlertType.INFORMATION);
+            try {
+                departementService.addDepartement(dept);
+                showAlert("Succès", "Département ajouté avec succès", Alert.AlertType.INFORMATION);
+                resetForm();
+                loadDepartements();
+            } catch (Exception e) {
+                showAlert("Erreur", "Échec de l'ajout: " + e.getMessage(), Alert.AlertType.ERROR);
+            }
         }
-
-        resetForm();
-        loadDepartements();
     }
 
     private boolean validateForm() {
         boolean isValid = true;
         clearErrors();
 
-        if (nomField.getText().isEmpty()) {
+        if (nomField.getText() == null || nomField.getText().trim().isEmpty()) {
             nomError.setText("Le nom est obligatoire");
             isValid = false;
         }
 
-        if (adresseField.getText().isEmpty()) {
+        if (adresseField.getText() == null || adresseField.getText().trim().isEmpty()) {
             adresseError.setText("L'adresse est obligatoire");
             isValid = false;
         }
@@ -249,39 +236,62 @@ public class DepartementController {
         imageField.clear();
         imagePreview.setImage(null);
         imagePath = "";
-        departementTable.getSelectionModel().clearSelection();
         clearErrors();
     }
 
     private void showEditDialog(departement dept) {
-        nomField.setText(dept.getNom());
-        adresseField.setText(dept.getAdresse());
-        imageField.setText(dept.getImage());
-
-        if (dept.getImage() != null && !dept.getImage().isEmpty()) {
-            File imageFile = new File(IMAGE_DIR + dept.getImage());
-            if (imageFile.exists()) {
-                imagePreview.setImage(new Image(imageFile.toURI().toString()));
-                imagePath = dept.getImage();
+        try {
+            // Charger le FXML en utilisant getResourceAsStream pour plus de fiabilité
+            InputStream fxmlStream = getClass().getResourceAsStream("/editDepartement.fxml");
+            if (fxmlStream == null) {
+                throw new IOException("Fichier editDepartement.fxml introuvable dans les ressources");
             }
+
+            FXMLLoader loader = new FXMLLoader();
+            Parent root = loader.load(fxmlStream);
+
+            // Créer la boîte de dialogue
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Modifier Département");
+            dialog.setHeaderText("Modification du département " + dept.getNom());
+            dialog.getDialogPane().setContent(root);
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+            // Configurer le contrôleur
+            EditDepartementController controller = loader.getController();
+            controller.setDepartementData(dept);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                departement updatedDept = controller.getUpdatedDepartement();
+                departementService.updateDepartement(updatedDept);
+                loadDepartements();
+                showAlert("Succès", "Département mis à jour", Alert.AlertType.INFORMATION);
+            }
+
+        } catch (IOException e) {
+            showAlert("Erreur Critique",
+                    "Échec du chargement de l'éditeur:\n" + e.getMessage() +
+                            "\nVérifiez que editDepartement.fxml existe dans src/main/resources",
+                    Alert.AlertType.ERROR);
         }
     }
 
     private void confirmAndDelete(departement dept) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation de suppression");
-        alert.setHeaderText("Supprimer le département");
-        alert.setContentText("Êtes-vous sûr de vouloir supprimer le département " + dept.getNom() + "?");
-
-        ButtonType yesButton = new ButtonType("Oui", ButtonBar.ButtonData.YES);
-        ButtonType noButton = new ButtonType("Non", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(yesButton, noButton);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Supprimer le département " + dept.getNom());
+        alert.setContentText("Êtes-vous sûr de vouloir supprimer ce département ?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == yesButton) {
-            departementService.deleteDepartement(dept);
-            loadDepartements();
-            showAlert("Succès", "Département supprimé", Alert.AlertType.INFORMATION);
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                departementService.deleteDepartement(dept);
+                loadDepartements();
+                showAlert("Succès", "Département supprimé", Alert.AlertType.INFORMATION);
+            } catch (Exception e) {
+                showAlert("Erreur", "Échec de la suppression: " + e.getMessage(), Alert.AlertType.ERROR);
+            }
         }
     }
 
@@ -293,46 +303,38 @@ public class DepartementController {
         alert.showAndWait();
     }
 
-    @FXML
-    private void showDepartements(ActionEvent event) {
-        // Already on departement view
-    }
-
+    // Navigation
     @FXML
     private void showEtages(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/etage.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            showAlert("Erreur", "Impossible de charger l'interface des étages", Alert.AlertType.ERROR);
-        }
+        loadView("/etage.fxml", event);
     }
 
     @FXML
     private void showSalles(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/salle.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            showAlert("Erreur", "Impossible de charger l'interface des salles", Alert.AlertType.ERROR);
-        }
+        loadView("/salle.fxml", event);
     }
 
+    @FXML
     public void Acceuil(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/interface.fxml"));
-            Parent root = loader.load();
+        loadView("/interface.fxml", event);
+    }
+
+    private void loadView(String fxmlPath, ActionEvent event) {
+        try (InputStream fxmlStream = getClass().getResourceAsStream(fxmlPath)) {
+            if (fxmlStream == null) {
+                throw new IOException("Fichier " + fxmlPath + " introuvable");
+            }
+
+            Parent root = FXMLLoader.load(fxmlStream);
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
-            showAlert("Erreur", "Impossible de charger l'interface des salles", Alert.AlertType.ERROR);
+            showAlert("Erreur Critique",
+                    "Impossible de charger " + fxmlPath +
+                            "\nVérifiez que le fichier existe dans src/main/resources\n" +
+                            "Erreur complète: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
         }
     }
 }

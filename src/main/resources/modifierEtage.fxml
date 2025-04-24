@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.ModifierEtageController"
+      spacing="10" style="-fx-padding: 10;">
+    <Label text="Modifier un étage" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Numéro:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="numeroField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Département:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="departementCombo" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    </GridPane>
+</VBox>
