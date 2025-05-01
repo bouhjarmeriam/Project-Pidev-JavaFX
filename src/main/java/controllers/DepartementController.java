@@ -207,7 +207,7 @@ public class DepartementController {
             dialogStage.setTitle("Statistiques des Départements");
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(((Node) event.getSource()).getScene().getWindow());
-            dialogStage.setScene(new Scene(root));
+            dialogStage.setScene(new Scene(root,600,800));
             dialogStage.showAndWait();
 
         } catch (Exception e) {

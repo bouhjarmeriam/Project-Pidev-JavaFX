@@ -4,28 +4,31 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.ScrollPane?>
 
-<VBox xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controllers.StatisticsDialogController" spacing="20" alignment="CENTER"
-      style="-fx-padding: 20; -fx-background-color: #f4f4f4;">
+<ScrollPane xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.StatisticsDialogController"
+            fitToWidth="true" fitToHeight="true" style="-fx-background-color: #f4f4f4;">
 
-    <!-- Title -->
-    <Text text="Statistiques des Départements" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <VBox spacing="20" alignment="CENTER" style="-fx-padding: 20;">
+        <!-- Title -->
+        <Text text="Statistiques des Départements" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
 
-    <!-- Bar Chart Placeholder -->
-    <VBox fx:id="barChartPlaceholder" alignment="CENTER" style="-fx-border-color: #cccccc; -fx-border-width: 1;">
-        <Text text="Nombre d'Étages par Département" style="-fx-font-size: 14px; -fx-padding: 10;" />
+        <!-- Bar Chart Placeholder -->
+        <VBox fx:id="barChartPlaceholder" alignment="CENTER" style="-fx-border-color: #cccccc; -fx-border-width: 1;">
+            <Text text="Nombre d'Étages par Département" style="-fx-font-size: 14px; -fx-padding: 10;" />
+        </VBox>
+
+        <!-- Pie Chart Placeholder -->
+        <VBox fx:id="pieChartPlaceholder" alignment="CENTER" style="-fx-border-color: #cccccc; -fx-border-width: 1;">
+            <Text text="Nombre de Salles par Étage" style="-fx-font-size: 14px; -fx-padding: 10;" />
+        </VBox>
+
+        <!-- Export Button -->
+        <HBox alignment="CENTER" spacing="10">
+            <Button fx:id="exportPdfBtn" text="Exporter en PDF" onAction="#handleExportPDF"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 16;" />
+        </HBox>
     </VBox>
 
-    <!-- Pie Chart Placeholder -->
-    <VBox fx:id="pieChartPlaceholder" alignment="CENTER" style="-fx-border-color: #cccccc; -fx-border-width: 1;">
-        <Text text="Nombre de Salles par Étage" style="-fx-font-size: 14px; -fx-padding: 10;" />
-    </VBox>
-
-    <!-- Export Button -->
-    <HBox alignment="CENTER" spacing="10">
-        <Button fx:id="exportPdfBtn" text="Exporter en PDF" onAction="#handleExportPDF"
-                style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 16;" />
-    </HBox>
-
-</VBox>
+</ScrollPane>
