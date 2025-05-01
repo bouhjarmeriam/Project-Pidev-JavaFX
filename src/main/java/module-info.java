@@ -5,6 +5,9 @@ module org.example.roar {
     requires java.sql;
     requires java.prefs;
     requires java.desktop;
+    requires javafx.swing;
+    requires itextpdf; // Add this line to include the javafx.swing module
+
     // Fix: Open controllers package for JavaFX reflection
     opens controllers to javafx.fxml;
     exports controllers;

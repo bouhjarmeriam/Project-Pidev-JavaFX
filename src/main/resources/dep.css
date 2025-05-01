@@ -93,3 +93,71 @@
     -fx-background-radius: 5px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
 }
+/* Style général */
+.department-card {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 5px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-cursor: hand;
+}
+
+.department-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 8, 0, 0, 2);
+}
+
+.department-card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.department-card-details {
+    -fx-font-size: 13px;
+    -fx-text-fill: #666;
+}
+
+/* Conteneur étage */
+.floor-container {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 5px;
+    -fx-padding: 15px;
+}
+
+/* Carte étage */
+.floor-card {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 2, 0, 0);
+}
+
+/* Bouton voir salles */
+.toggle-button {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 3px;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+}
+
+.toggle-button:hover {
+    -fx-background-color: #5a6268;
+}
+
+/* Carte salle */
+.room-card {
+    -fx-background-color: white;
+    -fx-border-color: #eee;
+    -fx-border-width: 1px;
+    -fx-padding: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 1, 1, 0, 0);
+}
+
+.room-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 2, 0, 0);
+}

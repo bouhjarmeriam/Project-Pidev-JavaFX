@@ -1,112 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controllers.SalleController"
-      stylesheets="@styles1.css"
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.SalleController" stylesheets="styles1.css"
       spacing="0">
 
-    <!-- Barre de navigation -->
-    <HBox styleClass="navbar">
-        <Button text="Départements" styleClass="nav-btn" onAction="#showDepartements"/>
-        <Button text="Étages" styleClass="nav-btn" onAction="#showEtages"/>
-        <Button text="Salles" styleClass="nav-btn active" onAction="#showSalles"/>
-        <Button text="Acceuil" styleClass="nav-btn" onAction="#Acceuil"/>
+    <!-- Navigation Bar (Fixed at the top) -->
+    <HBox styleClass="nav-bar" spacing="10" style="-fx-padding: 10;" HBox.hgrow="ALWAYS">
+        <Button fx:id="departementsBtn" text="Départements" onAction="#showDepartements" styleClass="nav-button"/>
+        <Button fx:id="etagesBtn" text="Étages" onAction="#showEtages" styleClass="nav-button"/>
+        <Button fx:id="sallesBtn" text="Salles" onAction="#showSalles" styleClass="nav-button"/>
+        <Button fx:id="accueilBtn" text="Accueil" onAction="#Acceuil" styleClass="nav-button"/>
     </HBox>
 
-    <ScrollPane fitToWidth="true" styleClass="content-scroll">
-        <VBox styleClass="main-container" spacing="20">
-            <!-- En-tête -->
-            <Label text="Gestion des Salles" styleClass="header-title"/>
-
-            <!-- Formulaire -->
-            <VBox styleClass="form-container" spacing="15">
+    <!-- Scrollable Content (Form and Table) -->
+    <ScrollPane fitToWidth="true" styleClass="scroll-pane" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER">
+        <VBox spacing="20" fillWidth="true" style="-fx-padding: 20;">
+            <!-- Form Section -->
+            <VBox styleClass="card" spacing="15" style="-fx-padding: 20;" HBox.hgrow="ALWAYS">
                 <Label text="Ajouter une salle" styleClass="section-title"/>
-
-                <GridPane hgap="10" vgap="10">
-                    <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" minWidth="120"/>
-                        <ColumnConstraints halignment="LEFT" minWidth="300"/>
-                        <ColumnConstraints halignment="LEFT" minWidth="200"/>
-                    </columnConstraints>
-
-                    <!-- Ligne 1: Nom -->
-                    <Label text="Nom:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                    <TextField fx:id="nomField" styleClass="form-field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <GridPane hgap="10" vgap="10" HBox.hgrow="ALWAYS">
+                    <!-- Nom -->
+                    <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="nomField" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="text-field" HBox.hgrow="ALWAYS"/>
                     <Label fx:id="nomError" styleClass="error-label" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
 
-                    <!-- Ligne 2: Capacité -->
-                    <Label text="Capacité:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                    <TextField fx:id="capaciteField" styleClass="form-field" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <!-- Capacité -->
+                    <Label text="Capacité:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="capaciteField" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="text-field" HBox.hgrow="ALWAYS"/>
                     <Label fx:id="capaciteError" styleClass="error-label" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
 
-                    <!-- Ligne 3: Type -->
-                    <Label text="Type:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                    <ComboBox fx:id="typeCombo" styleClass="form-field" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    <!-- Type -->
+                    <Label text="Type:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <ComboBox fx:id="typeCombo" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="combo-box" HBox.hgrow="ALWAYS"/>
                     <Label fx:id="typeError" styleClass="error-label" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
 
-                    <!-- Ligne 4: Status -->
-                    <Label text="Status:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                    <ComboBox fx:id="statusCombo" styleClass="form-field" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    <!-- Status -->
+                    <Label text="Status:" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <ComboBox fx:id="statusCombo" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="combo-box" HBox.hgrow="ALWAYS"/>
                     <Label fx:id="statusError" styleClass="error-label" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
 
-                    <!-- Ligne 5: Priorité -->
-                    <Label text="Priorité:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                    <HBox styleClass="form-field" GridPane.rowIndex="4" GridPane.columnIndex="1" spacing="5">
-                        <Spinner fx:id="prioriteSpinner" styleClass="spinner-field">
-                            <valueFactory>
-                                <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="10" initialValue="1"/>
-                            </valueFactory>
-                        </Spinner>
-                    </HBox>
+                    <!-- Priorité -->
+                    <Label text="Priorité:" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <Spinner fx:id="prioriteSpinner" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="spinner" HBox.hgrow="ALWAYS"/>
                     <Label fx:id="prioriteError" styleClass="error-label" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
 
-                    <!-- Ligne 6: Étage -->
-                    <Label text="Étage:" styleClass="form-label" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-                    <ComboBox fx:id="etageCombo" styleClass="form-field" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                    <!-- Étage -->
+                    <Label text="Étage:" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <ComboBox fx:id="etageCombo" GridPane.rowIndex="5" GridPane.columnIndex="1" styleClass="combo-box" HBox.hgrow="ALWAYS"/>
                     <Label fx:id="etageError" styleClass="error-label" GridPane.rowIndex="5" GridPane.columnIndex="2"/>
 
-                    <!-- Ligne 7: Image -->
-                    <Label text="Image:" styleClass="form-label" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-                    <HBox spacing="10" GridPane.rowIndex="6" GridPane.columnIndex="1">
-                        <TextField fx:id="imageField" styleClass="form-field" editable="false"/>
-                        <Button fx:id="browseBtn" text="Parcourir" styleClass="browse-btn" onAction="#handleBrowseImage"/>
+                    <!-- Image -->
+                    <Label text="Image:" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <HBox GridPane.rowIndex="6" GridPane.columnIndex="1" spacing="10" HBox.hgrow="ALWAYS">
+                        <TextField fx:id="imageField" styleClass="text-field" editable="false" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="browseBtn" text="Parcourir" onAction="#handleBrowseImage" styleClass="button"/>
                     </HBox>
                     <Label fx:id="imageError" styleClass="error-label" GridPane.rowIndex="6" GridPane.columnIndex="2"/>
-
-                    <!-- Ligne 8: Aperçu image -->
-                    <ImageView fx:id="imagePreview" fitHeight="100" fitWidth="100"
-                               GridPane.rowIndex="7" GridPane.columnIndex="1"
-                               GridPane.halignment="LEFT"/>
-
-                    <!-- Boutons -->
-                    <HBox spacing="10" styleClass="button-container" GridPane.rowIndex="8" GridPane.columnIndex="1">
-                        <Button text="Enregistrer" styleClass="primary-btn" onAction="#handleSave"/>
-                        <Button text="Effacer" styleClass="secondary-btn" onAction="#handleClear"/>
-                    </HBox>
                 </GridPane>
+                <ImageView fx:id="imagePreview" fitHeight="100" fitWidth="100" preserveRatio="true"/>
+                <HBox spacing="10" alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Button fx:id="saveBtn" text="Enregistrer" onAction="#handleSave" styleClass="button"/>
+                    <Button fx:id="clearBtn" text="Effacer" onAction="#handleClear" styleClass="button"/>
+                </HBox>
             </VBox>
 
-            <!-- Tableau -->
-            <VBox styleClass="table-container" spacing="10">
+            <!-- Table Section -->
+            <VBox styleClass="card" spacing="10" style="-fx-padding: 20;" HBox.hgrow="ALWAYS">
                 <Label text="Liste des Salles" styleClass="section-title"/>
-
-                <TableView fx:id="salleTable" styleClass="data-table">
+                <TextField fx:id="searchField" promptText="Rechercher une salle..." styleClass="text-field" HBox.hgrow="ALWAYS"/>
+                <TableView fx:id="salleTable" styleClass="table-view" HBox.hgrow="ALWAYS" minHeight="400">
                     <columns>
-                        <TableColumn fx:id="nomColumn" text="Nom" styleClass="table-column"/>
-                        <TableColumn fx:id="capaciteColumn" text="Capacité" styleClass="table-column"/>
-                        <TableColumn fx:id="typeColumn" text="Type" styleClass="table-column"/>
-                        <TableColumn fx:id="statusColumn" text="Status" styleClass="table-column"/>
-                        <TableColumn fx:id="prioriteColumn" text="Priorité" styleClass="table-column"/>
-                        <TableColumn fx:id="etageColumn" text="Étage" styleClass="table-column"/>
-                        <TableColumn fx:id="imageColumn" text="Image" styleClass="table-column"/>
-                        <TableColumn fx:id="actionsColumn" text="Actions" styleClass="table-column"/>
+                        <TableColumn fx:id="nomColumn" text="Nom"/>
+                        <TableColumn fx:id="capaciteColumn" text="Capacité"/>
+                        <TableColumn fx:id="typeColumn" text="Type"/>
+                        <TableColumn fx:id="statusColumn" text="Status"/>
+                        <TableColumn fx:id="prioriteColumn" text="Priorité"/>
+                        <TableColumn fx:id="etageColumn" text="Étage"/>
+                        <TableColumn fx:id="imageColumn" text="Image"/>
+                        <TableColumn fx:id="actionsColumn" text="Actions"/>
                     </columns>
                 </TableView>
+                <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Button fx:id="exportBtn" text="Exporter CSV" onAction="#handleExportCSV" styleClass="button"/>
+                </HBox>
             </VBox>
         </VBox>
     </ScrollPane>

@@ -5,18 +5,18 @@ public class departement {
     private String nom;
     private String adresse;
     private String image;
-    private int nbretage;  // Attribut pour l'affichage seulement, non lié à la base de données
+    private int nbr_etage;  // Attribut pour l'affichage seulement, non lié à la base de données
 
     // Constructeurs
     public departement() {
-        this.nbretage = 0;  // Initialisé à 0 par défaut
+        this.nbr_etage = 0;  // Initialisé à 0 par défaut
     }
 
     public departement(String nom, String adresse, String image) {
         this.nom = nom;
         this.adresse = adresse;
         this.image = image;
-        this.nbretage = 0;  // Initialisé à 0 par défaut
+        this.nbr_etage = 0;  // Initialisé à 0 par défaut
     }
 
     public departement(int id, String nom, String adresse, String image) {
@@ -24,7 +24,7 @@ public class departement {
         this.nom = nom;
         this.adresse = adresse;
         this.image = image;
-        this.nbretage = 0;  // Initialisé à 0 par défaut
+        this.nbr_etage = 0;  // Initialisé à 0 par défaut
     }
 
     // Getters et setters
@@ -38,25 +38,19 @@ public class departement {
     public void setImage(String image) { this.image = image; }
 
     // Getter et setter pour nbretage
-    public int getNbretage() { return nbretage; }
-    public void setNbretage(int nbretage) { this.nbretage = nbretage; }
+    public int getNbr_etage() { return nbr_etage; }
+    public void setNbr_etage(int nbretage) { this.nbr_etage = nbretage; }
 
     // Méthode pour augmenter le nombre d'étages
-    public void ajouterEtage() {
-        this.nbretage++;
-    }
 
     @Override
     public String toString() {
-        return "departement{" +
-                "nom='" + nom + '\'' +
-                '}';
+        return null;
+    }
+
+    public void setNbr_Etage(int i) {
     }
 
     // Méthode optionnelle pour diminuer le nombre d'étages
-    public void supprimerEtage() {
-        if (this.nbretage > 0) {
-            this.nbretage--;
-        }
-    }
+
 }

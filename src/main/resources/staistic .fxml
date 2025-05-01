@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.StatisticsDialogController"
+      spacing="20" style="-fx-padding: 20;" minWidth="600" minHeight="600">
+    <Label text="Statistiques" styleClass="section-title"/>
+
+    <!-- Placeholder for Bar Chart (Étages par Département) -->
+    <VBox fx:id="barChartPlaceholder" spacing="10">
+        <Label text="Nombre d'Étages par Département"/>
+    </VBox>
+
+    <!-- Placeholder for Pie Chart (Salles par Étage) -->
+    <VBox fx:id="pieChartPlaceholder" spacing="10">
+        <Label text="Nombre de Salles par Étage"/>
+    </VBox>
+    <Button fx:id="statsBtn" text="exporterPDF" onAction="#handleExportPDF" styleClass="button"/>
+</VBox>

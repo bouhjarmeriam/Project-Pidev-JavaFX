@@ -3,6 +3,7 @@ package entite;
 public class etage {
     private int id;
     private int numero;
+    private int  nbrSalle = 0; // Initialisé à 0
     private entite.departement departement;
     public etage() {}
     public etage(int id, int numero, entite.departement departement) {
@@ -29,4 +30,10 @@ public class etage {
         this.departement = departement;
     }
 
+    public int getNbrSalle() {
+        return nbrSalle;
+    }
+    public void setNbrSalle(int nbrSalle) {
+        this.nbrSalle = nbrSalle;
+    }
 }

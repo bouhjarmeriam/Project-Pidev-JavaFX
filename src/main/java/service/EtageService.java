@@ -149,4 +149,57 @@ public class EtageService {
         }
         return list;
     }
+
+    public static etage getEtageById(int etageId) {
+        String query = "SELECT e.*, d.nom as departement_nom, d.adresse " +
+                "FROM etage e JOIN departement d ON e.departement_id = d.id WHERE e.id = ?";
+        try (Connection conn = DataSource.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, etageId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    departement d = new departement(
+                            rs.getInt("departement_id"),
+                            rs.getString("departement_nom"),
+                            rs.getString("adresse"),
+                            null // image non récupérée ici
+                    );
+
+                    etage e = new etage(
+                            rs.getInt("id"),
+                            rs.getInt("numero"),
+                            d
+                    );
+                    return e;
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error fetching etage by id: " + ex.getMessage());
+            ex.printStackTrace();
+            throw new RuntimeException("Failed to fetch etage by id", ex);
+        }
+        return null;
+    }
+
+    public int countEtagesByDepartement(int departementId) {
+        String query = "SELECT COUNT(*) FROM etage WHERE departement_id = ?";
+        try (Connection conn = DataSource.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, departementId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    System.out.println("Count for departement_id " + departementId + ": " + count);
+                    return count;
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error counting etages for departement_id " + departementId + ": " + ex.getMessage());
+            ex.printStackTrace();
+            throw new RuntimeException("Failed to count etages by departement", ex);
+        }
+        System.out.println("No etages found for departement_id " + departementId);
+        return 0;
+    }
+
 }

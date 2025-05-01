@@ -1,14 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.EditSalleController"
+            prefHeight="500.0" prefWidth="600.0">
 
+    <VBox spacing="10" style="-fx-padding: 10;">
+        <Label text="Modifier la salle" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+        <GridPane hgap="10" vgap="10">
+            <!-- Nom -->
+            <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="nomField" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="2"/>
+
+            <!-- Capacité -->
+            <Label text="Capacité:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="capaciteField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <!-- Type -->
+            <Label text="Type:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="typeCombo" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="150"/>
+
+            <!-- Statut -->
+            <Label text="Statut:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="statusCombo" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="150"/>
+
+            <!-- Priorité -->
+            <Label text="Priorité:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <Spinner fx:id="prioriteSpinner" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <!-- Étage -->
+            <Label text="Étage:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="etageCombo" GridPane.rowIndex="5" GridPane.columnIndex="1" prefWidth="150"/>
+
+            <!-- Image -->
+            <Label text="Image:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+            <HBox spacing="5" GridPane.rowIndex="6" GridPane.columnIndex="1">
+                <TextField fx:id="imageField" editable="false" style="-fx-background-color: #f0f0f0;" prefWidth="200"/>
+                <Button text="Parcourir" onAction="#handleBrowseImage"/>
+            </HBox>
+
+            <!-- Aperçu image -->
+            <ImageView fx:id="imagePreview" fitHeight="100" fitWidth="100"
+                       GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+        </GridPane>
+    </VBox>
 </AnchorPane>

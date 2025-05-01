@@ -2,12 +2,10 @@ package controllers;
 
 import entite.departement;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,29 +19,27 @@ public class EditDepartementController {
     @FXML private ImageView imagePreview;
 
     private departement departement;
-    private String imagePath = "";
+    private String imagePath;
     private static final String IMAGE_DIR = "src/main/resources/images/";
 
-    public void setDepartementData(departement dept) {
-        this.departement = dept;
-        nomField.setText(dept.getNom());
-        adresseField.setText(dept.getAdresse());
-        imageField.setText(dept.getImage());
-        imagePath = dept.getImage();
+    @FXML
+    public void initialize() {
+        // Initialisation si nécessaire
+    }
 
-        if (dept.getImage() != null && !dept.getImage().isEmpty()) {
-            File imageFile = new File(IMAGE_DIR + dept.getImage());
+    public void setDepartementData(departement departement) {
+        this.departement = departement;
+        nomField.setText(departement.getNom());
+        adresseField.setText(departement.getAdresse());
+        imageField.setText(departement.getImage());
+        this.imagePath = departement.getImage();
+
+        if (departement.getImage() != null && !departement.getImage().isEmpty()) {
+            File imageFile = new File(IMAGE_DIR + departement.getImage());
             if (imageFile.exists()) {
                 imagePreview.setImage(new Image(imageFile.toURI().toString()));
             }
         }
-    }
-
-    public departement getUpdatedDepartement() {
-        departement.setNom(nomField.getText().trim());
-        departement.setAdresse(adresseField.getText().trim());
-        departement.setImage(imagePath);
-        return departement;
     }
 
     @FXML
@@ -54,10 +50,7 @@ public class EditDepartementController {
                 new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
         );
 
-        // Obtenir la fenêtre parente
-        Window window = imageField.getScene().getWindow();
-        File selectedFile = fileChooser.showOpenDialog(window);
-
+        File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
             try {
                 String fileName = System.currentTimeMillis() + "_" + selectedFile.getName();
@@ -68,16 +61,15 @@ public class EditDepartementController {
                 imageField.setText(fileName);
                 imagePreview.setImage(new Image(destFile.toURI().toString()));
             } catch (IOException e) {
-                showAlert("Erreur", "Impossible de charger l'image: " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    public departement getUpdatedDepartement() {
+        departement.setNom(nomField.getText());
+        departement.setAdresse(adresseField.getText());
+        departement.setImage(imagePath);
+        return departement;
     }
 }

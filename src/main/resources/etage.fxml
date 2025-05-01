@@ -1,63 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17"
+<VBox xmlns="http://javafx.com/javafx/11"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controllers.EtageController"
-      stylesheets="@styles1.css"
+      stylesheets="styles1.css"
       spacing="0">
 
-    <!-- Barre de navigation identique à departement.fxml -->
-    <HBox styleClass="navbar">
-        <Button text="Départements" styleClass="nav-btn" onAction="#showDepartements"/>
-        <Button text="Étages" styleClass="nav-btn active" onAction="#showEtages"/>
-        <Button text="Salles" styleClass="nav-btn" onAction="#showSalles"/>
-        <Button text="Acceuil" styleClass="nav-btn" onAction="#Acceuil"/>
+    <!-- Navigation Bar (Fixed at the top) -->
+    <HBox styleClass="nav-bar" spacing="10" style="-fx-padding: 10;" HBox.hgrow="ALWAYS">
+        <Button text="Départements" styleClass="nav-button" onAction="#showDepartements"/>
+        <Button text="Étages" styleClass="nav-button active" onAction="#showEtages"/>
+        <Button text="Salles" styleClass="nav-button" onAction="#showSalles"/>
+        <Button text="Acceuil" styleClass="nav-button" onAction="#Acceuil"/>
     </HBox>
 
-    <!-- Contenu principal -->
-    <ScrollPane fitToWidth="true" styleClass="content-scroll">
-        <VBox alignment="TOP_CENTER" spacing="20" style="-fx-padding: 20;">
-            <Label text="Gestion des Étages" styleClass="header-title"/>
+    <!-- Scrollable Content (Form and Table) -->
+    <ScrollPane fitToWidth="true" styleClass="scroll-pane" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER">
+        <VBox spacing="20" fillWidth="true" style="-fx-padding: 20;">
+            <!-- Header -->
+            <Label text="Gestion des Étages" styleClass="section-title"/>
 
-            <!-- Formulaire -->
-            <VBox spacing="10" styleClass="form-container">
-                <Label text="Ajouter un Étage" style="-fx-font-weight: bold;"/>
-                <GridPane hgap="10" vgap="10">
-                    <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" minWidth="100"/>
-                        <ColumnConstraints halignment="LEFT" minWidth="300"/>
-                    </columnConstraints>
+            <!-- Form Section -->
+            <VBox styleClass="card" spacing="15" style="-fx-padding: 20;" HBox.hgrow="ALWAYS">
+                <GridPane hgap="10" vgap="10" HBox.hgrow="ALWAYS">
+                    <!-- Numéro -->
+                    <Label text="Numéro:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="numeroField" styleClass="text-field" GridPane.rowIndex="0" GridPane.columnIndex="1" HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="numeroError" styleClass="error-label" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
 
-                    <Label text="Numéro :" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                    <TextField fx:id="numeroField" styleClass="form-field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-                    <Label fx:id="numeroError" styleClass="error-label" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
-                    <Label text="Département :" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                    <ComboBox fx:id="departementCombo" styleClass="form-field" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-                    <Label fx:id="departementError" styleClass="error-label" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-
-                    <Button text="Ajouter" onAction="#handleSave" styleClass="primary-btn"
-                            GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.halignment="RIGHT"/>
+                    <!-- Département -->
+                    <Label text="Département:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <ComboBox fx:id="departementCombo" styleClass="combo-box" GridPane.rowIndex="1" GridPane.columnIndex="1" HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="departementError" styleClass="error-label" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
                 </GridPane>
+
+                <HBox spacing="10" alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Button fx:id="saveButton" text="Ajouter" styleClass="button" onAction="#handleSave"/>
+                    <Button fx:id="cancelButton" text="Effacer" styleClass="button" onAction="#clearForm"/>
+                </HBox>
             </VBox>
 
-            <!-- Tableau -->
-            <VBox spacing="5" styleClass="table-container">
-                <Label text="Étages existants" styleClass="section-title"/>
-                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
-                    <TableView fx:id="etageTable" styleClass="data-table">
-                        <columns>
-                            <TableColumn fx:id="idColumn" text="ID" styleClass="table-column" minWidth="50"/>
-                            <TableColumn fx:id="numeroColumn" text="Numéro" styleClass="table-column" minWidth="100"/>
-                            <TableColumn fx:id="departementColumn" text="Département" styleClass="table-column" minWidth="200"/>
-                            <TableColumn fx:id="modifierColumn" text="Modifier" styleClass="table-column" minWidth="80"/>
-                            <TableColumn fx:id="supprimerColumn" text="Supprimer" styleClass="table-column" minWidth="80"/>
-                        </columns>
-                    </TableView>
-                </ScrollPane>
+            <!-- Table Section -->
+            <VBox styleClass="card" spacing="10" style="-fx-padding: 20;" HBox.hgrow="ALWAYS">
+                <Label text="Liste des Étages" styleClass="section-title"/>
+                <TextField fx:id="searchField" promptText="Rechercher un étage..." styleClass="text-field" HBox.hgrow="ALWAYS"/>
+                <TableView fx:id="etageTable" styleClass="table-view" HBox.hgrow="ALWAYS" minHeight="400">
+                    <columns>
+                        <TableColumn fx:id="idColumn" text="ID"/>
+                        <TableColumn fx:id="numeroColumn" text="Numéro"/>
+                        <TableColumn fx:id="departementColumn" text="Département"/>
+                        <TableColumn fx:id="nbrSalleColumn" text="Nb Salles"/>
+                        <TableColumn fx:id="modifierColumn" text="Modifier"/>
+                        <TableColumn fx:id="supprimerColumn" text="Supprimer"/>
+                    </columns>
+                </TableView>
             </VBox>
         </VBox>
     </ScrollPane>

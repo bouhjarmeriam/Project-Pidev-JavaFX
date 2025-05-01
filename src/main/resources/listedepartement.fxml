@@ -32,30 +32,8 @@
     <!-- Main Content Area -->
     <center>
         <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;">
-            <VBox spacing="30" style="-fx-padding: 30px;">
-                <!-- Departments Container -->
-                <FlowPane fx:id="departementContainer" hgap="25" vgap="25"
-                          alignment="TOP_CENTER" style="-fx-padding: 10px;"/>
-
-                <!-- Floors Container (hidden by default, shown when department is selected) -->
-                <VBox fx:id="floorsContainer" spacing="15" visible="false" managed="false"
-                      style="-fx-padding: 20px; -fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 10;">
-                    <Label text="Étages du Département"
-                           style="-fx-font-size: 20px; -fx-text-fill: #4a6fa5; -fx-font-weight: bold;"/>
-
-                    <FlowPane fx:id="floorContainer" hgap="20" vgap="20"
-                              alignment="TOP_CENTER" style="-fx-padding: 10px;"/>
-                </VBox>
-
-                <!-- Rooms Container (hidden by default, shown when floor is selected) -->
-                <VBox fx:id="roomsContainer" spacing="15" visible="false" managed="false"
-                      style="-fx-padding: 20px; -fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 10;">
-                    <Label text="Salles de l'Étage"
-                           style="-fx-font-size: 20px; -fx-text-fill: #4a6fa5; -fx-font-weight: bold;"/>
-
-                    <FlowPane fx:id="roomContainer" hgap="15" vgap="15"
-                              alignment="TOP_CENTER" style="-fx-padding: 10px;"/>
-                </VBox>
+            <VBox fx:id="departementContainer" spacing="30" style="-fx-padding: 30px;">
+                <!-- Chaque département sera ajouté ici sous forme de VBox ou Card -->
             </VBox>
         </ScrollPane>
     </center>

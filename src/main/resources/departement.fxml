@@ -7,61 +7,66 @@
 <VBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controllers.DepartementController"
-      stylesheets="@styles1.css"
+      stylesheets="styles1.css"
       spacing="0">
 
-    <!-- Barre de navigation -->
-    <HBox styleClass="navbar">
-        <Button text="Départements" styleClass="nav-btn active" onAction="#showDepartements"/>
-        <Button text="Étages" styleClass="nav-btn" onAction="#showEtages"/>
-        <Button text="Salles" styleClass="nav-btn" onAction="#showSalles"/>
-        <Button text="Acceuil" styleClass="nav-btn" onAction="#Acceuil"/>
+    <!-- Navigation Bar (Fixed at the top) -->
+    <HBox styleClass="nav-bar" spacing="10" style="-fx-padding: 10;" HBox.hgrow="ALWAYS">
+        <Button text="Départements" styleClass="nav-button active" onAction="#showDepartements"/>
+        <Button text="Étages" styleClass="nav-button" onAction="#showEtages"/>
+        <Button text="Salles" styleClass="nav-button" onAction="#showSalles"/>
+        <Button text="Acceuil" styleClass="nav-button" onAction="#Acceuil"/>
     </HBox>
 
-    <ScrollPane fitToWidth="true" styleClass="content-scroll">
-        <VBox styleClass="main-container" spacing="20">
-            <!-- En-tête -->
-            <Label text="Gestion des Départements" styleClass="header-title"/>
+    <!-- Scrollable Content (Form and Table) -->
+    <ScrollPane fitToWidth="true" styleClass="scroll-pane" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER">
+        <VBox spacing="20" fillWidth="true" style="-fx-padding: 20;">
+            <!-- Header -->
+            <Label text="Gestion des Départements" styleClass="section-title"/>
 
-            <!-- Formulaire -->
-            <VBox styleClass="form-container" spacing="15">
-                <GridPane hgap="10" vgap="10">
+            <!-- Form Section -->
+            <VBox styleClass="card" spacing="15" style="-fx-padding: 20;" HBox.hgrow="ALWAYS">
+                <GridPane hgap="10" vgap="10" HBox.hgrow="ALWAYS">
                     <Label text="Nom:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                    <TextField fx:id="nomField" styleClass="form-field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <TextField fx:id="nomField" styleClass="text-field" GridPane.rowIndex="0" GridPane.columnIndex="1" HBox.hgrow="ALWAYS"/>
                     <Label fx:id="nomError" styleClass="error-label" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
 
                     <Label text="Adresse:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                    <TextField fx:id="adresseField" styleClass="form-field" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <TextField fx:id="adresseField" styleClass="text-field" GridPane.rowIndex="1" GridPane.columnIndex="1" HBox.hgrow="ALWAYS"/>
                     <Label fx:id="adresseError" styleClass="error-label" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
 
                     <Label text="Image:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                    <HBox spacing="10" GridPane.rowIndex="2" GridPane.columnIndex="1">
-                        <TextField fx:id="imageField" styleClass="form-field" editable="false"/>
-                        <Button fx:id="browseBtn" text="Parcourir" styleClass="browse-btn" onAction="#handleBrowseImage"/>
+                    <HBox spacing="10" GridPane.rowIndex="2" GridPane.columnIndex="1" HBox.hgrow="ALWAYS">
+                        <TextField fx:id="imageField" styleClass="text-field" editable="false" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="browseBtn" text="Parcourir" styleClass="button" onAction="#handleBrowseImage"/>
                     </HBox>
                     <Label fx:id="imageError" styleClass="error-label" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
 
-                    <ImageView fx:id="imagePreview" fitHeight="100" fitWidth="100" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    <ImageView fx:id="imagePreview" fitHeight="100" fitWidth="100" preserveRatio="true" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
                 </GridPane>
 
-                <HBox spacing="10" styleClass="button-container">
-                    <Button fx:id="saveBtn" text="Enregistrer" styleClass="primary-btn" onAction="#handleSave"/>
-                    <Button fx:id="clearBtn" text="Effacer" styleClass="secondary-btn" onAction="#handleClear"/>
+                <HBox spacing="10" alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Button fx:id="saveBtn" text="Enregistrer" styleClass="button" onAction="#handleSave"/>
+                    <Button fx:id="clearBtn" text="Effacer" styleClass="button" onAction="#handleClear"/>
                 </HBox>
             </VBox>
 
-            <!-- Tableau -->
-            <VBox styleClass="table-container" spacing="10">
-                <Label text="Liste des départements" styleClass="section-title"/>
-
-                <TableView fx:id="departementTable" styleClass="data-table">
+            <!-- Table Section -->
+            <VBox styleClass="card" spacing="10" style="-fx-padding: 20;" HBox.hgrow="ALWAYS">
+                <Label text="Liste des Départements" styleClass="section-title"/>
+                <TextField fx:id="searchField" promptText="Rechercher un département..." styleClass="text-field" HBox.hgrow="ALWAYS"/>
+                <TableView fx:id="departementTable" styleClass="table-view" HBox.hgrow="ALWAYS" minHeight="400">
                     <columns>
                         <TableColumn fx:id="nomColumn" text="Nom"/>
                         <TableColumn fx:id="adresseColumn" text="Adresse"/>
+                        <TableColumn fx:id="nbrEtageColumn" text="Nb Étages"/>
                         <TableColumn fx:id="imageColumn" text="Logo"/>
                         <TableColumn fx:id="actionsColumn" text="Actions"/>
                     </columns>
                 </TableView>
+                <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Button fx:id="statsBtn" text="Voir Statistiques" onAction="#showStatisticsDialog" styleClass="button"/>
+                </HBox>
             </VBox>
         </VBox>
     </ScrollPane>

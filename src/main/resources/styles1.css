@@ -1,205 +1,128 @@
-/* Styles de base */
-/* Styles de base */
 .root {
-    -fx-primary-color: #3498db;
-    -fx-secondary-color: #2ecc71;
-    -fx-danger-color: #e74c3c;
-    -fx-light-gray: #ecf0f1;
-    -fx-dark-gray: #2c3e50;
-    -fx-background-color: #f9f9f9;
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-background-color: linear-gradient(to bottom, #E1F5FE, #FFFFFF);
 }
 
-.main-container {
-    -fx-padding: 20;
-    -fx-background-color: #f9f9f9;  /* Changed from -fx-background-color to actual color */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-fit-to-width: true;
 }
 
-/* Rest of your CSS remains the same... */
-
-/* En-tête */
-.header-title {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -fx-dark-gray;
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
 }
 
-/* Formulaire */
-.form-container {
-    -fx-padding: 15;
-    -fx-background-color: white;
-    -fx-background-radius: 5;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
 }
 
-.form-label {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
+.scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: #E0E0E0;
+    -fx-background-radius: 5px;
 }
 
-.form-field {
-    -fx-font-size: 14px;
-    -fx-padding: 8;
-    -fx-background-radius: 4;
-    -fx-border-radius: 4;
-    -fx-border-color: #ddd;
-    -fx-border-width: 1;
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #26A69A;
+    -fx-background-radius: 5px;
 }
 
-.error-label {
-    -fx-text-fill: -fx-danger-color;
-    -fx-font-size: 12px;
-}
-
-/* Boutons */
-.button-container {
-    -fx-alignment: center-right;
-}
-
-.primary-btn {
-    -fx-background-color: -fx-secondary-color;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-padding: 8 16;
-    -fx-background-radius: 4;
-}
-
-.secondary-btn {
-    -fx-background-color: -fx-light-gray;
-    -fx-text-fill: -fx-dark-gray;
-    -fx-font-weight: bold;
-    -fx-padding: 8 16;
-    -fx-background-radius: 4;
-}
-
-.browse-btn {
-    -fx-background-color: -fx-primary-color;
-    -fx-text-fill: white;
-    -fx-padding: 8 12;
-    -fx-background-radius: 4;
-}
-
-.edit-btn {
-    -fx-background-color: -fx-primary-color;
-    -fx-text-fill: white;
-    -fx-padding: 5 10;
-    -fx-background-radius: 4;
-}
-
-.delete-btn {
-    -fx-background-color: -fx-danger-color;
-    -fx-text-fill: white;
-    -fx-padding: 5 10;
-    -fx-background-radius: 4;
-}
-
-/* Tableau */
-.data-table {
-    -fx-font-size: 14px;
-    -fx-background-color: white;
-    -fx-border-color: #ddd;
-    -fx-border-width: 1;
-    -fx-border-radius: 4;
-}
-
-.data-table .column-header {
-    -fx-background-color: -fx-primary-color;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-
-.data-table .table-row-cell:odd {
-    -fx-background-color: #f9f9f9;
-}
-
-.data-table .table-row-cell:even {
-    -fx-background-color: white;
-}
-
-.data-table .table-row-cell:hover {
-    -fx-background-color: #f0f0f0;
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #4DB6AC;
 }
 
 .section-title {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-text-fill: -fx-dark-gray;
-}
-/* Styles pour la barre de navigation */
-.navbar {
-    -fx-background-color: #2c3e50;
-    -fx-padding: 0;
-    -fx-spacing: 0;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-text-fill: #333333;
 }
 
-.nav-btn {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
+.form-label {
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-padding: 15 25;
-    -fx-cursor: hand;
-    -fx-border-width: 0;
+    -fx-text-fill: #666666;
 }
 
-.nav-btn:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.1);
+.text-field, .combo-box, .spinner {
+    -fx-font-size: 14px;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CCCCCC;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-max-width: Infinity;
 }
 
-.nav-btn.active {
-    -fx-background-color: #3498db;
-    -fx-text-fill: white;
+.error-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #EF5350;
+    -fx-font-style: italic;
 }
 
-/* Style pour le contenu scrollable */
-.content-scroll {
-    -fx-fit-to-width: true;
-    -fx-padding: 0;
+.card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.nav-bar {
+    -fx-background-color: #37474F;
+    -fx-background-radius: 5px;
+}
+
+.nav-button {
     -fx-background-color: transparent;
-    -fx-border-width: 0;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-padding: 5px 10px;
+    -fx-max-width: Infinity;
 }
 
-/* Ajustement pour le main-container */
-.main-container {
-    -fx-padding: 20;
-    -fx-background-color: #f9f9f9;
-}
-/* Style pour le spinner */
-.spinner-field {
-    -fx-pref-width: 80px;
+.nav-button:hover {
+    -fx-background-color: #455A64;
+    -fx-background-radius: 5px;
 }
 
-/* Style spécifique pour les colonnes du tableau */
-.table-column {
-    -fx-alignment: CENTER;
-    -fx-font-size: 13px;
+.button {
+    -fx-background-color: #26A69A;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
 }
 
-/* Style pour les ComboBox dans les formulaires */
-.form-field .combo-box {
-    -fx-pref-width: 300px;
+.button:hover {
+    -fx-background-color: #4DB6AC;
+    -fx-cursor: hand;
 }
 
-/* Style pour les boutons de la barre de navigation */
-.nav-btn.active {
-    -fx-background-color: #3498db;
-    -fx-text-fill: white;
+.button:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
 }
-/* styles.css */
+
 .table-view {
-    -fx-background-color: #f9f9f9;
+    -fx-font-size: 14px;
+    -fx-background-color: #F5F5F5;
 }
 
 .table-view .column-header {
-    -fx-background-color: #2196F3;
-    -fx-text-fill: white;
+    -fx-background-color: #26A69A;
+    -fx-text-fill: #FFFFFF;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #FFFFFF;
     -fx-font-weight: bold;
 }
 
 .table-row-cell:odd {
-    -fx-background-color: #f2f2f2;
+    -fx-background-color: #F9F9F9;
 }
 
-.table-row-cell:selected {
-    -fx-background-color: #bbdefb;
+.table-row-cell:even {
+    -fx-background-color: #FFFFFF;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #E0F7FA;
 }

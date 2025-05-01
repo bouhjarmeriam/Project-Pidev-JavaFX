@@ -20,12 +20,12 @@ import javafx.stage.Stage;
 import service.EtageService;
 import service.SalleService;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SalleController {
 
@@ -63,13 +63,18 @@ public class SalleController {
     @FXML private Button saveBtn;
     @FXML private Button clearBtn;
     @FXML private Button browseBtn;
+    @FXML private Button exportBtn;
+
+    // Search field
+    @FXML private TextField searchField;
 
     // Services et données
     private final SalleService salleService = new SalleService();
     private final EtageService etageService = new EtageService();
     private final ObservableList<salle> salleData = FXCollections.observableArrayList();
+    private final ObservableList<salle> filteredSalleData = FXCollections.observableArrayList();
     private String imagePath = "";
-    private static final String IMAGE_DIR = "src/main/resources/images/";
+    public static final String IMAGE_DIR = "src/main/resources/images/";
 
     @FXML
     public void initialize() {
@@ -77,6 +82,7 @@ public class SalleController {
         setupForm();
         setupTable();
         loadSalles();
+        setupSearch();
     }
 
     private void createImageDirectory() {
@@ -100,19 +106,25 @@ public class SalleController {
         // Chargement des étages
         List<etage> etages = etageService.getAllEtages();
         etageCombo.setItems(FXCollections.observableArrayList(etages));
+
+        // Afficher le numéro de l'étage dans le ComboBox
+        etageCombo.setCellFactory(combo -> new ListCell<etage>() {
+            @Override
+            protected void updateItem(etage item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : String.valueOf(item.getNumero()));
+            }
+        });
+        etageCombo.setButtonCell(new ListCell<etage>() {
+            @Override
+            protected void updateItem(etage item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : String.valueOf(item.getNumero()));
+            }
+        });
     }
 
     private void setupTable() {
-        // Configuration des largeurs de colonnes
-        nomColumn.setPrefWidth(150);
-        capaciteColumn.setPrefWidth(80);
-        typeColumn.setPrefWidth(150);
-        statusColumn.setPrefWidth(100);
-        prioriteColumn.setPrefWidth(80);
-        etageColumn.setPrefWidth(80);
-        imageColumn.setPrefWidth(150);
-        actionsColumn.setPrefWidth(150);
-
         // Configuration des colonnes de données
         nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
         capaciteColumn.setCellValueFactory(new PropertyValueFactory<>("capacite"));
@@ -122,7 +134,44 @@ public class SalleController {
         etageColumn.setCellValueFactory(new PropertyValueFactory<>("etage"));
         imageColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
 
-        // Configuration de la colonne image améliorée
+        // Bind column widths to TableView width for responsiveness
+        nomColumn.prefWidthProperty().bind(salleTable.widthProperty().multiply(0.15));
+        capaciteColumn.prefWidthProperty().bind(salleTable.widthProperty().multiply(0.1));
+        typeColumn.prefWidthProperty().bind(salleTable.widthProperty().multiply(0.15));
+        statusColumn.prefWidthProperty().bind(salleTable.widthProperty().multiply(0.15));
+        prioriteColumn.prefWidthProperty().bind(salleTable.widthProperty().multiply(0.1));
+        etageColumn.prefWidthProperty().bind(salleTable.widthProperty().multiply(0.1));
+        imageColumn.prefWidthProperty().bind(salleTable.widthProperty().multiply(0.15));
+        actionsColumn.prefWidthProperty().bind(salleTable.widthProperty().multiply(0.1));
+
+        // Configuration de la colonne status
+        statusColumn.setCellFactory(column -> new TableCell<salle, String>() {
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+                setText(null);
+                setStyle("");
+
+                if (!empty && status != null) {
+                    setText(status);
+                    switch (status) {
+                        case "Occupée":
+                            setStyle("-fx-text-fill: #EF5350; -fx-background-color: #FFEBEE;");
+                            break;
+                        case "Disponible":
+                            setStyle("-fx-text-fill: #66BB6A; -fx-background-color: #E8F5E9;");
+                            break;
+                        case "En maintenance":
+                            setStyle("-fx-text-fill: #FFCA28; -fx-background-color: #FFF8E1;");
+                            break;
+                        default:
+                            setStyle("-fx-text-fill: #333333;");
+                    }
+                }
+            }
+        });
+
+        // Configuration de la colonne image
         imageColumn.setCellFactory(column -> new TableCell<salle, String>() {
             private final ImageView imageView = new ImageView();
             private final Label label = new Label();
@@ -131,7 +180,7 @@ public class SalleController {
                 imageView.setFitHeight(40);
                 imageView.setFitWidth(40);
                 imageView.setPreserveRatio(true);
-                label.setStyle("-fx-text-fill: gray;");
+                label.setStyle("-fx-text-fill: #666666;");
             }
 
             @Override
@@ -159,22 +208,20 @@ public class SalleController {
             }
         });
 
-        // Configuration de la colonne d'étage améliorée
+        // Configuration de la colonne d'étage
         etageColumn.setCellFactory(column -> new TableCell<salle, etage>() {
             @Override
             protected void updateItem(etage etage, boolean empty) {
                 super.updateItem(etage, empty);
                 if (empty || etage == null) {
                     setText(null);
-                    setStyle("");
                 } else {
                     setText(String.valueOf(etage.getNumero()));
-                    setStyle("-fx-alignment: CENTER;");
                 }
             }
         });
 
-        // Configuration améliorée de la colonne d'actions
+        // Configuration de la colonne d'actions
         actionsColumn.setCellFactory(column -> new TableCell<salle, Void>() {
             private final HBox buttons = new HBox(5);
             private final Button editBtn = new Button("✏️");
@@ -182,11 +229,8 @@ public class SalleController {
 
             {
                 buttons.setStyle("-fx-alignment: CENTER;");
-                editBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-                deleteBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
-
-                editBtn.setTooltip(new Tooltip("Modifier"));
-                deleteBtn.setTooltip(new Tooltip("Supprimer"));
+                editBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 12px; -fx-background-radius: 5px;");
+                deleteBtn.setStyle("-fx-background-color: #EF5350; -fx-text-fill: white; -fx-font-size: 12px; -fx-background-radius: 5px;");
 
                 editBtn.setOnAction(event -> {
                     salle salle = getTableView().getItems().get(getIndex());
@@ -204,23 +248,92 @@ public class SalleController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(buttons);
-                }
+                setGraphic(empty ? null : buttons);
             }
         });
-
-        // Style général du tableau
-        salleTable.setStyle("-fx-font-size: 14px;");
-        salleTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private void loadSalles() {
         salleData.clear();
         salleData.addAll(salleService.getAll());
-        salleTable.setItems(salleData);
+        filteredSalleData.setAll(salleData);
+        salleTable.setItems(filteredSalleData);
+    }
+
+    private void setupSearch() {
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterSalles(newValue);
+        });
+    }
+
+    private void filterSalles(String searchText) {
+        if (searchText == null || searchText.isEmpty()) {
+            filteredSalleData.setAll(salleData);
+        } else {
+            String lowerCaseFilter = searchText.toLowerCase();
+            List<salle> filteredList = salleData.stream()
+                    .filter(salle -> {
+                        boolean matchesNom = salle.getNom() != null &&
+                                salle.getNom().toLowerCase().contains(lowerCaseFilter);
+                        boolean matchesType = salle.getType_salle() != null &&
+                                salle.getType_salle().toLowerCase().contains(lowerCaseFilter);
+                        boolean matchesStatus = salle.getStatus() != null &&
+                                salle.getStatus().toLowerCase().contains(lowerCaseFilter);
+                        boolean matchesEtage = salle.getEtage() != null &&
+                                String.valueOf(salle.getEtage().getNumero()).contains(lowerCaseFilter);
+                        return matchesNom || matchesType || matchesStatus || matchesEtage;
+                    })
+                    .collect(Collectors.toList());
+            filteredSalleData.setAll(filteredList);
+        }
+    }
+
+    @FXML
+    private void handleExportCSV(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Exporter les salles en CSV");
+        fileChooser.setInitialFileName("salles_export.csv");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Fichiers CSV", "*.csv")
+        );
+
+        Stage stage = (Stage) salleTable.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            try (FileWriter writer = new FileWriter(file)) {
+                // Write CSV headers
+                writer.append("Nom,Capacité,Type,Status,Priorité,Étage,Image\n");
+
+                // Write data rows
+                for (salle s : filteredSalleData) {
+                    writer.append(escapeCsvField(s.getNom())).append(",");
+                    writer.append(String.valueOf(s.getCapacite())).append(",");
+                    writer.append(escapeCsvField(s.getType_salle())).append(",");
+                    writer.append(escapeCsvField(s.getStatus())).append(",");
+                    writer.append(String.valueOf(s.getPriorite())).append(",");
+                    writer.append(s.getEtage() != null ? String.valueOf(s.getEtage().getNumero()) : "").append(",");
+                    writer.append(escapeCsvField(s.getImage())).append("\n");
+                }
+
+                writer.flush();
+                showAlert("Succès", "Les données ont été exportées avec succès dans " + file.getAbsolutePath(), Alert.AlertType.INFORMATION);
+            } catch (IOException e) {
+                showAlert("Erreur", "Erreur lors de l'exportation CSV: " + e.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
+    }
+
+    private String escapeCsvField(String field) {
+        if (field == null) {
+            return "";
+        }
+        // Escape commas and quotes in the field
+        if (field.contains(",") || field.contains("\"")) {
+            field = field.replace("\"", "\"\""); // Escape quotes by doubling them
+            return "\"" + field + "\""; // Wrap the field in quotes
+        }
+        return field;
     }
 
     @FXML
@@ -228,8 +341,7 @@ public class SalleController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir une image");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif"),
-                new FileChooser.ExtensionFilter("Tous les fichiers", "*.*")
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
         );
 
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -262,31 +374,65 @@ public class SalleController {
         salle.setEtage(etageCombo.getValue());
         salle.setImage(imagePath);
 
-        salle selected = salleTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            salle.setId(selected.getId());
-            salleService.updateSalle(salle);
-            showAlert("Succès", "Salle mise à jour", Alert.AlertType.INFORMATION);
-        } else {
-            salleService.addSalle(salle);
-            showAlert("Succès", "Salle ajoutée", Alert.AlertType.INFORMATION);
-        }
-
+        salleService.addSalle(salle);
+        showAlert("Succès", "Salle ajoutée avec succès", Alert.AlertType.INFORMATION);
         resetForm();
         loadSalles();
+    }
+
+    private void showEditDialog(salle salle) {
+        try {
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Modifier Salle");
+            dialog.setHeaderText("Modification de la salle " + salle.getNom());
+
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/editSalle.fxml"));
+            Parent root = loader.load();
+
+            EditSalleController controller = loader.getController();
+            controller.setSalleData(salle);
+
+            dialog.getDialogPane().setContent(root);
+            dialog.getDialogPane().setPrefSize(600, 500);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                salle updatedSalle = controller.getUpdatedSalle();
+                salleService.updateSalle(updatedSalle);
+                loadSalles();
+                showAlert("Succès", "Salle mise à jour avec succès", Alert.AlertType.INFORMATION);
+            }
+        } catch (IOException e) {
+            showAlert("Erreur", "Impossible d'ouvrir l'éditeur: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void confirmAndDelete(salle salle) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Supprimer la salle " + salle.getNom());
+        alert.setContentText("Êtes-vous sûr de vouloir supprimer cette salle ?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            salleService.deleteSalle(salle.getId());
+            loadSalles();
+            showAlert("Succès", "Salle supprimée avec succès", Alert.AlertType.INFORMATION);
+        }
     }
 
     private boolean validateForm() {
         boolean isValid = true;
         clearErrors();
 
-        // Validation du nom
         if (nomField.getText().isEmpty()) {
             nomError.setText("Le nom est obligatoire");
             isValid = false;
         }
 
-        // Validation de la capacité
         if (capaciteField.getText().isEmpty()) {
             capaciteError.setText("La capacité est obligatoire");
             isValid = false;
@@ -299,19 +445,16 @@ public class SalleController {
             }
         }
 
-        // Validation du type
         if (typeCombo.getValue() == null) {
             typeError.setText("Le type est obligatoire");
             isValid = false;
         }
 
-        // Validation du statut
         if (statusCombo.getValue() == null) {
             statusError.setText("Le statut est obligatoire");
             isValid = false;
         }
 
-        // Validation de l'étage
         if (etageCombo.getValue() == null) {
             etageError.setText("L'étage est obligatoire");
             isValid = false;
@@ -345,44 +488,7 @@ public class SalleController {
         imageField.clear();
         imagePreview.setImage(null);
         imagePath = "";
-        salleTable.getSelectionModel().clearSelection();
         clearErrors();
-    }
-
-    private void showEditDialog(salle salle) {
-        nomField.setText(salle.getNom());
-        capaciteField.setText(String.valueOf(salle.getCapacite()));
-        typeCombo.setValue(salle.getType_salle());
-        statusCombo.setValue(salle.getStatus());
-        prioriteSpinner.getValueFactory().setValue(salle.getPriorite());
-        etageCombo.setValue(salle.getEtage());
-        imageField.setText(salle.getImage());
-
-        if (salle.getImage() != null && !salle.getImage().isEmpty()) {
-            File imageFile = new File(IMAGE_DIR + salle.getImage());
-            if (imageFile.exists()) {
-                imagePreview.setImage(new Image(imageFile.toURI().toString()));
-                imagePath = salle.getImage();
-            }
-        }
-    }
-
-    private void confirmAndDelete(salle salle) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation de suppression");
-        alert.setHeaderText("Supprimer la salle");
-        alert.setContentText("Êtes-vous sûr de vouloir supprimer la salle " + salle.getNom() + "?");
-
-        ButtonType yesButton = new ButtonType("Oui", ButtonBar.ButtonData.YES);
-        ButtonType noButton = new ButtonType("Non", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(yesButton, noButton);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == yesButton) {
-            salleService.deleteSalle(salle.getId());
-            loadSalles();
-            showAlert("Succès", "Salle supprimée", Alert.AlertType.INFORMATION);
-        }
     }
 
     private void showAlert(String title, String message, Alert.AlertType alertType) {
@@ -395,28 +501,12 @@ public class SalleController {
 
     @FXML
     private void showDepartements(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/departement.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            showAlert("Erreur", "Impossible de charger l'interface des départements", Alert.AlertType.ERROR);
-        }
+        loadView("/departement.fxml", event);
     }
 
     @FXML
     private void showEtages(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/etage.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            showAlert("Erreur", "Impossible de charger l'interface des étages", Alert.AlertType.ERROR);
-        }
+        loadView("/etage.fxml", event);
     }
 
     @FXML
@@ -424,16 +514,19 @@ public class SalleController {
         // Already on salle view
     }
 
-
+    @FXML
     public void Acceuil(ActionEvent event) {
-        try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/interface.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
-    } catch (IOException e) {
-        showAlert("Erreur", "Impossible de charger l'interface des salles", Alert.AlertType.ERROR);
+        loadView("/interface.fxml", event);
     }
-}
+
+    private void loadView(String fxmlPath, ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            showAlert("Erreur", "Impossible de charger la vue: " + fxmlPath, Alert.AlertType.ERROR);
+        }
+    }
 }
