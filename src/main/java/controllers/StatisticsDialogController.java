@@ -35,17 +35,16 @@ public class StatisticsDialogController {
     @FXML private VBox pieChartPlaceholder;
     @FXML private Button exportPdfBtn;
 
-    private final DepartemntService departementService;
-    private final EtageService etageService;
-    private final SalleService salleService;
-
     private BarChart<String, Number> barChart;
     private PieChart pieChart;
 
-    public StatisticsDialogController(DepartemntService departementService, EtageService etageService, SalleService salleService) {
-        this.departementService = departementService;
-        this.etageService = etageService;
-        this.salleService = salleService;
+    // Initialize services directly
+    private final DepartemntService departementService = new DepartemntService();
+    private final EtageService etageService = new EtageService();
+    private final SalleService salleService = new SalleService();
+
+    public StatisticsDialogController() {
+        // Dependencies are initialized directly
     }
 
     @FXML
@@ -62,7 +61,6 @@ public class StatisticsDialogController {
 
         barChart = new BarChart<>(xAxis, yAxis);
         barChart.setTitle("Nombre d'Étages par Département");
-        barChart.setPrefSize(500, 300);
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Étages");
@@ -75,19 +73,16 @@ public class StatisticsDialogController {
                 }
             }
         } catch (Exception e) {
-            showAlert("Erreur", "Erreur lors du chargement des données pour le graphique à barres: " + e.getMessage(), Alert.AlertType.ERROR);
+            showAlert("Erreur", "Erreur lors du chargement des données: " + e.getMessage(), Alert.AlertType.ERROR);
         }
 
         barChart.getData().add(series);
-        if (barChartPlaceholder != null) {
-            barChartPlaceholder.getChildren().add(barChart);
-        }
+        barChartPlaceholder.getChildren().add(barChart);
     }
 
     private void createPieChart() {
         pieChart = new PieChart();
         pieChart.setTitle("Nombre de Salles par Étage");
-        pieChart.setPrefSize(500, 300);
 
         try {
             List<etage> etages = etageService.getAllEtages();
@@ -100,88 +95,66 @@ public class StatisticsDialogController {
                             Collectors.counting()
                     ));
 
-            if (etages != null) {
-                for (etage e : etages) {
-                    long count = sallesPerEtage.getOrDefault(e.getNumero(), 0L);
-                    if (count > 0) {
-                        pieChart.getData().add(new PieChart.Data("Étage " + e.getNumero(), count));
-                    }
-                }
+            for (etage e : etages) {
+                long count = sallesPerEtage.getOrDefault(e.getNumero(), 0L);
+                pieChart.getData().add(new PieChart.Data("Étage " + e.getNumero(), count));
             }
         } catch (Exception e) {
-            showAlert("Erreur", "Erreur lors du chargement des données pour le graphique en secteurs: " + e.getMessage(), Alert.AlertType.ERROR);
+            showAlert("Erreur", "Erreur lors du chargement des données: " + e.getMessage(), Alert.AlertType.ERROR);
         }
 
-        if (pieChartPlaceholder != null) {
-            pieChartPlaceholder.getChildren().add(pieChart);
-        }
+        pieChartPlaceholder.getChildren().add(pieChart);
     }
 
     @FXML
     private void handleExportPDF() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Exporter les statistiques en PDF");
-        fileChooser.setInitialFileName("statistiques.pdf");
+        fileChooser.setTitle("Exporter en PDF");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf")
         );
 
-        Stage stage = (Stage) exportPdfBtn.getScene().getWindow();
-        File pdfFile = fileChooser.showSaveDialog(stage);
+        File file = fileChooser.showSaveDialog(exportPdfBtn.getScene().getWindow());
+        if (file == null) return;
 
-        if (pdfFile != null) {
-            Document document = null;
-            try {
-                document = new Document(PageSize.A4, 36, 36, 36, 36);
-                PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
-                document.open();
+        try {
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(file));
+            document.open();
 
-                Paragraph title = new Paragraph("Statistiques", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16));
-                title.setAlignment(Element.ALIGN_CENTER);
-                document.add(title);
-                document.add(new Paragraph("\n"));
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+            Paragraph title = new Paragraph("Statistiques des Départements", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            document.add(Chunk.NEWLINE);
 
-                Paragraph barChartTitle = new Paragraph("Nombre d'Étages par Département", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14));
-                barChartTitle.setSpacingAfter(10);
-                document.add(barChartTitle);
+            addChartToDocument(document, barChart, "Nombre d'étages par département");
+            document.add(Chunk.NEWLINE);
+            addChartToDocument(document, pieChart, "Nombre de salles par étage");
 
-                WritableImage barChartSnapshot = barChart.snapshot(new SnapshotParameters(), null);
-                BufferedImage barChartImage = SwingFXUtils.fromFXImage(barChartSnapshot, null);
-
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(barChartImage, "png", baos);
-                byte[] barChartBytes = baos.toByteArray();
-
-                com.itextpdf.text.Image barChartPdfImage = com.itextpdf.text.Image.getInstance(barChartBytes);
-                float pageWidth = document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin();
-                barChartPdfImage.scaleToFit(pageWidth, barChartPdfImage.getHeight());
-                document.add(barChartPdfImage);
-                document.add(new Paragraph("\n"));
-
-                Paragraph pieChartTitle = new Paragraph("Nombre de Salles par Étage", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14));
-                pieChartTitle.setSpacingAfter(10);
-                document.add(pieChartTitle);
-
-                WritableImage pieChartSnapshot = pieChart.snapshot(new SnapshotParameters(), null);
-                BufferedImage pieChartImage = SwingFXUtils.fromFXImage(pieChartSnapshot, null);
-
-                baos.reset();
-                ImageIO.write(pieChartImage, "png", baos);
-                byte[] pieChartBytes = baos.toByteArray();
-
-                com.itextpdf.text.Image pieChartPdfImage = com.itextpdf.text.Image.getInstance(pieChartBytes);
-                pieChartPdfImage.scaleToFit(pageWidth, pieChartPdfImage.getHeight());
-                document.add(pieChartPdfImage);
-
-                showAlert("Succès", "Les statistiques ont été exportées avec succès dans " + pdfFile.getAbsolutePath(), Alert.AlertType.INFORMATION);
-            } catch (DocumentException | IOException e) {
-                showAlert("Erreur", "Erreur lors de l'exportation PDF: " + e.getMessage(), Alert.AlertType.ERROR);
-            } finally {
-                if (document != null && document.isOpen()) {
-                    document.close();
-                }
-            }
+            document.close();
+            showAlert("Succès", "PDF exporté avec succès", Alert.AlertType.INFORMATION);
+        } catch (Exception e) {
+            showAlert("Erreur", "Erreur lors de l'export: " + e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    private void addChartToDocument(Document document, Chart chart, String title) throws Exception {
+        Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14);
+        Paragraph paragraph = new Paragraph(title, font);
+        document.add(paragraph);
+
+        WritableImage image = chart.snapshot(new SnapshotParameters(), null);
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "png", baos);
+        com.itextpdf.text.Image pdfImage = com.itextpdf.text.Image.getInstance(baos.toByteArray());
+
+        float documentWidth = document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin();
+        pdfImage.scaleToFit(documentWidth, 300);
+
+        document.add(pdfImage);
     }
 
     private void showAlert(String title, String message, Alert.AlertType alertType) {
