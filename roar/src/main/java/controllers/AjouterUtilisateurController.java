@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
+import service.EmailSender;
 import service.UserService;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -157,14 +159,13 @@ public class AjouterUtilisateurController implements Initializable {
             user.setNom(nom);
             user.setPrenom(prenom);
             user.setType(type);
+            EmailSender.envoyerEmailInscription(email, nom, password, type);
 
             // Si le type est "admin", enregistrer directement et rediriger
             if (type.toLowerCase().equals("admin")) {
                 userService.ajouterUtilisateur(user, type);
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Admin créé avec succès !");// Redirection vers la liste des utilisateurs
 
-                showAlert(Alert.AlertType.INFORMATION, "Succès", "Admin créé avec succès !");
-
-                // Redirection vers la liste des utilisateurs
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListeUtilisateurs.fxml"));
                 Parent root = loader.load();
                 Stage stage = (Stage) btnCreer.getScene().getWindow();
@@ -200,6 +201,7 @@ public class AjouterUtilisateurController implements Initializable {
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
                 Parent root = loader.load();
+
 
                 // Passer l'utilisateur au contrôleur
                 Object controller = loader.getController();

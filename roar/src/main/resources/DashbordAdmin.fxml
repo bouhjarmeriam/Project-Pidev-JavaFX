@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane style="-fx-background-color: #F8F9FA;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
+    <!-- Sidebar -->
+    <left>
+        <VBox fx:id="sidebar" prefWidth="250" style="-fx-background-color: #2C3E50; -fx-padding: 20;">
+            <Label text="ADMIN DASHBOARD" style="-fx-text-fill: white;">
+                <font>
+                    <Font name="Arial Bold" size="16"/>
+                </font>
+            </Label>
+            <VBox spacing="10" style="-fx-padding: 10 0 10 0;">
+                <Hyperlink fx:id="btnUsers" text="Users" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleUsers"/>
+                <Hyperlink fx:id="btnMedicalServices" text="Medical Services" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleMedicalServices"/>
+                <Hyperlink fx:id="btnConsultations" text="Consultations" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleAdminConsultation"/>
+                <Hyperlink fx:id="btnEquipment" text="Equipment" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleEquipement"/>
+                <Hyperlink fx:id="btnInfrastructure" text="Infrastructure" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Hyperlink fx:id="btnMedicationStock" text="Medication Stock" style="-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0; -fx-underline: false;" onAction="#handleLinkAction"/>
+                <Button fx:id="btnDeconnexion" text="Se déconnecter" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 0 10 0;" onAction="#handleLogoutAction"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Main Content -->
+    <center>
+        <VBox fx:id="contentArea" style="-fx-background-color: #ECF0F1; -fx-padding: 20; -fx-alignment: top-left;" spacing="20">
+            <Label text="Admin Dashboard" style="-fx-text-fill: #2C3E50;">
+                <font>
+                    <Font name="Arial Bold" size="24"/>
+                </font>
+            </Label>
+            <Label text="Gérez les utilisateurs, les services et bien plus encore." style="-fx-text-fill: #34495E;">
+                <font>
+                    <Font name="Arial" size="18"/>
+                </font>
+            </Label>
+        </VBox>
+    </center>
+</BorderPane>

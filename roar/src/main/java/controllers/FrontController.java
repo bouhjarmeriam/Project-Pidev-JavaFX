@@ -2,21 +2,36 @@ package controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class FrontController {
+public class FrontController implements Initializable {
 
     @FXML
     private Button servicesButton;
+    @FXML private VBox adviceContainer;
 
+
+    private void loadAdviceComponent() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Advice.fxml"));
+            VBox adviceBox = loader.load();
+            adviceContainer.getChildren().add(adviceBox);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     private void loadInterfaceScene(ActionEvent event) {
         try {
@@ -96,4 +111,13 @@ public class FrontController {
     }
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Exemple : ajouter un effet de survol ou initialiser un comportement particulier
+        servicesButton.setOnMouseEntered(e -> servicesButton.setStyle(servicesButton.getStyle() + "; -fx-background-color: #CDEEFF;"));
+        servicesButton.setOnMouseExited(e -> servicesButton.setStyle(servicesButton.getStyle().replace("; -fx-background-color: #CDEEFF;", "")));
+        loadAdviceComponent();
+        // Tu peux aussi initialiser des données ou lancer des animations ici
+        System.out.println("FrontController initialisé.");
+    }
 }

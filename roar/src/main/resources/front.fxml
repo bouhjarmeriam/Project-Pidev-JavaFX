@@ -206,5 +206,9 @@
                 <Label style="-fx-text-fill: #C4E4FF; -fx-font-size: 12px;" text="© 2023 MediPlus. All Rights Reserved." />
             </HBox>
         </VBox>
+        <!-- INSERT HERE -->
+        <VBox fx:id="adviceContainer" spacing="10" alignment="CENTER" style="-fx-background-color: #ffffff; -fx-padding: 10; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #fdc632; -fx-border-width: 2;">
+            <Label style="-fx-font-size: 14px; -fx-text-fill: #002347;" text="Ici des conseils pour toi ,profitez!" />
+        </VBox>
     </bottom>
 </BorderPane>

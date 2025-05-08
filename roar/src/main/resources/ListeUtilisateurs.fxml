@@ -3,11 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <VBox xmlns="http://javafx.com/javafx/8.0.171"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controllers.UserListController"
       spacing="20" alignment="TOP_CENTER">
+
+
 
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
@@ -26,6 +31,40 @@
                 fx:id="btnDeconnexion"
                 onAction="#deconnexion"
                 style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-weight: bold;" />
+    </HBox>
+
+    <!-- Barre de recherche et filtre -->
+    <HBox spacing="20" alignment="CENTER_LEFT">
+        <TextField fx:id="searchInput" promptText="Rechercher par nom..." prefWidth="200"
+                   style="-fx-background-radius: 50; -fx-border-radius: 50; -fx-padding: 8;" />
+        <ComboBox fx:id="roleFilter" prefWidth="200"
+                  style="-fx-background-radius: 50; -fx-border-radius: 50;">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="" />
+                    <String fx:value="ROLE_PATIENT" />
+                    <String fx:value="ROLE_MEDECIN" />
+                    <String fx:value="ROLE_PHARMACIEN" />
+                    <String fx:value="ROLE_STAFF" />
+                    <String fx:value="ROLE_ADMIN" />
+                </FXCollections>
+            </items>
+            <value>
+                <String fx:value="" />
+            </value>
+        </ComboBox>
+    </HBox>
+
+    <!-- Conteneur pour les statistiques (BarChart) -->
+    <HBox fx:id="statsContainer" spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 10; -fx-background-color: #f1f1f1; -fx-border-radius: 8; -fx-background-radius: 8;">
+        <BarChart fx:id="statsChart" title="Répartition des utilisateurs par rôle" prefWidth="400" prefHeight="200">
+            <xAxis>
+                <CategoryAxis label="Rôle" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Nombre d'utilisateurs" />
+            </yAxis>
+        </BarChart>
     </HBox>
 
     <!-- Conteneur des utilisateurs dynamiques -->
