@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.AjouterEquipementController"
+      spacing="25"
+      style="-fx-padding: 30;
+             -fx-background-color: linear-gradient(to bottom, #f8fbff, #e6f0fa);
+             -fx-font-family: 'Segoe UI', Arial;
+             -fx-border-radius: 12;
+             -fx-background-radius: 12;
+             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 6, 0.1, 0, 2);">
+
+    <!-- Titre du formulaire -->
+    <Label text="Ajouter un nouvel équipement"
+           style="-fx-font-size: 26px;
+                  -fx-font-weight: bold;
+                  -fx-text-fill: #2f4f4f;"/>
+
+    <!-- Formulaire aligné -->
+    <GridPane hgap="15" vgap="15">
+        <!-- Champ Nom -->
+        <Label text="Nom :" GridPane.rowIndex="0" GridPane.columnIndex="0"
+               style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+        <TextField fx:id="nomField"
+                   promptText="Nom de l'équipement"
+                   GridPane.rowIndex="0" GridPane.columnIndex="1"
+                   style="-fx-padding: 8; -fx-background-radius: 8;
+                          -fx-background-color: #ffffff;
+                          -fx-border-color: #cce0ff;"/>
+
+        <!-- Champ Type -->
+        <Label text="Type :" GridPane.rowIndex="1" GridPane.columnIndex="0"
+               style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+        <TextField fx:id="typeField"
+                   promptText="Type d'équipement"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"
+                   style="-fx-padding: 8; -fx-background-radius: 8;
+                          -fx-background-color: #ffffff;
+                          -fx-border-color: #cce0ff;"/>
+
+        <!-- Champ Statut -->
+        <Label text="Statut :" GridPane.rowIndex="2" GridPane.columnIndex="0"
+               style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+        <ComboBox fx:id="statutCombo"
+                  promptText="Sélectionner un statut"
+                  GridPane.rowIndex="2" GridPane.columnIndex="1"
+                  style="-fx-padding: 6; -fx-background-radius: 8;
+                         -fx-background-color: #ffffff;
+                         -fx-border-color: #cce0ff;">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Fonctionnel"/>
+                    <String fx:value="En Panne"/>
+                    <String fx:value="En maintenance"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <!-- Champ Catégorie -->
+        <Label text="Catégorie :" GridPane.rowIndex="3" GridPane.columnIndex="0"
+               style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+        <TextField fx:id="categoryField"
+                   promptText="Catégorie de l'équipement"
+                   editable="false"
+                   focusTraversable="false"
+                   GridPane.rowIndex="3" GridPane.columnIndex="1"
+                   style="-fx-opacity: 1;
+                          -fx-padding: 8;
+                          -fx-background-radius: 8;
+                          -fx-background-color: #f0f4f9;
+                          -fx-border-color: #cce0ff;"/>
+    </GridPane>
+
+    <!-- Bouton Enregistrer -->
+    <Button text="Enregistrer"
+            onAction="#handleEnregistrer"
+            style="-fx-background-color: #0d6efd;
+                   -fx-text-fill: white;
+                   -fx-font-weight: bold;
+                   -fx-padding: 10 20;
+                   -fx-background-radius: 8;
+                   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.2, 0, 2);"/>
+</VBox>

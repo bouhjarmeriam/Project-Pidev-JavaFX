@@ -1,0 +1,27 @@
+/* Apply a red-blue gradient background */
+#navBar {
+    -fx-background-color: linear-gradient(to right, red, blue);
+    -fx-padding: 10px;
+}
+
+/* Style for buttons */
+#homeBtn, #profileBtn, #settingsBtn {
+    -fx-background-color: rgba(255, 255, 255, 0.2); /* Transparent White */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: white;
+}
+
+/* Hover effect */
+#homeBtn:hover, #profileBtn:hover, #settingsBtn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+    -fx-cursor: hand;
+}
+
+/* Active button effect */
+#homeBtn:pressed, #profileBtn:pressed, #settingsBtn:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+}

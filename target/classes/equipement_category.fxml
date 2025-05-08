@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.EquipementCategoryController"
+      spacing="20"
+      style="-fx-padding: 30;
+             -fx-background-color: linear-gradient(to bottom, #f8fbff, #e6f0fa);
+             -fx-font-family: 'Segoe UI', Arial;
+             -fx-border-radius: 10;
+             -fx-background-radius: 10;
+             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 6, 0.1, 0, 2);">
+
+    <!-- Titre de la catégorie -->
+    <Label fx:id="categoryLabel"
+           text="Catégorie :"
+           style="-fx-font-size: 26px;
+                  -fx-font-weight: bold;
+                  -fx-text-fill: #2f4f4f;"/>
+
+    <Label fx:id="labelNomCategorie"
+           layoutX="20"
+           layoutY="20"
+           style="-fx-font-size: 18px;
+                  -fx-text-fill: #003366;"/>
+
+    <!-- Barre de recherche -->
+    <TextField fx:id="searchBar"
+               promptText="Rechercher un équipement"
+               onKeyReleased="#filterEquipements"
+               style="-fx-padding: 10;
+                      -fx-font-size: 14px;
+                      -fx-background-radius: 8;
+                      -fx-border-color: #cce0ff;
+                      -fx-border-width: 1;
+                      -fx-background-color: #ffffff;"/>
+
+    <!-- Bouton pour ajouter un équipement dans la catégorie -->
+    <Button text="Ajouter un équipement à la catégorie"
+            onAction="#handleAjouterEquipement"
+            style="-fx-background-color: #0d6efd;
+                   -fx-text-fill: white;
+                   -fx-font-weight: bold;
+                   -fx-padding: 10 15;
+                   -fx-background-radius: 6;
+                   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.2, 0, 2);"/>
+
+    <!-- Titre de la liste des équipements -->
+    <Label text="Liste des équipements"
+           style="-fx-font-size: 20px;
+                  -fx-text-fill: #2a2a2a;
+                  -fx-font-weight: bold;"/>
+
+    <!-- Liste des équipements -->
+    <ListView fx:id="equipementList"
+              prefHeight="200"
+              style="-fx-background-color: #ffffff;
+                     -fx-border-color: #ddeeff;
+                     -fx-border-width: 1;
+                     -fx-background-radius: 8;
+                     -fx-padding: 5;"/>
+
+    <!-- Message affiché si aucun équipement n'est trouvé -->
+    <Label fx:id="noEquipementsLabel"
+           text="Aucun équipement trouvé dans cette catégorie."
+           visible="false"
+           style="-fx-text-fill: #cc0000;
+                  -fx-font-style: italic;"/>
+
+    <!-- Zone dynamique pour afficher d'autres vues (ex. ajouter un équipement) -->
+    <VBox fx:id="contentArea" />
+</VBox>

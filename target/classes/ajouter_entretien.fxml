@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+
+<VBox spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.AjouterEntretienController"
+      style="
+          -fx-padding: 50;
+          -fx-background-color: linear-gradient(to bottom right, #f9f9f9, #eaeaea);
+          -fx-border-radius: 15;
+          -fx-background-radius: 15;
+          -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.1, 0, 4);
+      ">
+
+    <Label fx:id="titleLabel" text="Créer un entretien"
+           style="
+               -fx-font-size: 26px;
+               -fx-font-weight: bold;
+               -fx-text-fill: #2e2e2e;
+               -fx-underline: true;
+           "/>
+
+    <TextField fx:id="nomEquipementField" promptText="Nom de l’équipement" editable="false"
+               style="
+                   -fx-pref-width: 350px;
+                   -fx-padding: 12;
+                   -fx-background-color: #ffffff;
+                   -fx-background-radius: 12;
+                   -fx-border-color: #3f51b5;
+                   -fx-border-width: 1.5;
+                   -fx-border-radius: 12;
+                   -fx-font-size: 14px;
+               "/>
+
+    <DatePicker fx:id="dateEntretienPicker"
+                style="
+                    -fx-pref-width: 350px;
+                    -fx-padding: 12;
+                    -fx-background-radius: 12;
+                    -fx-border-color: #3f51b5;
+                    -fx-border-width: 1.5;
+                    -fx-border-radius: 12;
+                    -fx-font-size: 14px;
+                "/>
+
+    <TextArea fx:id="descriptionField" promptText="Description de l’entretien"
+              style="
+                  -fx-pref-width: 350px;
+                  -fx-pref-height: 120px;
+                  -fx-padding: 12;
+                  -fx-background-color: #ffffff;
+                  -fx-background-radius: 12;
+                  -fx-border-color: #3f51b5;
+                  -fx-border-width: 1.5;
+                  -fx-border-radius: 12;
+                  -fx-font-size: 14px;
+              "/>
+
+    <Button text="Créer" onAction="#handleCreateEntretien"
+            style="
+                -fx-background-color: #3f51b5;
+                -fx-text-fill: white;
+                -fx-font-weight: bold;
+                -fx-font-size: 16px;
+                -fx-background-radius: 20;
+                -fx-padding: 10 30;
+                -fx-cursor: hand;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0.1, 0, 2);
+            "/>
+</VBox>
+
+

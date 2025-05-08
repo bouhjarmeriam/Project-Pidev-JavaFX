@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.ModifierEquipementController"
+            style="-fx-background-color: linear-gradient(to bottom, #f9fbfd, #e9eff5);">
+    <children>
+        <VBox alignment="CENTER"
+              spacing="15"
+              AnchorPane.topAnchor="30.0"
+              AnchorPane.leftAnchor="30.0"
+              AnchorPane.rightAnchor="30.0"
+              style="-fx-padding: 25;
+                     -fx-background-radius: 12;
+                     -fx-border-radius: 12;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 4, 0.2, 0, 2);">
+
+            <padding>
+                <Insets top="25" right="25" bottom="25" left="25"/>
+            </padding>
+
+            <Label text="Modifier un Équipement"
+                   style="-fx-font-size: 24px;
+                          -fx-font-weight: bold;
+                          -fx-text-fill: #2c3e50;"/>
+
+            <TextField fx:id="nomField"
+                       promptText="Nom de l'équipement"
+                       style="-fx-background-radius: 8;
+                              -fx-border-color: #cce0ff;
+                              -fx-padding: 8;
+                              -fx-background-color: white;"/>
+
+            <TextField fx:id="typeField"
+                       promptText="Type de l'équipement"
+                       style="-fx-background-radius: 8;
+                              -fx-border-color: #cce0ff;
+                              -fx-padding: 8;
+                              -fx-background-color: white;"/>
+
+            <ComboBox fx:id="statutCombo"
+                      promptText="Statut"
+                      style="-fx-background-radius: 8;
+                             -fx-border-color: #cce0ff;
+                             -fx-padding: 6;
+                             -fx-background-color: white;"/>
+
+            <TextField fx:id="categorieField"
+                       promptText="Catégorie"
+                       editable="false"
+                       focusTraversable="false"
+                       style="-fx-opacity: 1;
+                              -fx-background-radius: 8;
+                              -fx-border-color: #cce0ff;
+                              -fx-padding: 8;
+                              -fx-background-color: #f0f4f9;"/>
+
+            <Button text="Enregistrer les modifications"
+                    onAction="#modifierEquipementAction"
+                    style="-fx-background-color: #198754;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;
+                           -fx-padding: 10 20;
+                           -fx-background-radius: 8;
+                           -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.2, 0, 2);"/>
+        </VBox>
+    </children>
+</AnchorPane>

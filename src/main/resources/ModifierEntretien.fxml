@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.ModifierEntretienController"
+            prefWidth="400.0" prefHeight="300.0">
+    <VBox spacing="10" layoutX="30.0" layoutY="20.0">
+        <Label text="Nom de l'équipement:"/>
+        <TextField fx:id="nomEquipementField"/>
+
+        <Label text="Date d'entretien:"/>
+        <DatePicker fx:id="datePicker"/>
+
+        <Label text="Description:"/>
+        <TextArea fx:id="descriptionArea" prefHeight="100.0"/>
+
+        <Button text="Mettre à jour" onAction="#handleUpdate"
+                style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+    </VBox>
+</AnchorPane>
