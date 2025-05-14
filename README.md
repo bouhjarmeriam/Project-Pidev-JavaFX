@@ -1,20 +1,20 @@
 import os
 
-# Contenu du README.md pour ClinCare
-readme_content = """# 🏥 ClinCare – Application Desktop pour la Gestion d’une Clinique
+# Contenu du README.md pour CliniCare
+readme_content = """# 🏥 CliniCare – Application Desktop pour la Gestion d’une Clinique
 
 <p align="center">
   <a href="https://www.facebook.com/profile.php?id=61572284563201">
-    <img src="https://img.shields.io/badge/Join%20us%20on-Facebook-blue" alt="ClinCare Facebook"/>
+    <img src="https://img.shields.io/badge/Join%20us%20on-Facebook-blue" alt="CliniCare Facebook"/>
   </a>
   <a href="https://github.com/bouhjarmeriam">
-    <img src="https://img.shields.io/badge/Follow%20us%20on-GitHub-181717" alt="ClinCare GitHub"/>
+    <img src="https://img.shields.io/badge/Follow%20us%20on-GitHub-181717" alt="CliniCare GitHub"/>
   </a>
 </p>
 
 ## 📖 Description du Projet
 
-ClinCare est une application desktop complète développée en *JavaFX*, dans le cadre du projet intégré Web-Java de 3e année universitaire (2024–2025). Elle vise à faciliter la gestion administrative et médicale d’une clinique grâce à une interface graphique moderne et modulaire. L'application offre une solution tout-en-un pour gérer les utilisateurs, les infrastructures cliniques, les médicaments, les consultations, les dossiers médicaux, et bien plus, avec des fonctionnalités avancées comme un chatbot, un système de recommandation, et des exports PDF.
+CliniCare est une application desktop complète développée en *JavaFX*, dans le cadre du projet intégré Web-Java de 3e année universitaire (2024–2025). Elle vise à faciliter la gestion administrative et médicale d’une clinique grâce à une interface graphique moderne et modulaire. L'application offre une solution tout-en-un pour gérer les utilisateurs, les infrastructures cliniques, les médicaments, les consultations, les dossiers médicaux, et bien plus, avec des fonctionnalités avancées comme un chatbot, un système de recommandation, et des exports PDF.
 
 ## 🗂 Table des Matières
 
@@ -145,7 +145,7 @@ Avant d'exécuter le projet, assurez-vous d'avoir installé les éléments suiva
 ## 📬 Contact
 
 - *GitHub* : [@bouhjarmeriam](https://github.com/bouhjarmeriam)
-- *Facebook* : [ClinCare](https://www.facebook.com/profile.php?id=61572284563201)
+- *Facebook* : [CliniCare](https://www.facebook.com/profile.php?id=61572284563201)
 - *Email* : support@clincare.com
 
 ---
