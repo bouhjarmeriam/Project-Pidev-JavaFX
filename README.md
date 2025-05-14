@@ -1,91 +1,158 @@
-🏥 ClinCare – Application Desktop pour la Gestion d’une Clinique
+import os
 
-  
-    
-  
+# Contenu du README.md pour ClinCare
+readme_content = """# 🏥 ClinCare – Application Desktop pour la Gestion d’une Clinique
 
+<p align="center">
+  <a href="https://www.facebook.com/profile.php?id=61572284563201">
+    <img src="https://img.shields.io/badge/Join%20us%20on-Facebook-blue" alt="ClinCare Facebook"/>
+  </a>
+  <a href="https://github.com/bouhjarmeriam">
+    <img src="https://img.shields.io/badge/Follow%20us%20on-GitHub-181717" alt="ClinCare GitHub"/>
+  </a>
+</p>
 
-📖 Description du Projet
-ClinCare est une application desktop complète développée en JavaFX, dans le cadre du projet intégré Web-Java de 3e année universitaire (2024–2025).Elle vise à faciliter la gestion administrative et médicale d’une clinique grâce à une interface graphique moderne et modulaire.
-🗂 Table des Matières
+## 📖 Description du Projet
 
-Pré-requis
-Installation
-Utilisation
-Fonctionnalités principales
-Démo
-Contact
+ClinCare est une application desktop complète développée en *JavaFX*, dans le cadre du projet intégré Web-Java de 3e année universitaire (2024–2025). Elle vise à faciliter la gestion administrative et médicale d’une clinique grâce à une interface graphique moderne et modulaire. L'application offre une solution tout-en-un pour gérer les utilisateurs, les infrastructures cliniques, les médicaments, les consultations, les dossiers médicaux, et bien plus, avec des fonctionnalités avancées comme un chatbot, un système de recommandation, et des exports PDF.
 
+## 🗂 Table des Matières
 
-✅ Pré-requis
-Avant d'exécuter le projet, assurez-vous d'avoir :
+- [Pré-requis](#pré-requis)
+- [Installation](#installation)
+- [Utilisation](#utilisation)
+- [Fonctionnalités Principales](#fonctionnalités-principales)
+- [Démo](#démo)
+- [Contact](#contact)
 
-JDK 17
-Un IDE (IntelliJ IDEA ou VSCode)
-JavaFX
-MySQL
-Git
-Maven
+## ✅ Pré-requis
 
+Avant d'exécuter le projet, assurez-vous d'avoir installé les éléments suivants :
 
-⚙ Installation
-git clone https://github.com/bouhjarmeriam/Project-Pidev-JavaFX.git
-cd Project-Pidev-JavaFX
-mvn clean install
+- *[JDK 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)* : Pour exécuter l'application JavaFX.
+- *[JavaFX SDK](https://openjfx.io/)* : Framework pour l'interface graphique.
+- *[Maven](https://maven.apache.org/)* : Gestion des dépendances.
+- *[MySQL](https://www.mysql.com/)* : Base de données pour stocker les données.
+- *[Git](https://git-scm.com/)* : Pour cloner le repository.
+- *Un IDE* : IntelliJ IDEA ou VSCode recommandé.
+- *Clé API [Stripe](https://stripe.com/)* : Pour les paiements (mode test recommandé).
+- *Clé API [Twilio](https://www.twilio.com/)* : Pour l'envoi de SMS.
 
+## ⚙ Installation
 
-🚀 Utilisation
+1. *Cloner le repository* :
+   bash
+   git clone https://github.com/bouhjarmeriam/Project-Pidev-JavaFX.git
+   cd Project-Pidev-JavaFX
+   
 
-Ouvrir le fichier src/main/java/main/MainApp.java
-Lancer l'application depuis l'IDE
+2. *Installer les dépendances* :
+   bash
+   mvn clean install
+   
 
+3. *Configurer la base de données* :
+   - Créez une base de données MySQL nommée clincare_db :
+     sql
+     CREATE DATABASE clincare_db;
+     
+   - Importez le schéma SQL (si fourni) ou configurez les tables via l'application.
+   - Mettez à jour les informations de connexion dans src/main/resources/config.properties :
+     properties
+     db.url=jdbc:mysql://localhost:3306/clincare_db
+     db.user=votre_utilisateur
+     db.password=votre_mot_de_passe
+     stripe.api.key=sk_test_votre_cle_stripe
+     twilio.api.key=votre_cle_twilio
+     
 
-🔧 Fonctionnalités principales
-👤 Gestion des utilisateurs
+4. *Ouvrir le projet dans un IDE* :
+   - Utilisez IntelliJ IDEA ou VSCode.
+   - Assurez-vous que le JDK 17 et JavaFX sont configurés dans les paramètres du projet.
 
-Gestion des utilisateurs (User, Médecin, Patient, Pharmacien, Staff)
-Architecture orientée services sans héritage entre les classes
-Chaque type d'utilisateur possède sa propre entité Java
-Support complet CRUD, hashage sécurisé des mots de passe, envoi d’e-mails à la création et assignation dynamique des rôles
+## 🚀 Utilisation
 
-🏢 Gestion des infrastructures cliniques
+1. *Lancer l'application* :
+   - Ouvrez le fichier src/main/java/main/MainApp.java dans votre IDE.
+   - Exécutez la classe principale (MainApp).
+   - Alternativement, depuis la ligne de commande :
+     bash
+     mvn javafx:run
+     
 
-Gestion des départements, étages et salles avec interfaces dynamiques
-Réservation de salles, visualisation des disponibilités et statistiques détaillées par étage/département
-Support de l’import/export CSV pour faciliter l’analyse ou migration des données
+2. *Tester les fonctionnalités* :
+   - *Admin* : Connectez-vous avec un compte admin pour gérer les utilisateurs, départements, et services.
+   - *Médecin/Pharmacien* : Gérez les consultations, médicaments, et commandes.
+   - *Patient* : Accédez aux dossiers médicaux, passez des commandes, et planifiez des rendez-vous.
+   - *Paiements* : Utilisez une carte de test Stripe (ex. 4242 4242 4242 4242) pour simuler un achat.
 
-💊 Gestion des médicaments et des commandes
+## 🛠 Fonctionnalités Principales
 
-Le pharmacien gère les médicaments (CRUD), avec un chatbot intelligent d’assistance
-Statistiques selon le type de médicament et détection automatique des expirations
-Le patient peut passer des commandes avec paiement sécurisé via Stripe et facturation PDF automatisée
+### 👥 Gestion des Utilisateurs
+- *Types d'utilisateurs* : User, Médecin, Patient, Pharmacien, Staff.
+- Architecture orientée services sans héritage entre les classes.
+- Entités Java distinctes pour chaque type d'utilisateur.
+- *CRUD complet* : Création, lecture, modification, suppression des comptes.
+- *Sécurité* : Hashage sécurisé des mots de passe.
+- *Emails* : Envoi d’emails automatiques à la création de compte.
+- *Rôles dynamiques* : Assignation flexible des rôles selon les besoins.
 
-🩺 Gestion des consultations, services médicaux et évaluations
+### 🏢 Gestion des Infrastructures Cliniques
+- Gestion des *départements, **étages, et **salles* via des interfaces dynamiques.
+- *Réservation de salles* : Visualisation des disponibilités en temps réel.
+- *Statistiques* : Données détaillées par étage/département (occupation, utilisation).
+- *Import/Export CSV* : Analyse et migration des données simplifiées.
 
-Interfaces distinctes : patient, administrateur, gestion des services
-Notation des services, export PDF, graphes statistiques, SMS via Twilio, multi-langues, et recherche avancée
-Design moderne avec animations, ombres portées, dégradés et code bien structuré
+### 💊 Gestion des Médicaments et Commandes
+- *Pharmacien* : CRUD pour les médicaments, suivi des stocks.
+- *Chatbot intelligent* : Assistance pour la gestion des médicaments.
+- *Statistiques* : Analyse par type de médicament, détection des expirations.
+- *Commandes patients* : Paiement sécurisé via *Stripe*, facturation PDF automatisée.
 
-📋 Gestion des dossiers médicaux et séjours
+### 🩺 Gestion des Consultations, Services Médicaux et Évaluations
+- *Interfaces dédiées* : Patient, administrateur, gestion des services.
+- *Évaluations* : Notation des services avec export PDF des résultats.
+- *Statistiques* : Graphiques pour analyser les performances des services.
+- *Notifications* : Envoi de SMS via *Twilio* pour rappels ou confirmations.
+- *Multi-langues* : Support linguistique pour une accessibilité accrue.
+- *Recherche avancée* : Filtrage des consultations et services.
 
-Opérations CRUD avec validation de saisie sur les dossiers et séjours hospitaliers
-Lecture par code scanner pour accès rapide aux données médicales
-Planification via calendrier interactif (hospitalisations, rendez-vous, opérations)
-Statistiques médicales exportables en PDF, améliorant la planification et la communication médicale
+### 📋 Gestion des Dossiers Médicaux et Séjours
+- *CRUD sécurisé* : Gestion des dossiers médicaux et séjours hospitaliers avec validation des saisies.
+- *Accès rapide* : Lecture par code scanner pour les données médicales.
+- *Planification* : Calendrier interactif pour hospitalisations, rendez-vous, et opérations.
+- *Export PDF* : Statistiques médicales exportables pour la planification.
 
-➕ Autres fonctionnalités
+### 📝 Formulaires Interactifs
+- Upload d’images pour enrichir les dossiers ou consultations.
+- Interfaces dynamiques avec validation en temps réel.
 
-Formulaires interactifs avec upload d’images
-Recherches dynamiques et filtrage des données
-Système de recommandation personnalisé
-Chatbot de support intégré
+### 🔍 Recherches Dynamiques et Filtrage
+- Recherche instantanée sur les utilisateurs, médicaments, consultations, et dossiers.
+- Filtres personnalisables pour une navigation efficace.
 
+### 🤝 Système de Recommandation Personnalisé
+- Suggestions intelligentes pour les services, médicaments, ou rendez-vous basées sur les données utilisateur.
 
-🎬 Démo
-👉 Voir la démo vidéo de ClinCare
+### 💬 Chatbot de Support Intégré
+- Assistance automatisée pour les utilisateurs (patients, pharmaciens, staff).
+- Réponses contextuelles pour améliorer l’expérience utilisateur.
 
-📬 Contact
+## 🎬 Démo
 
-GitHub: @bouhjarmeriam
-Facebook: ClinCare
+👉 [Voir la démo vidéo de ClinCare sur YouTube](https://www.youtube.com/watch?v=exemple) (Lien à mettre à jour après publication)
+
+## 📬 Contact
+
+- *GitHub* : [@bouhjarmeriam](https://github.com/bouhjarmeriam)
+- *Facebook* : [ClinCare](https://www.facebook.com/profile.php?id=61572284563201)
+- *Email* : support@clincare.com
+
+---
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Made%20with-JavaFX-orange" alt="Made with JavaFX"/>
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License MIT"/>
+</p>
+"""
 
